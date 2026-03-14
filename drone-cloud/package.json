@@ -1,0 +1,15 @@
+{
+  "name": "drone-cloud",
+  "version": "1.0.0",
+  "description": "Cloud infrastructure for autonomous drone fleets",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run --workspaces dev",
+    "build": "npm run --workspaces build",
+    "start": "npm run --workspaces start"
+  }
+}
