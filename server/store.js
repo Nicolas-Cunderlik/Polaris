@@ -81,22 +81,12 @@ export const updateProfile = async (id, updates) => {
   }
 };
 
-const attachCompany = (item, companies, companyKey, outputKey) => {
-  if (!item) return item;
-  const companyId = item[companyKey];
-  return {
-    ...item,
-    [outputKey]: companyId ? companies.find((company) => company.id === companyId) ?? null : null,
-  };
-};
-
 export const getNodes = async () => {
   const nodes =
     (await withCollection('nodes', (collection) =>
       collection.find({}, { projection: { _id: 0 } }).toArray()
     )) ?? memoryStore.nodes;
-  const companies = await getCompanies();
-  return nodes.map((node) => attachCompany(node, companies, 'owner_company_id', 'owner_company'));
+  return nodes;
 };
 
 export const getNodeById = async (id) => {
@@ -142,7 +132,12 @@ export const getDrones = async () => {
       collection.find({}, { projection: { _id: 0 } }).toArray()
     )) ?? memoryStore.drones;
   const companies = await getCompanies();
-  return drones.map((drone) => attachCompany(drone, companies, 'company_id', 'company'));
+  return drones.map((drone) => ({
+    ...drone,
+    company: drone.company_id
+      ? companies.find((company) => company.id === drone.company_id) ?? null
+      : null,
+  }));
 };
 
 export const getDroneById = async (id) => {
@@ -163,6 +158,46 @@ export const updateDrone = async (id, updates) => {
   if (index >= 0) {
     memoryStore.drones[index] = { ...memoryStore.drones[index], ...updates };
   }
+};
+
+export const createDrone = async (payload) => {
+  const now = new Date().toISOString();
+  const newDrone = {
+    id: randomUUID(),
+    name: payload.name,
+    company_id: payload.company_id ?? null,
+    lat: payload.lat ?? 37.7749 + (Math.random() - 0.5) * 0.05,
+    lng: payload.lng ?? -122.4194 + (Math.random() - 0.5) * 0.05,
+    battery: payload.battery ?? 100,
+    status: payload.status ?? 'idle',
+    destination_lat: null,
+    destination_lng: null,
+    current_node_id: null,
+    created_at: now,
+    updated_at: now,
+  };
+
+  const result = await withCollection('drones', (collection) =>
+    collection.insertOne(newDrone)
+  );
+  if (result) return newDrone;
+
+  memoryStore.drones.push(newDrone);
+  return newDrone;
+};
+
+export const deleteDrone = async (id) => {
+  const result = await withCollection('drones', (collection) =>
+    collection.deleteOne({ id })
+  );
+  if (result) return true;
+
+  const index = memoryStore.drones.findIndex((drone) => drone.id === id);
+  if (index >= 0) {
+    memoryStore.drones.splice(index, 1);
+    return true;
+  }
+  return false;
 };
 
 export const getTransactions = async (limit = 50) => {

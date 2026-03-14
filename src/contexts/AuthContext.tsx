@@ -32,14 +32,28 @@ const clearStorage = (key: string) => {
 
 const createProfileForUser = (user: AuthUser, username: string): Profile => {
   const normalized = username.trim().toLowerCase();
-  const role: UserRole = normalized === 'admin' ? 'admin' : 'operator';
+  const role: UserRole =
+    normalized === 'admin' ? 'admin' : normalized === 'provider' ? 'provider' : 'operator';
+
+  const companyIdLookup: Record<string, string> = {
+    provider: 'company-aurora',
+    operator: 'company-skylink',
+    aurora: 'company-aurora',
+    skylink: 'company-skylink',
+    nimbus: 'company-nimbus',
+  };
+
+  const company_id =
+    role === 'admin'
+      ? null
+      : companyIdLookup[normalized] ?? 'company-aurora';
 
   return {
     id: user.id,
     email: user.email,
     username,
     role,
-    company_id: null,
+    company_id,
     created_at: user.created_at,
   };
 };

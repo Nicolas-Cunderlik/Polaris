@@ -5,15 +5,17 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
-import type { DroneWithCompany, NodeWithCompany } from '@/types/database';
+import type { DroneWithCompany, Node } from '@/types/database';
 import { Battery, Zap, MapPin, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const FleetMapPage: React.FC = () => {
   const [drones, setDrones] = useState<DroneWithCompany[]>([]);
-  const [nodes, setNodes] = useState<NodeWithCompany[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState(true);
   const simulationInterval = useRef<NodeJS.Timeout | null>(null);
+  const { profile } = useAuth();
 
   useEffect(() => {
     loadData();
@@ -84,13 +86,17 @@ const FleetMapPage: React.FC = () => {
   const mapSrc = mapsKey
     ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=us`
     : null;
+  const visibleDrones =
+    profile?.role === 'admin'
+      ? drones
+      : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
 
   return (
     <MainLayout>
       <div className="container mx-auto p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold gradient-text">Live Fleet Map</h1>
+            <h1 className="text-3xl font-bold gradient-text">Local Cluster Monitoring</h1>
             <p className="text-muted-foreground">Real-time drone fleet monitoring</p>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -127,7 +133,7 @@ const FleetMapPage: React.FC = () => {
               </div>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                 <div className="p-3 bg-muted rounded-lg">
-                  <div className="text-2xl font-bold text-primary">{drones.length}</div>
+                  <div className="text-2xl font-bold text-primary">{visibleDrones.length}</div>
                   <div className="text-xs text-muted-foreground">Total Drones</div>
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
@@ -136,13 +142,13 @@ const FleetMapPage: React.FC = () => {
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
                   <div className="text-2xl font-bold text-chart-5">
-                    {drones.filter((d) => d.status === 'flying').length}
+                    {visibleDrones.filter((d) => d.status === 'flying').length}
                   </div>
                   <div className="text-xs text-muted-foreground">Active Flights</div>
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
                   <div className="text-2xl font-bold text-chart-4">
-                    {drones.filter((d) => d.status === 'charging').length}
+                    {visibleDrones.filter((d) => d.status === 'charging').length}
                   </div>
                   <div className="text-xs text-muted-foreground">Charging</div>
                 </div>
@@ -164,7 +170,7 @@ const FleetMapPage: React.FC = () => {
                     <Skeleton key={i} className="h-20 w-full bg-muted" />
                   ))
                 ) : (
-                  drones.map((drone) => (
+                  visibleDrones.map((drone) => (
                     <div
                       key={drone.id}
                       className="p-3 border border-border rounded-lg hover:bg-accent/50 transition-colors"
@@ -215,9 +221,7 @@ const FleetMapPage: React.FC = () => {
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <div className="font-medium">{node.name}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {node.owner_company?.name || 'Public'}
-                        </div>
+                        <div className="text-xs text-muted-foreground">Platform-owned</div>
                       </div>
                       <Badge variant={node.current_load >= node.capacity ? 'destructive' : 'outline'}>
                         {node.current_load}/{node.capacity}
