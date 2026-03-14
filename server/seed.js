@@ -55,6 +55,7 @@ export const seedData = {
       lng: -122.4194,
       capacity: 6,
       current_load: 2,
+      owner_company_id: 'company-aurora',
       created_at: now,
     },
     {
@@ -64,6 +65,7 @@ export const seedData = {
       lng: -122.4094,
       capacity: 4,
       current_load: 1,
+      owner_company_id: null,
       created_at: now,
     },
     {
@@ -73,6 +75,7 @@ export const seedData = {
       lng: -122.4294,
       capacity: 5,
       current_load: 3,
+      owner_company_id: 'company-nimbus',
       created_at: now,
     },
   ],

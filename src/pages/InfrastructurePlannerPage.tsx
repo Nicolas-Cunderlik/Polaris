@@ -29,6 +29,7 @@ const InfrastructurePlannerPage: React.FC = () => {
     lat: 37.7749,
     lng: -122.4194,
     capacity: 5,
+    owner_company_id: '',
   });
   const [newDrone, setNewDrone] = useState({
     name: '',
@@ -50,6 +51,15 @@ const InfrastructurePlannerPage: React.FC = () => {
       setNewDrone((prev) => ({
         ...prev,
         company_id: profile?.company_id ?? '',
+      }));
+    }
+  }, [profile]);
+
+  useEffect(() => {
+    if (profile?.role !== 'admin') {
+      setNewNode((prev) => ({
+        ...prev,
+        owner_company_id: profile?.company_id ?? '',
       }));
     }
   }, [profile]);
@@ -99,6 +109,7 @@ const InfrastructurePlannerPage: React.FC = () => {
         lat: newNode.lat,
         lng: newNode.lng,
         capacity: newNode.capacity,
+        owner_company_id: newNode.owner_company_id || null,
       });
       toast.success('Node created successfully');
       setNewNode({
@@ -106,6 +117,7 @@ const InfrastructurePlannerPage: React.FC = () => {
         lat: 37.7749,
         lng: -122.4194,
         capacity: 5,
+        owner_company_id: profile?.role === 'admin' ? '' : profile?.company_id ?? '',
       });
       setSimulationMode(false);
       loadData();
@@ -323,6 +335,33 @@ const InfrastructurePlannerPage: React.FC = () => {
                 />
               </div>
               <div className="space-y-2">
+                <Label>Owner Company</Label>
+                {profile?.role === 'admin' ? (
+                  <Select
+                    value={newNode.owner_company_id}
+                    onValueChange={(value) =>
+                      setNewNode({ ...newNode, owner_company_id: value })
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies.map((company) => (
+                        <SelectItem key={company.id} value={company.id}>
+                          {company.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    {companies.find((company) => company.id === newNode.owner_company_id)?.name ||
+                      'Assigned company'}
+                  </div>
+                )}
+              </div>
+              <div className="space-y-2">
                 <Button onClick={handleSimulateNode} variant="outline" className="w-full">
                   Simulate Impact
                 </Button>
@@ -446,7 +485,10 @@ const InfrastructurePlannerPage: React.FC = () => {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="font-medium">{node.name}</div>
-                      <div className="text-xs text-muted-foreground">Platform-owned</div>
+                      <div className="text-xs text-muted-foreground">
+                        {companies.find((company) => company.id === node.owner_company_id)?.name ||
+                          'Platform-owned'}
+                      </div>
                     </div>
                     <Badge variant={node.current_load >= node.capacity ? 'destructive' : 'outline'}>
                       {node.current_load}/{node.capacity}

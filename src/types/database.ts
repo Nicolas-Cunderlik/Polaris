@@ -26,6 +26,7 @@ export interface Node {
   lng: number;
   capacity: number;
   current_load: number;
+  owner_company_id?: string | null;
   created_at: string;
 }
 
