@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { getNodes, getCompanies, createNode } from '@/db/api';
+import { getCompanies, getDrones, getNodes, createNode, registerDrone, deleteDrone } from '@/db/api';
 import { useAuth } from '@/contexts/AuthContext';
-import type { NodeWithCompany, Company } from '@/types/database';
-import { Network, Plus, TrendingDown, AlertCircle, MapPin } from 'lucide-react';
+import type { Node, DroneWithCompany, Company } from '@/types/database';
+import { Network, Plus, TrendingDown, AlertCircle, MapPin, Trash2, Plane } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Select,
@@ -19,7 +19,8 @@ import {
 } from '@/components/ui/select';
 
 const InfrastructurePlannerPage: React.FC = () => {
-  const [nodes, setNodes] = useState<NodeWithCompany[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [drones, setDrones] = useState<DroneWithCompany[]>([]);
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [simulationMode, setSimulationMode] = useState(false);
@@ -28,18 +29,40 @@ const InfrastructurePlannerPage: React.FC = () => {
     lat: 37.7749,
     lng: -122.4194,
     capacity: 5,
-    owner_company_id: '',
   });
+  const [newDrone, setNewDrone] = useState({
+    name: '',
+    tier: 'starter' as 'starter' | 'pro' | 'enterprise',
+    lat: 37.7749,
+    lng: -122.4194,
+    company_id: '',
+  });
+  const [registering, setRegistering] = useState(false);
+  const [removingId, setRemovingId] = useState<string | null>(null);
   const { profile } = useAuth();
 
   useEffect(() => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    if (profile?.role !== 'admin') {
+      setNewDrone((prev) => ({
+        ...prev,
+        company_id: profile?.company_id ?? '',
+      }));
+    }
+  }, [profile]);
+
   const loadData = async () => {
     try {
-      const [nodesData, companiesData] = await Promise.all([getNodes(), getCompanies()]);
+      const [nodesData, dronesData, companiesData] = await Promise.all([
+        getNodes(),
+        getDrones(),
+        getCompanies(),
+      ]);
       setNodes(nodesData);
+      setDrones(dronesData);
       setCompanies(companiesData);
     } catch (error) {
       toast.error('Failed to load infrastructure data');
@@ -76,7 +99,6 @@ const InfrastructurePlannerPage: React.FC = () => {
         lat: newNode.lat,
         lng: newNode.lng,
         capacity: newNode.capacity,
-        owner_company_id: newNode.owner_company_id || null,
       });
       toast.success('Node created successfully');
       setNewNode({
@@ -84,13 +106,63 @@ const InfrastructurePlannerPage: React.FC = () => {
         lat: 37.7749,
         lng: -122.4194,
         capacity: 5,
-        owner_company_id: '',
       });
       setSimulationMode(false);
       loadData();
     } catch (error) {
       toast.error('Failed to create node');
       console.error(error);
+    }
+  };
+
+  const handleRegisterDrone = async () => {
+    if (!newDrone.name) {
+      toast.error('Please enter a drone name');
+      return;
+    }
+
+    const companyId =
+      profile?.role === 'admin' ? newDrone.company_id : profile?.company_id;
+
+    if (!companyId) {
+      toast.error('Please select a company for this drone');
+      return;
+    }
+
+    setRegistering(true);
+    try {
+      const response = await registerDrone({
+        name: newDrone.name,
+        company_id: companyId,
+        tier: newDrone.tier,
+        lat: newDrone.lat,
+        lng: newDrone.lng,
+      });
+      toast.success(`Drone registered. ${response.amount_sol} SOL charged.`);
+      setNewDrone((prev) => ({
+        ...prev,
+        name: '',
+      }));
+      loadData();
+    } catch (error) {
+      toast.error('Failed to register drone');
+      console.error(error);
+    } finally {
+      setRegistering(false);
+    }
+  };
+
+  const handleRemoveDrone = async (id: string) => {
+    setRemovingId(id);
+    try {
+      await deleteDrone(id);
+      toast.success('Drone removed from fleet');
+      loadData();
+    } catch (error) {
+      toast.error('Failed to remove drone');
+      console.error(error);
+    } finally {
+      setRemovingId(null);
     }
   };
 
@@ -107,6 +179,11 @@ const InfrastructurePlannerPage: React.FC = () => {
   };
 
   const impact = simulationMode ? calculateImpact() : null;
+
+  const visibleDrones =
+    profile?.role === 'admin'
+      ? drones
+      : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
 
   const mapCenter = { lat: newNode.lat, lng: newNode.lng };
   const mapZoom = 12;
@@ -246,24 +323,6 @@ const InfrastructurePlannerPage: React.FC = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="node-owner">Owner Company</Label>
-                <Select
-                  value={newNode.owner_company_id}
-                  onValueChange={(value) => setNewNode({ ...newNode, owner_company_id: value })}
-                >
-                  <SelectTrigger id="node-owner">
-                    <SelectValue placeholder="Select company" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {companies.map((company) => (
-                      <SelectItem key={company.id} value={company.id}>
-                        {company.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
                 <Button onClick={handleSimulateNode} variant="outline" className="w-full">
                   Simulate Impact
                 </Button>
@@ -272,6 +331,102 @@ const InfrastructurePlannerPage: React.FC = () => {
                     Create Node
                   </Button>
                 )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Plane className="h-5 w-5" />
+                Drone Registration
+              </CardTitle>
+              <CardDescription>Register drones and simulate subscription purchases</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="drone-name">Drone Name</Label>
+                <Input
+                  id="drone-name"
+                  placeholder="e.g., Drone-Zeta"
+                  value={newDrone.name}
+                  onChange={(e) => setNewDrone({ ...newDrone, name: e.target.value })}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <Label htmlFor="drone-lat">Latitude</Label>
+                  <Input
+                    id="drone-lat"
+                    type="number"
+                    step="0.0001"
+                    value={newDrone.lat}
+                    onChange={(e) => setNewDrone({ ...newDrone, lat: parseFloat(e.target.value) })}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="drone-lng">Longitude</Label>
+                  <Input
+                    id="drone-lng"
+                    type="number"
+                    step="0.0001"
+                    value={newDrone.lng}
+                    onChange={(e) => setNewDrone({ ...newDrone, lng: parseFloat(e.target.value) })}
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label>Subscription Tier</Label>
+                <Select
+                  value={newDrone.tier}
+                  onValueChange={(value) =>
+                    setNewDrone({ ...newDrone, tier: value as 'starter' | 'pro' | 'enterprise' })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select tier" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="starter">Starter - 0.5 SOL</SelectItem>
+                    <SelectItem value="pro">Pro - 1.25 SOL</SelectItem>
+                    <SelectItem value="enterprise">Enterprise - 2.5 SOL</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label>Company</Label>
+                {profile?.role === 'admin' ? (
+                  <Select
+                    value={newDrone.company_id}
+                    onValueChange={(value) => setNewDrone({ ...newDrone, company_id: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select company" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {companies.map((company) => (
+                        <SelectItem key={company.id} value={company.id}>
+                          {company.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <div className="text-sm text-muted-foreground">
+                    {companies.find((company) => company.id === profile?.company_id)?.name ||
+                      'Assigned company'}
+                  </div>
+                )}
+              </div>
+              <Button onClick={handleRegisterDrone} className="w-full" disabled={registering}>
+                {registering ? 'Registering...' : 'Register Drone'}
+              </Button>
+              <div className="space-y-2">
+                <div className="text-sm font-medium">Subscription Notes</div>
+                <div className="text-xs text-muted-foreground">
+                  Starter: essentials for small fleets. Pro: higher throughput analytics. Enterprise:
+                  priority support and SLA.
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -291,9 +446,7 @@ const InfrastructurePlannerPage: React.FC = () => {
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="font-medium">{node.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {node.owner_company?.name || 'Public'}
-                      </div>
+                      <div className="text-xs text-muted-foreground">Platform-owned</div>
                     </div>
                     <Badge variant={node.current_load >= node.capacity ? 'destructive' : 'outline'}>
                       {node.current_load}/{node.capacity}
@@ -312,6 +465,52 @@ const InfrastructurePlannerPage: React.FC = () => {
                       style={{ width: `${(node.current_load / node.capacity) * 100}%` }}
                     />
                   </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Plane className="h-5 w-5" />
+              Registered Drones
+            </CardTitle>
+            <CardDescription>
+              {profile?.role === 'admin'
+                ? 'Viewing all drones across companies.'
+                : 'Viewing drones registered to your company.'}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {visibleDrones.map((drone) => (
+                <div key={drone.id} className="p-4 border border-border rounded-lg space-y-2">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="font-medium">{drone.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {drone.company?.name || 'Unknown company'}
+                      </div>
+                    </div>
+                    <Badge variant="outline">{drone.status}</Badge>
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    📍 {drone.lat.toFixed(4)}, {drone.lng.toFixed(4)}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Battery: {drone.battery.toFixed(0)}%</div>
+                  {(profile?.role === 'admin' || drone.company_id === profile?.company_id) && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleRemoveDrone(drone.id)}
+                      disabled={removingId === drone.id}
+                    >
+                      <Trash2 className="mr-2 h-4 w-4" />
+                      {removingId === drone.id ? 'Removing...' : 'Remove Drone'}
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>

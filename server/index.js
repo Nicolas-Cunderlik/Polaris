@@ -15,6 +15,8 @@ import {
   getDrones,
   getDroneById,
   updateDrone,
+  createDrone,
+  deleteDrone,
   getTransactions,
   createTransaction,
   getNetworkMetrics,
@@ -150,6 +152,42 @@ app.patch('/api/drones/:id', async (req, res, next) => {
   try {
     await updateDrone(req.params.id, req.body);
     res.json({ ok: true });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/drones', async (req, res, next) => {
+  try {
+    const tierPricing = {
+      starter: 0.5,
+      pro: 1.25,
+      enterprise: 2.5,
+    };
+
+    const { tier = 'starter', ...payload } = req.body ?? {};
+    const drone = await createDrone(payload);
+
+    const amountSol = tierPricing[tier] ?? tierPricing.starter;
+    if (drone.company_id) {
+      await createTransaction({
+        drone_id: drone.id,
+        node_id: null,
+        company_id: drone.company_id,
+        amount_sol: amountSol,
+      });
+    }
+
+    res.json({ drone, tier, amount_sol: amountSol });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/drones/:id', async (req, res, next) => {
+  try {
+    const removed = await deleteDrone(req.params.id);
+    res.json({ ok: removed });
   } catch (error) {
     next(error);
   }
