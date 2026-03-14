@@ -19,19 +19,11 @@ const FleetMapPage: React.FC = () => {
     loadData();
 
     const dronesChannel = subscribeToDrones((payload) => {
-      if (payload.eventType === 'UPDATE') {
-        setDrones((prev) =>
-          prev.map((d) => (d.id === payload.new.id ? { ...d, ...payload.new } : d))
-        );
-      }
+      setDrones(payload.data);
     });
 
     const nodesChannel = subscribeToNodes((payload) => {
-      if (payload.eventType === 'UPDATE') {
-        setNodes((prev) =>
-          prev.map((n) => (n.id === payload.new.id ? { ...n, ...payload.new } : n))
-        );
-      }
+      setNodes(payload.data);
     });
 
     simulationInterval.current = setInterval(() => {
@@ -88,6 +80,10 @@ const FleetMapPage: React.FC = () => {
 
   const mapCenter = { lat: 37.7749, lng: -122.4194 };
   const mapZoom = 10;
+  const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
+  const mapSrc = mapsKey
+    ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=us`
+    : null;
 
   return (
     <MainLayout>
@@ -113,15 +109,21 @@ const FleetMapPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyB_LJOYJL-84SMuxNB7LtRGhxEQLjswvy0&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=cn`}
-                  title="Fleet Map"
-                />
+                {mapSrc ? (
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={mapSrc}
+                    title="Fleet Map"
+                  />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
+                    Set VITE_GOOGLE_MAPS_API_KEY to load the map preview.
+                  </div>
+                )}
               </div>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                 <div className="p-3 bg-muted rounded-lg">

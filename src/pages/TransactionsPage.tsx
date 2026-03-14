@@ -17,9 +17,7 @@ const TransactionsPage: React.FC = () => {
     loadTransactions();
 
     const channel = subscribeToTransactions((payload) => {
-      if (payload.eventType === 'INSERT') {
-        loadTransactions();
-      }
+      setTransactions(payload.data);
     });
 
     return () => {

@@ -110,6 +110,10 @@ const InfrastructurePlannerPage: React.FC = () => {
 
   const mapCenter = { lat: newNode.lat, lng: newNode.lng };
   const mapZoom = 12;
+  const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
+  const mapSrc = mapsKey
+    ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=us`
+    : null;
 
   return (
     <MainLayout>
@@ -134,15 +138,21 @@ const InfrastructurePlannerPage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyB_LJOYJL-84SMuxNB7LtRGhxEQLjswvy0&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=cn`}
-                  title="Node Placement Map"
-                />
+                {mapSrc ? (
+                  <iframe
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={mapSrc}
+                    title="Node Placement Map"
+                  />
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
+                    Set VITE_GOOGLE_MAPS_API_KEY to load the map preview.
+                  </div>
+                )}
               </div>
 
               {simulationMode && impact && (

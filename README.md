@@ -39,7 +39,7 @@ Miaoda Application Link URL
 
 ## Tech Stack
 
-Vite, TypeScript, React, Supabase
+Vite, TypeScript, React, MongoDB (API placeholder)
 
 ## Development Guidelines
 
@@ -82,13 +82,22 @@ Alternatively, use the official installer: Visit the Node.js official website. D
 # Step 2: Extract the code package
 # Step 3: Open the code package with your IDE and navigate into the code directory
 # Step 4: In the IDE terminal, run the command to install dependencies: npm i
-# Step 5: In the IDE terminal, run the command to start the development server: npm run dev -- --host 127.0.0.1
-# Step 6: if step 5 failed, try this command to start the development server: npx vite --host 127.0.0.1
+# Step 5: Create your env file: cp .env.example .env
+# Step 6: Start the API server in one terminal: npm run dev:api
+# Step 7: Start the frontend dev server in another terminal: npm run dev
 ```
 
 ### How to develop backend services?
 
-Configure environment variables and install relevant dependencies.If you need to use a database, please use the official version of Supabase.
+Configure environment variables and install relevant dependencies. The API server uses MongoDB when `MONGODB_URI` is set, or an in-memory placeholder store when it is not.
+
+### Local Admin Login (Placeholder)
+
+Use username `admin` to create an admin profile on first sign-in. Other usernames default to the `operator` role.
+
+### Map Preview
+
+Set `VITE_GOOGLE_MAPS_API_KEY` in `.env` to load Google Maps embeds.
 
 ## Learn More
 

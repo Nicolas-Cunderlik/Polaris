@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "echo 'Do not use this command, only use lint to check'",
-    "build": "echo 'Do not use this command, only use lint to check'",
+    "dev": "vite --host 127.0.0.1",
+    "dev:api": "node --watch server/index.js",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
     "lint": "tsgo -p tsconfig.check.json; npx biome lint; .rules/check.sh;npx tailwindcss -i ./src/index.css -o /dev/null 2>&1 | grep -E '^(CssSyntaxError|Error):.*' || true;.rules/testBuild.sh"
   },
   "dependencies": {
@@ -37,7 +39,6 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
-    "@supabase/supabase-js": "^2.98.0",
     "axios": "^1.13.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -70,7 +71,11 @@
     "tailwindcss-intersect": "^2.2.0",
     "vaul": "^1.1.2",
     "video-react": "^0.16.0",
-    "zod": "^3.25.76"
+    "zod": "^3.25.76",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "mongodb": "^6.20.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",

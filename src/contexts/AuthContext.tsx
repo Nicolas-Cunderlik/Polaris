@@ -1,25 +1,59 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { supabase } from '@/db/supabase';
-import type { User } from '@supabase/supabase-js';
-import type { Profile } from '@/types/database';
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import type { Profile, UserRole } from '@/types/database';
+import { upsertProfile } from '@/db/api';
 import { toast } from 'sonner';
 
-export async function getProfile(userId: string): Promise<Profile | null> {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .maybeSingle();
+export interface AuthUser {
+  id: string;
+  email: string | null;
+  username: string | null;
+  created_at: string;
+}
 
-  if (error) {
-    console.error('Failed to get user profile:', error);
+const USER_STORAGE_KEY = 'polaris_user';
+const PROFILE_STORAGE_KEY = 'polaris_profile';
+
+const readStorage = <T,>(key: string): T | null => {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  } catch {
     return null;
   }
-  return data;
+};
+
+const writeStorage = (key: string, value: unknown) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+const clearStorage = (key: string) => {
+  localStorage.removeItem(key);
+};
+
+const createProfileForUser = (user: AuthUser, username: string): Profile => {
+  const normalized = username.trim().toLowerCase();
+  const role: UserRole = normalized === 'admin' ? 'admin' : 'operator';
+
+  return {
+    id: user.id,
+    email: user.email,
+    username,
+    role,
+    company_id: null,
+    created_at: user.created_at,
+  };
+};
+
+export async function getProfile(userId: string): Promise<Profile | null> {
+  const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
+  if (storedProfile?.id === userId) {
+    return storedProfile;
+  }
+  return null;
 }
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   profile: Profile | null;
   loading: boolean;
   signInWithUsername: (username: string, password: string) => Promise<{ error: Error | null }>;
@@ -31,7 +65,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,77 +80,81 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    supabase
-      .auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          getProfile(session.user.id).then(setProfile);
-        }
-      })
-      .catch(error => {
-        toast.error(`Failed to get user info: ${error.message}`);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        getProfile(session.user.id).then(setProfile);
-      } else {
-        setProfile(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    try {
+      const storedUser = readStorage<AuthUser>(USER_STORAGE_KEY);
+      const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
+      setUser(storedUser);
+      setProfile(storedProfile);
+    } catch (error) {
+      toast.error('Failed to restore session');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const signInWithUsername = async (username: string, password: string) => {
+  const signInWithUsername = async (username: string, _password: string) => {
     try {
-      const email = `${username}@miaoda.com`;
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const storedUser = readStorage<AuthUser>(USER_STORAGE_KEY);
+      const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
+
+      if (storedUser && storedProfile && storedUser.username === username) {
+        setUser(storedUser);
+        setProfile(storedProfile);
+        return { error: null };
+      }
+
+      // Placeholder auth: create a local user if none exists.
+      const createdAt = new Date().toISOString();
+      const newUser: AuthUser = {
+        id: crypto.randomUUID(),
+        email: `${username}@miaoda.com`,
+        username,
+        created_at: createdAt,
+      };
+      const newProfile = createProfileForUser(newUser, username);
+
+      writeStorage(USER_STORAGE_KEY, newUser);
+      writeStorage(PROFILE_STORAGE_KEY, newProfile);
+      setUser(newUser);
+      setProfile(newProfile);
+
+      void upsertProfile(newProfile).catch((error) => {
+        console.error('Failed to sync profile:', error);
       });
 
-      if (error) throw error;
       return { error: null };
     } catch (error) {
       return { error: error as Error };
     }
   };
 
-  const signUpWithUsername = async (username: string, password: string) => {
-    try {
-      const email = `${username}@miaoda.com`;
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username,
-          },
-        },
-      });
-
-      if (error) throw error;
-      return { error: null };
-    } catch (error) {
-      return { error: error as Error };
-    }
+  const signUpWithUsername = async (username: string, _password: string) => {
+    return signInWithUsername(username, _password);
   };
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    clearStorage(USER_STORAGE_KEY);
+    clearStorage(PROFILE_STORAGE_KEY);
     setUser(null);
     setProfile(null);
   };
 
+  const contextValue = useMemo(
+    () => ({
+      user,
+      profile,
+      loading,
+      signInWithUsername,
+      signUpWithUsername,
+      signOut,
+      refreshProfile,
+    }),
+    [user, profile, loading]
+  );
+
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signInWithUsername, signUpWithUsername, signOut, refreshProfile }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

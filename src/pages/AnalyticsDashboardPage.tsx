@@ -4,8 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getNetworkMetrics, getNodes } from '@/db/api';
-import { supabase } from '@/db/supabase';
+import { generateAIAnalysis, generateVoiceExplanation, getNetworkMetrics, getNodes } from '@/db/api';
 import type { NetworkMetrics } from '@/types/database';
 import { BarChart3, TrendingUp, AlertTriangle, Zap, Volume2, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -60,22 +59,12 @@ const AnalyticsDashboardPage: React.FC = () => {
         return congestion > maxCongestion ? node : max;
       }, nodes[0]);
 
-      const { data, error } = await supabase.functions.invoke('ai-analytics', {
-        body: {
-          networkData: {
-            ...metrics,
-            most_congested_node: mostCongestedNode?.name,
-          },
-        },
+      const analysis = await generateAIAnalysis({
+        ...metrics,
+        most_congested_node: mostCongestedNode?.name,
       });
 
-      if (error) {
-        const errorMsg = await error?.context?.text();
-        console.error('AI analytics error:', errorMsg || error?.message);
-        throw new Error(errorMsg || error?.message || 'Failed to generate AI analysis');
-      }
-
-      setAiAnalysis(data as AIAnalysis);
+      setAiAnalysis(analysis as AIAnalysis);
       toast.success('AI analysis generated');
     } catch (error: any) {
       toast.error(error.message || 'Failed to generate AI analysis');
@@ -97,22 +86,22 @@ const AnalyticsDashboardPage: React.FC = () => {
         .map((r, i) => `${i + 1}. ${r.title}: ${r.description}`)
         .join(' ')}`;
 
-      const { data, error } = await supabase.functions.invoke('text-to-speech', {
-        body: { text },
-      });
+      const response = await generateVoiceExplanation(text);
 
-      if (error) {
-        const errorMsg = await error?.context?.text();
-        console.error('TTS error:', errorMsg || error?.message);
-        throw new Error(errorMsg || error?.message || 'Failed to generate audio');
+      if (!response.audioBase64) {
+        toast.info(response.message || 'Text-to-speech is not configured yet');
+        return;
       }
 
-      const blob = new Blob([data], { type: 'audio/mpeg' });
+      const byteCharacters = atob(response.audioBase64);
+      const byteNumbers = Array.from(byteCharacters, (char) => char.charCodeAt(0));
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: 'audio/mpeg' });
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
 
       const audio = new Audio(url);
-      audio.play();
+      void audio.play();
       toast.success('Playing voice explanation');
     } catch (error: any) {
       toast.error(error.message || 'Failed to generate voice explanation');
