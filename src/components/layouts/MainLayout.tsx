@@ -29,7 +29,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   };
 
   const navItems = [
-    { path: '/', label: 'Fleet Map', icon: Map },
+    { path: '/', label: 'Local Cluster', icon: Map },
     { path: '/analytics', label: 'Analytics', icon: BarChart3 },
     { path: '/infrastructure', label: 'Infrastructure', icon: Network },
     { path: '/transactions', label: 'Transactions', icon: Receipt },
@@ -108,7 +108,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       </main>
       <footer className="border-t border-border bg-card py-4">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          © 2026 Drone Cloud Platform. All rights reserved.
+          © 2026 Polaris. All rights reserved.
         </div>
       </footer>
     </div>

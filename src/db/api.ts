@@ -5,7 +5,6 @@ import type {
   Drone,
   Transaction,
   DroneWithCompany,
-  NodeWithCompany,
   TransactionWithDetails,
   NetworkMetrics,
 } from '@/types/database';
@@ -53,8 +52,8 @@ export const updateProfile = async (id: string, updates: Partial<Profile>): Prom
 };
 
 // Nodes API
-export const getNodes = async (): Promise<NodeWithCompany[]> => {
-  return apiFetch<NodeWithCompany[]>('/api/nodes');
+export const getNodes = async (): Promise<Node[]> => {
+  return apiFetch<Node[]>('/api/nodes');
 };
 
 export const getNodeById = async (id: string): Promise<Node | null> => {
@@ -88,6 +87,33 @@ export const updateDrone = async (id: string, updates: Partial<Drone>): Promise<
   await apiFetch<void>(`/api/drones/${id}`, {
     method: 'PATCH',
     body: JSON.stringify(updates),
+  });
+};
+
+export interface DroneRegistrationPayload {
+  name: string;
+  company_id: string | null;
+  tier: 'starter' | 'pro' | 'enterprise';
+  lat?: number;
+  lng?: number;
+}
+
+export interface DroneRegistrationResponse {
+  drone: Drone;
+  tier: 'starter' | 'pro' | 'enterprise';
+  amount_sol: number;
+}
+
+export const registerDrone = async (payload: DroneRegistrationPayload): Promise<DroneRegistrationResponse> => {
+  return apiFetch<DroneRegistrationResponse>('/api/drones', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+};
+
+export const deleteDrone = async (id: string): Promise<void> => {
+  await apiFetch<void>(`/api/drones/${id}`, {
+    method: 'DELETE',
   });
 };
 
@@ -205,6 +231,6 @@ export const subscribeToTransactions = (callback: (payload: SyncPayload<Transact
   return createPollingSubscription(() => getTransactions(100), callback, 6000);
 };
 
-export const subscribeToNodes = (callback: (payload: SyncPayload<NodeWithCompany[]>) => void): RealtimeSubscription => {
+export const subscribeToNodes = (callback: (payload: SyncPayload<Node[]>) => void): RealtimeSubscription => {
   return createPollingSubscription(getNodes, callback);
 };
