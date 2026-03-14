@@ -71,7 +71,7 @@ const LoginPage: React.FC = () => {
               <Plane className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold gradient-text">Drone Cloud Platform</CardTitle>
+          <CardTitle className="text-2xl font-bold gradient-text">POLARIS</CardTitle>
           <CardDescription>
             Manage your autonomous drone fleet and charging infrastructure
           </CardDescription>
