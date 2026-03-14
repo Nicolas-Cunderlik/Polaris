@@ -26,6 +26,7 @@ export interface Node {
   lng: number;
   capacity: number;
   current_load: number;
+  owner_company_id?: string | null;
   created_at: string;
 }
 
@@ -55,6 +56,10 @@ export interface Transaction {
 
 export interface DroneWithCompany extends Drone {
   company?: Company;
+}
+
+export interface NodeWithCompany extends Node {
+  owner_company?: Company;
 }
 
 export interface TransactionWithDetails extends Transaction {
