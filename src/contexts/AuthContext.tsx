@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Profile, UserRole } from '@/types/database';
-import { upsertProfile } from '@/db/api';
+import { getProfileById, getProfileByUsername, upsertProfile } from '@/db/api';
 import { toast } from 'sonner';
 
 export interface AuthUser {
@@ -32,21 +32,8 @@ const clearStorage = (key: string) => {
 
 const createProfileForUser = (user: AuthUser, username: string): Profile => {
   const normalized = username.trim().toLowerCase();
-  const role: UserRole =
-    normalized === 'admin' ? 'admin' : normalized === 'provider' ? 'provider' : 'operator';
-
-  const companyIdLookup: Record<string, string> = {
-    provider: 'company-aurora',
-    operator: 'company-skylink',
-    aurora: 'company-aurora',
-    skylink: 'company-skylink',
-    nimbus: 'company-nimbus',
-  };
-
-  const company_id =
-    role === 'admin'
-      ? null
-      : companyIdLookup[normalized] ?? 'company-aurora';
+  const role: UserRole = normalized === 'admin' ? 'admin' : 'operator';
+  const company_id = null;
 
   return {
     id: user.id,
@@ -59,6 +46,16 @@ const createProfileForUser = (user: AuthUser, username: string): Profile => {
 };
 
 export async function getProfile(userId: string): Promise<Profile | null> {
+  try {
+    const serverProfile = await getProfileById(userId);
+    if (serverProfile) {
+      writeStorage(PROFILE_STORAGE_KEY, serverProfile);
+      return serverProfile;
+    }
+  } catch (error) {
+    console.warn('Failed to fetch profile from API:', error);
+  }
+
   const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
   if (storedProfile?.id === userId) {
     return storedProfile;
@@ -115,6 +112,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (storedUser && storedProfile && storedUser.username === username) {
         setUser(storedUser);
         setProfile(storedProfile);
+        return { error: null };
+      }
+
+      const existingProfile = await getProfileByUsername(username);
+      if (existingProfile) {
+        const existingUser: AuthUser = {
+          id: existingProfile.id,
+          email: existingProfile.email,
+          username: existingProfile.username,
+          created_at: existingProfile.created_at,
+        };
+        writeStorage(USER_STORAGE_KEY, existingUser);
+        writeStorage(PROFILE_STORAGE_KEY, existingProfile);
+        setUser(existingUser);
+        setProfile(existingProfile);
         return { error: null };
       }
 

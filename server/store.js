@@ -1,14 +1,14 @@
 import { randomUUID } from 'node:crypto';
 import { getDb } from './db.js';
-import { seedData } from './seed.js';
-
 const memoryStore = {
-  companies: [...seedData.companies],
-  profiles: [...seedData.profiles],
-  nodes: [...seedData.nodes],
-  drones: [...seedData.drones],
-  transactions: [...seedData.transactions],
+  companies: [],
+  profiles: [],
+  nodes: [],
+  drones: [],
+  transactions: [],
 };
+
+const normalizeCompanyName = (name) => name.trim().toLowerCase();
 
 const withCollection = async (name, handler) => {
   const db = await getDb();
@@ -28,6 +28,52 @@ export const getCompanies = async () => {
     collection.find({}, { projection: { _id: 0 } }).toArray()
   );
   return result ?? memoryStore.companies;
+};
+
+export const createCompany = async (name) => {
+  const trimmed = name.trim();
+  if (!trimmed) {
+    throw new Error('Company name is required.');
+  }
+
+  const normalized = normalizeCompanyName(trimmed);
+  const existingFromDb = await withCollection('companies', async (collection) => {
+    const byLower = await collection.findOne(
+      { name_lower: normalized },
+      { projection: { _id: 0 } }
+    );
+    if (byLower) return byLower;
+    return collection.findOne(
+      { name: trimmed },
+      { projection: { _id: 0 }, collation: { locale: 'en', strength: 2 } }
+    );
+  });
+
+  const existing =
+    existingFromDb ??
+    memoryStore.companies.find(
+      (company) => normalizeCompanyName(company.name) === normalized
+    );
+
+  if (existing) {
+    throw new Error('A company with this name already exists.');
+  }
+
+  const newCompany = {
+    id: randomUUID(),
+    name: trimmed,
+    name_lower: normalized,
+    wallet_address: `wallet-${Math.random().toString(36).slice(2, 10)}`,
+    created_at: new Date().toISOString(),
+  };
+
+  const result = await withCollection('companies', (collection) =>
+    collection.insertOne(newCompany)
+  );
+  if (result) return newCompany;
+
+  memoryStore.companies.push(newCompany);
+  return newCompany;
 };
 
 export const getCompanyById = async (id) => {
@@ -53,20 +99,70 @@ export const getProfileById = async (id) => {
   return memoryStore.profiles.find((profile) => profile.id === id) ?? null;
 };
 
-export const upsertProfile = async (profile) => {
+export const getProfileByUsername = async (username) => {
+  const normalized = username?.trim().toLowerCase();
+  if (!normalized) return null;
+
   const result = await withCollection('profiles', async (collection) => {
-    await collection.updateOne({ id: profile.id }, { $set: profile }, { upsert: true });
-    return profile;
+    const byLower = await collection.findOne(
+      { username_lower: normalized },
+      { projection: { _id: 0 } }
+    );
+    if (byLower) return byLower;
+    return collection.findOne(
+      { username: username?.trim() },
+      { projection: { _id: 0 }, collation: { locale: 'en', strength: 2 } }
+    );
+  });
+  if (result) return result;
+  return (
+    memoryStore.profiles.find(
+      (profile) => profile.username?.trim().toLowerCase() === normalized
+    ) ?? null
+  );
+};
+
+export const upsertProfile = async (profile) => {
+  const usernameLower = profile.username?.trim().toLowerCase();
+  const enrichedProfile = usernameLower
+    ? { ...profile, username_lower: usernameLower }
+    : profile;
+  const result = await withCollection('profiles', async (collection) => {
+    await collection.updateOne(
+      { id: profile.id },
+      { $set: enrichedProfile },
+      { upsert: true }
+    );
+    return enrichedProfile;
   });
   if (result) return result;
 
   const index = memoryStore.profiles.findIndex((item) => item.id === profile.id);
   if (index >= 0) {
-    memoryStore.profiles[index] = { ...memoryStore.profiles[index], ...profile };
+    memoryStore.profiles[index] = { ...memoryStore.profiles[index], ...enrichedProfile };
   } else {
-    memoryStore.profiles.push(profile);
+    memoryStore.profiles.push(enrichedProfile);
   }
-  return profile;
+  return enrichedProfile;
+};
+
+export const associateProfileCompany = async (profileId, companyId) => {
+  const profile = await getProfileById(profileId);
+  if (!profile) {
+    throw new Error('Profile not found.');
+  }
+
+  if (profile.company_id) {
+    throw new Error('Company registration is locked once a company is assigned.');
+  }
+
+  const company = await getCompanyById(companyId);
+  if (!company) {
+    throw new Error('Company not found.');
+  }
+
+  await updateProfile(profileId, { company_id: companyId });
+  return { ...profile, company_id: companyId };
 };
 
 export const updateProfile = async (id, updates) => {
@@ -161,6 +257,9 @@ export const updateDrone = async (id, updates) => {
 };
 
 export const createDrone = async (payload) => {
+  if (!payload?.company_id) {
+    throw new Error('Company association is required to register a drone.');
+  }
   const now = new Date().toISOString();
   const newDrone = {
     id: randomUUID(),

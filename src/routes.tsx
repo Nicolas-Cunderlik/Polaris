@@ -4,6 +4,7 @@ import AnalyticsDashboardPage from './pages/AnalyticsDashboardPage';
 import InfrastructurePlannerPage from './pages/InfrastructurePlannerPage';
 import TransactionsPage from './pages/TransactionsPage';
 import AdminPage from './pages/AdminPage';
+import UserSettingsPage from './pages/UserSettingsPage';
 import NotFound from './pages/NotFound';
 import type { ReactNode } from 'react';
 
@@ -40,6 +41,12 @@ const routes: RouteConfig[] = [
     name: 'Transactions',
     path: '/transactions',
     element: <TransactionsPage />,
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    element: <UserSettingsPage />,
+    visible: false,
   },
   {
     name: 'Admin',

@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Link } from 'react-router-dom';
 
 const InfrastructurePlannerPage: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>([]);
@@ -88,18 +89,21 @@ const InfrastructurePlannerPage: React.FC = () => {
       return;
     }
 
-    if (profile?.role !== 'provider' && profile?.role !== 'admin') {
-      toast.error('Only providers can create nodes');
+    if (profile?.role !== 'admin') {
+      toast.error('Only admins can create nodes');
       return;
     }
 
     try {
-      await createNode({
-        name: newNode.name,
-        lat: newNode.lat,
-        lng: newNode.lng,
-        capacity: newNode.capacity,
-      });
+      await createNode(
+        {
+          name: newNode.name,
+          lat: newNode.lat,
+          lng: newNode.lng,
+          capacity: newNode.capacity,
+        },
+        profile?.role ?? null
+      );
       toast.success('Node created successfully');
       setNewNode({
         name: '',
@@ -131,13 +135,16 @@ const InfrastructurePlannerPage: React.FC = () => {
 
     setRegistering(true);
     try {
-      const response = await registerDrone({
-        name: newDrone.name,
-        company_id: companyId,
-        tier: newDrone.tier,
-        lat: newDrone.lat,
-        lng: newDrone.lng,
-      });
+      const response = await registerDrone(
+        {
+          name: newDrone.name,
+          company_id: companyId,
+          tier: newDrone.tier,
+          lat: newDrone.lat,
+          lng: newDrone.lng,
+        },
+        profile?.role ?? null
+      );
       toast.success(`Drone registered. ${response.amount_sol} SOL charged.`);
       setNewDrone((prev) => ({
         ...prev,
@@ -179,11 +186,13 @@ const InfrastructurePlannerPage: React.FC = () => {
   };
 
   const impact = simulationMode ? calculateImpact() : null;
+  const isAdmin = profile?.role === 'admin';
+  const companyIdForDrone = isAdmin ? newDrone.company_id : profile?.company_id ?? '';
+  const canRegisterDrone = Boolean(companyIdForDrone);
 
-  const visibleDrones =
-    profile?.role === 'admin'
-      ? drones
-      : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
+  const visibleDrones = isAdmin
+    ? drones
+    : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
 
   const mapCenter = { lat: newNode.lat, lng: newNode.lng };
   const mapZoom = 12;
@@ -272,164 +281,157 @@ const InfrastructurePlannerPage: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plus className="h-5 w-5" />
-                New Node Configuration
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="node-name">Node Name</Label>
-                <Input
-                  id="node-name"
-                  placeholder="e.g., Node-SF-06"
-                  value={newNode.name}
-                  onChange={(e) => setNewNode({ ...newNode, name: e.target.value })}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
+          {isAdmin ? (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Plus className="h-5 w-5" />
+                  New Node Configuration
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="node-lat">Latitude</Label>
+                  <Label htmlFor="node-name">Node Name</Label>
                   <Input
-                    id="node-lat"
+                    id="node-name"
+                    placeholder="e.g., Node-SF-06"
+                    value={newNode.name}
+                    onChange={(e) => setNewNode({ ...newNode, name: e.target.value })}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="node-lat">Latitude</Label>
+                    <Input
+                      id="node-lat"
+                      type="number"
+                      step="0.0001"
+                      value={newNode.lat}
+                      onChange={(e) => setNewNode({ ...newNode, lat: parseFloat(e.target.value) })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="node-lng">Longitude</Label>
+                    <Input
+                      id="node-lng"
+                      type="number"
+                      step="0.0001"
+                      value={newNode.lng}
+                      onChange={(e) => setNewNode({ ...newNode, lng: parseFloat(e.target.value) })}
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="node-capacity">Capacity</Label>
+                  <Input
+                    id="node-capacity"
                     type="number"
-                    step="0.0001"
-                    value={newNode.lat}
-                    onChange={(e) => setNewNode({ ...newNode, lat: parseFloat(e.target.value) })}
+                    min="1"
+                    max="20"
+                    value={newNode.capacity}
+                    onChange={(e) => setNewNode({ ...newNode, capacity: parseInt(e.target.value) })}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="node-lng">Longitude</Label>
-                  <Input
-                    id="node-lng"
-                    type="number"
-                    step="0.0001"
-                    value={newNode.lng}
-                    onChange={(e) => setNewNode({ ...newNode, lng: parseFloat(e.target.value) })}
-                  />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="node-capacity">Capacity</Label>
-                <Input
-                  id="node-capacity"
-                  type="number"
-                  min="1"
-                  max="20"
-                  value={newNode.capacity}
-                  onChange={(e) => setNewNode({ ...newNode, capacity: parseInt(e.target.value) })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Button onClick={handleSimulateNode} variant="outline" className="w-full">
-                  Simulate Impact
-                </Button>
-                {(profile?.role === 'provider' || profile?.role === 'admin') && (
+                  <Button onClick={handleSimulateNode} variant="outline" className="w-full">
+                    Simulate Impact
+                  </Button>
                   <Button onClick={handleCreateNode} className="w-full">
                     Create Node
                   </Button>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Plane className="h-5 w-5" />
-                Drone Registration
-              </CardTitle>
-              <CardDescription>Register drones and simulate subscription purchases</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="drone-name">Drone Name</Label>
-                <Input
-                  id="drone-name"
-                  placeholder="e.g., Drone-Zeta"
-                  value={newDrone.name}
-                  onChange={(e) => setNewDrone({ ...newDrone, name: e.target.value })}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Plane className="h-5 w-5" />
+                  Drone Registration
+                </CardTitle>
+                <CardDescription>Register drones and simulate subscription purchases</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="drone-lat">Latitude</Label>
+                  <Label htmlFor="drone-name">Drone Name</Label>
                   <Input
-                    id="drone-lat"
-                    type="number"
-                    step="0.0001"
-                    value={newDrone.lat}
-                    onChange={(e) => setNewDrone({ ...newDrone, lat: parseFloat(e.target.value) })}
+                    id="drone-name"
+                    placeholder="e.g., Drone-Zeta"
+                    value={newDrone.name}
+                    onChange={(e) => setNewDrone({ ...newDrone, name: e.target.value })}
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="drone-lng">Longitude</Label>
-                  <Input
-                    id="drone-lng"
-                    type="number"
-                    step="0.0001"
-                    value={newDrone.lng}
-                    onChange={(e) => setNewDrone({ ...newDrone, lng: parseFloat(e.target.value) })}
-                  />
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="drone-lat">Latitude</Label>
+                    <Input
+                      id="drone-lat"
+                      type="number"
+                      step="0.0001"
+                      value={newDrone.lat}
+                      onChange={(e) => setNewDrone({ ...newDrone, lat: parseFloat(e.target.value) })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="drone-lng">Longitude</Label>
+                    <Input
+                      id="drone-lng"
+                      type="number"
+                      step="0.0001"
+                      value={newDrone.lng}
+                      onChange={(e) => setNewDrone({ ...newDrone, lng: parseFloat(e.target.value) })}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <Label>Subscription Tier</Label>
-                <Select
-                  value={newDrone.tier}
-                  onValueChange={(value) =>
-                    setNewDrone({ ...newDrone, tier: value as 'starter' | 'pro' | 'enterprise' })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select tier" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="starter">Starter - 0.5 SOL</SelectItem>
-                    <SelectItem value="pro">Pro - 1.25 SOL</SelectItem>
-                    <SelectItem value="enterprise">Enterprise - 2.5 SOL</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Company</Label>
-                {profile?.role === 'admin' ? (
+                <div className="space-y-2">
+                  <Label>Subscription Tier</Label>
                   <Select
-                    value={newDrone.company_id}
-                    onValueChange={(value) => setNewDrone({ ...newDrone, company_id: value })}
+                    value={newDrone.tier}
+                    onValueChange={(value) =>
+                      setNewDrone({ ...newDrone, tier: value as 'starter' | 'pro' | 'enterprise' })
+                    }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Select company" />
+                      <SelectValue placeholder="Select tier" />
                     </SelectTrigger>
                     <SelectContent>
-                      {companies.map((company) => (
-                        <SelectItem key={company.id} value={company.id}>
-                          {company.name}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="starter">Starter - 0.5 SOL</SelectItem>
+                      <SelectItem value="pro">Pro - 1.25 SOL</SelectItem>
+                      <SelectItem value="enterprise">Enterprise - 2.5 SOL</SelectItem>
                     </SelectContent>
                   </Select>
-                ) : (
-                  <div className="text-sm text-muted-foreground">
+                </div>
+                <div className="space-y-2">
+                  <Label>
                     {companies.find((company) => company.id === profile?.company_id)?.name ||
-                      'Assigned company'}
+                      'No company assigned'}{' '}
+                    <Link to="/settings" className="text-xs text-primary underline underline-offset-4">
+                      Manage in Settings
+                    </Link>
+                  </Label>
+                </div>
+                <Button
+                  onClick={handleRegisterDrone}
+                  className="w-full"
+                  disabled={registering || !canRegisterDrone}
+                >
+                  {registering ? 'Registering...' : 'Register Drone'}
+                </Button>
+                {!canRegisterDrone && (
+                  <div className="text-xs text-muted-foreground">
+                    You must register with a company before creating drones.
                   </div>
                 )}
-              </div>
-              <Button onClick={handleRegisterDrone} className="w-full" disabled={registering}>
-                {registering ? 'Registering...' : 'Register Drone'}
-              </Button>
-              <div className="space-y-2">
-                <div className="text-sm font-medium">Subscription Notes</div>
-                <div className="text-xs text-muted-foreground">
-                  Starter: essentials for small fleets. Pro: higher throughput analytics. Enterprise:
-                  priority support and SLA.
+                <div className="space-y-2">
+                  <div className="text-sm font-medium">Subscription Notes</div>
+                  <div className="text-xs text-muted-foreground">
+                    Starter: essentials for small fleets. Pro: higher throughput analytics. Enterprise:
+                    priority support and SLA.
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
         </div>
 
         <Card>
