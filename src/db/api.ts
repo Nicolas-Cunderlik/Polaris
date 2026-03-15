@@ -233,13 +233,24 @@ export interface MLForecastHotspot {
   intensity: number;
 }
 
+export interface MLHeatCell {
+  lat: number;
+  lng: number;
+  intensity: number;
+}
+
 export interface MLForecast {
   predictions: MLForecastPrediction[];
   hotspots: MLForecastHotspot[];
+  heat_cells: MLHeatCell[];
   generated_at: string;
   model: {
     weights: number[];
     last_trained_at: string | null;
+    loss: number | null;
+    samples: number;
+    nodes: number;
+    drones: number;
   };
 }
 

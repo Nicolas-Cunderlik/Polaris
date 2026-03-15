@@ -4,7 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getDrones, getNodes, getMLForecast, subscribeToDrones, subscribeToNodes } from '@/db/api';
+import {
+  getDrones,
+  getNodes,
+  getMLForecast,
+  subscribeToDrones,
+  subscribeToNodes,
+} from '@/db/api';
+import type { MLForecast } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
 import { loadMockScenario } from '@/lib/mockData';
 import type { DroneWithCompany, Node } from '@/types/database';
@@ -38,6 +45,7 @@ const FleetMapPage: React.FC = () => {
   const [heatCells, setHeatCells] = useState<Array<{ lat: number; lng: number; intensity: number }>>(
     []
   );
+  const [mlMetrics, setMlMetrics] = useState<MLForecast['model'] | null>(null);
   const [dynamicRoutes, setDynamicRoutes] = useState<Map<string, Array<[number, number]>>>(
     new Map()
   );
@@ -370,27 +378,6 @@ const FleetMapPage: React.FC = () => {
       : new Map();
     const speedScale = 2;
 
-    const distancePointToSegment = (
-      p: { lat: number; lng: number },
-      a: { lat: number; lng: number },
-      b: { lat: number; lng: number }
-    ) => {
-      const ax = a.lng;
-      const ay = a.lat;
-      const bx = b.lng;
-      const by = b.lat;
-      const px = p.lng;
-      const py = p.lat;
-      const dx = bx - ax;
-      const dy = by - ay;
-      const lenSq = dx * dx + dy * dy || 1;
-      let t = ((px - ax) * dx + (py - ay) * dy) / lenSq;
-      t = Math.max(0, Math.min(1, t));
-      const lx = ax + t * dx;
-      const ly = ay + t * dy;
-      return Math.hypot(px - lx, py - ly);
-    };
-
     const isInRisk = (lat: number, lng: number) => {
       if (!mockScenario) return false;
       return mockScenario.risk_zones.some((zone) => {
@@ -417,63 +404,148 @@ const FleetMapPage: React.FC = () => {
       return nearest;
     };
 
+    const buildPath = (
+      start: { lat: number; lng: number },
+      goal: { lat: number; lng: number },
+      hotspots: Array<{ lat: number; lng: number; intensity: number }>
+    ) => {
+      const margin = 0.03;
+      const gridSize = 0.0035;
+      const minLat = Math.min(start.lat, goal.lat) - margin;
+      const maxLat = Math.max(start.lat, goal.lat) + margin;
+      const minLng = Math.min(start.lng, goal.lng) - margin;
+      const maxLng = Math.max(start.lng, goal.lng) + margin;
+      const rows = Math.ceil((maxLat - minLat) / gridSize);
+      const cols = Math.ceil((maxLng - minLng) / gridSize);
+
+      if (rows * cols > 6400) {
+        return [[start.lat, start.lng], [goal.lat, goal.lng]];
+      }
+
+      const toKey = (r: number, c: number) => `${r},${c}`;
+      const toCoord = (r: number, c: number) => ({
+        lat: minLat + r * gridSize,
+        lng: minLng + c * gridSize,
+      });
+      const toIndex = (lat: number, lng: number) => ({
+        r: Math.round((lat - minLat) / gridSize),
+        c: Math.round((lng - minLng) / gridSize),
+      });
+
+      const inBounds = (r: number, c: number) => r >= 0 && c >= 0 && r <= rows && c <= cols;
+
+      const blocked = (lat: number, lng: number) => isInRisk(lat, lng);
+
+      const hotspotPenalty = (lat: number, lng: number) => {
+        let penalty = 0;
+        hotspots.forEach((hotspot) => {
+          const dist = Math.hypot(lat - hotspot.lat, lng - hotspot.lng);
+          if (dist < 0.03) {
+            penalty += (0.03 - dist) * (1 + hotspot.intensity * 2);
+          }
+        });
+        return penalty * 4;
+      };
+
+      const startIdx = toIndex(start.lat, start.lng);
+      const goalIdx = toIndex(goal.lat, goal.lng);
+
+      const open = new Set<string>();
+      const cameFrom = new Map<string, string>();
+      const gScore = new Map<string, number>();
+      const fScore = new Map<string, number>();
+
+      const startKey = toKey(startIdx.r, startIdx.c);
+      const goalKey = toKey(goalIdx.r, goalIdx.c);
+      open.add(startKey);
+      gScore.set(startKey, 0);
+      fScore.set(startKey, 0);
+
+      const neighbors = [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+        [1, 1],
+        [1, -1],
+        [-1, 1],
+        [-1, -1],
+      ];
+
+      const heuristic = (r: number, c: number) =>
+        Math.hypot(r - goalIdx.r, c - goalIdx.c);
+
+      const popLowest = () => {
+        let bestKey = '';
+        let bestScore = Infinity;
+        open.forEach((key) => {
+          const score = fScore.get(key) ?? Infinity;
+          if (score < bestScore) {
+            bestScore = score;
+            bestKey = key;
+          }
+        });
+        if (bestKey) {
+          open.delete(bestKey);
+        }
+        return bestKey;
+      };
+
+      let iterations = 0;
+      while (open.size > 0 && iterations < 8000) {
+        iterations += 1;
+        const currentKey = popLowest();
+        if (!currentKey) break;
+        if (currentKey === goalKey) break;
+        const [rStr, cStr] = currentKey.split(',');
+        const r = Number(rStr);
+        const c = Number(cStr);
+        for (const [dr, dc] of neighbors) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (!inBounds(nr, nc)) continue;
+          const { lat, lng } = toCoord(nr, nc);
+          if (blocked(lat, lng)) continue;
+          const stepCost = Math.hypot(dr, dc);
+          const score = (gScore.get(currentKey) ?? Infinity) + stepCost + hotspotPenalty(lat, lng);
+          const neighborKey = toKey(nr, nc);
+          if (score < (gScore.get(neighborKey) ?? Infinity)) {
+            cameFrom.set(neighborKey, currentKey);
+            gScore.set(neighborKey, score);
+            fScore.set(neighborKey, score + heuristic(nr, nc));
+            open.add(neighborKey);
+          }
+        }
+      }
+
+      const path: Array<[number, number]> = [];
+      let current = goalKey;
+      let safety = 0;
+      while (current && current !== startKey && safety < 8000) {
+        safety += 1;
+        const [rStr, cStr] = current.split(',');
+        const r = Number(rStr);
+        const c = Number(cStr);
+        const coord = toCoord(r, c);
+        path.push([coord.lat, coord.lng]);
+        current = cameFrom.get(current) ?? '';
+      }
+      path.push([start.lat, start.lng]);
+      path.reverse();
+
+      if (path.length < 2) {
+        return [[start.lat, start.lng], [goal.lat, goal.lng]];
+      }
+
+      return path;
+    };
+
     const buildHeat = async () => {
       try {
         const forecast = await getMLForecast({ nodes: mlNodes, drones: mlDrones });
-        const points: Array<{ lat: number; lng: number; weight: number }> = [
-          ...mlDrones.map((drone) => ({ lat: drone.lat, lng: drone.lng, weight: 1.2 })),
-        ];
-
-        forecast.hotspots.forEach((hotspot) => {
-          if (hotspot.intensity < 0.4) return;
-          const extra = Math.round(3 + hotspot.intensity * 6);
-          for (let i = 0; i < extra; i += 1) {
-            points.push({
-              lat: hotspot.lat + (Math.random() - 0.5) * 0.014,
-              lng: hotspot.lng + (Math.random() - 0.5) * 0.014,
-              weight: 0.6 + hotspot.intensity * 0.6,
-            });
-          }
-        });
-
-        const grid = new Map<string, { lat: number; lng: number; value: number }>();
-        const gridSize = 0.0045;
-        const sigma = 0.035;
-        const radiusCells = Math.ceil((sigma * 2) / gridSize);
-
-        points.forEach((point) => {
-          const baseLat = Math.round(point.lat / gridSize) * gridSize;
-          const baseLng = Math.round(point.lng / gridSize) * gridSize;
-          for (let dx = -radiusCells; dx <= radiusCells; dx += 1) {
-            for (let dy = -radiusCells; dy <= radiusCells; dy += 1) {
-              const lat = baseLat + dx * gridSize;
-              const lng = baseLng + dy * gridSize;
-              const dist = Math.hypot(lat - point.lat, lng - point.lng);
-              const kernel = Math.exp(-(dist * dist) / (2 * sigma * sigma)) * point.weight;
-              if (kernel < 0.008) continue;
-              const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
-              const existing = grid.get(key);
-              if (existing) {
-                existing.value += kernel;
-              } else {
-                grid.set(key, { lat, lng, value: kernel });
-              }
-            }
-          }
-        });
-
-        const values = Array.from(grid.values()).map((cell) => cell.value);
-        const maxValue = values.length > 0 ? Math.max(...values) : 1;
-
-        const cells: HeatCell[] = [];
         const hotspots = forecast.hotspots;
-        grid.forEach((cell) => {
-          const intensity = Math.min(1, cell.value / maxValue);
-          if (intensity < 0.05) return;
-          cells.push({ lat: cell.lat, lng: cell.lng, intensity });
-        });
-
-        setHeatCells(cells);
+        setHeatCells((forecast.heat_cells ?? []) as HeatCell[]);
+        setMlMetrics(forecast.model ?? null);
         const routeMap = new Map<string, Array<[number, number]>>();
         mlDrones.forEach((drone) => {
           const current = { lat: drone.lat, lng: drone.lng };
@@ -498,30 +570,7 @@ const FleetMapPage: React.FC = () => {
             target = nearest ? { lat: nearest.lat, lng: nearest.lng } : current;
           }
 
-          const path: Array<[number, number]> = [[current.lat, current.lng]];
-          let detour: { lat: number; lng: number } | null = null;
-          for (const hotspot of hotspots) {
-            if (distancePointToSegment(hotspot, current, target) < 0.02) {
-              const dx = target.lng - current.lng;
-              const dy = target.lat - current.lat;
-              const len = Math.hypot(dx, dy) || 0.0001;
-              const nx = -dy / len;
-              const ny = dx / len;
-              const offset = 0.02 + hotspot.intensity * 0.02;
-              const candidate = {
-                lat: (current.lat + target.lat) / 2 + ny * offset,
-                lng: (current.lng + target.lng) / 2 + nx * offset,
-              };
-              if (!isInRisk(candidate.lat, candidate.lng)) {
-                detour = candidate;
-                break;
-              }
-            }
-          }
-          if (detour) {
-            path.push([detour.lat, detour.lng]);
-          }
-          path.push([target.lat, target.lng]);
+          const path = buildPath(current, target, hotspots);
           routeMap.set(drone.id, path);
         });
 
@@ -545,28 +594,30 @@ const FleetMapPage: React.FC = () => {
     Object.values(overlayLayersRef.current).forEach((layer) => layer?.remove());
     overlayLayersRef.current = {};
 
-    if (!mockEnabled || !mockScenario || !showOverlays) return;
+    if (!showOverlays) return;
 
     const riskLayer = L.layerGroup();
-    mockScenario.risk_zones.forEach((zone) => {
-      if (zone.type === 'circle') {
-        L.circle([zone.center.lat, zone.center.lng], {
-          radius: zone.radius_m,
-          color: '#ef4444',
-          weight: 2,
-          fillColor: '#ef4444',
-          fillOpacity: 0.15,
-        }).addTo(riskLayer);
-      } else {
-        L.polygon(zone.points.map((point) => [point.lat, point.lng]), {
-          color: '#f97316',
-          weight: 2,
-          fillColor: '#f97316',
-          fillOpacity: 0.12,
-        }).addTo(riskLayer);
-      }
-    });
-    riskLayer.addTo(map);
+    if (mockEnabled && mockScenario) {
+      mockScenario.risk_zones.forEach((zone) => {
+        if (zone.type === 'circle') {
+          L.circle([zone.center.lat, zone.center.lng], {
+            radius: zone.radius_m,
+            color: '#ef4444',
+            weight: 2,
+            fillColor: '#ef4444',
+            fillOpacity: 0.15,
+          }).addTo(riskLayer);
+        } else {
+          L.polygon(zone.points.map((point) => [point.lat, point.lng]), {
+            color: '#f97316',
+            weight: 2,
+            fillColor: '#f97316',
+            fillOpacity: 0.12,
+          }).addTo(riskLayer);
+        }
+      });
+      riskLayer.addTo(map);
+    }
 
     const flightLayer = L.layerGroup();
     if (dynamicRoutes.size > 0) {
@@ -577,7 +628,7 @@ const FleetMapPage: React.FC = () => {
           opacity: 0.35,
         }).addTo(flightLayer);
       });
-    } else {
+    } else if (mockScenario) {
       mockScenario.flight_plans.forEach((plan) => {
         const points = plan.waypoints.map((point) => [point.lat, point.lng]);
         L.polyline(points, {
@@ -711,6 +762,14 @@ const FleetMapPage: React.FC = () => {
                 <Activity className="h-4 w-4 animate-pulse text-primary" />
                 <span>Live Updates</span>
               </>
+            )}
+            {mlMetrics && (
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span>ML loss: {mlMetrics.loss?.toFixed(4) ?? 'n/a'}</span>
+                <span>Samples: {mlMetrics.samples}</span>
+                <span>Nodes: {mlMetrics.nodes}</span>
+                <span>Drones: {mlMetrics.drones}</span>
+              </div>
             )}
           </div>
         </div>
