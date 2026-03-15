@@ -1,0 +1,2709 @@
+{
+  "meta": {
+    "seed": 424242,
+    "center": {
+      "lat": 45.5017,
+      "lng": -73.5673
+    },
+    "ml_model": "linear_regression",
+    "generated_at": "2026-03-15T07:17:27.406729Z"
+  },
+  "nodes": [
+    {
+      "id": "node-mtl-01",
+      "name": "MTL-Node-01",
+      "lat": 45.56863069913781,
+      "lng": -73.59280549687169,
+      "capacity": 8,
+      "current_load": 2,
+      "created_at": "2026-03-15T07:17:27.403760Z"
+    },
+    {
+      "id": "node-mtl-02",
+      "name": "MTL-Node-02",
+      "lat": 45.438244724164676,
+      "lng": -73.60898975710899,
+      "capacity": 5,
+      "current_load": 3,
+      "created_at": "2026-03-15T07:17:27.404001Z"
+    },
+    {
+      "id": "node-mtl-03",
+      "name": "MTL-Node-03",
+      "lat": 45.480325336821295,
+      "lng": -73.58082203267676,
+      "capacity": 7,
+      "current_load": 1,
+      "created_at": "2026-03-15T07:17:27.404006Z"
+    },
+    {
+      "id": "node-mtl-04",
+      "name": "MTL-Node-04",
+      "lat": 45.453499594066486,
+      "lng": -73.53547578518281,
+      "capacity": 6,
+      "current_load": 3,
+      "created_at": "2026-03-15T07:17:27.404008Z"
+    },
+    {
+      "id": "node-mtl-05",
+      "name": "MTL-Node-05",
+      "lat": 45.4322774176551,
+      "lng": -73.6095204197619,
+      "capacity": 4,
+      "current_load": 3,
+      "created_at": "2026-03-15T07:17:27.404010Z"
+    },
+    {
+      "id": "node-mtl-06",
+      "name": "MTL-Node-06",
+      "lat": 45.5103315680775,
+      "lng": -73.57873205080935,
+      "capacity": 7,
+      "current_load": 1,
+      "created_at": "2026-03-15T07:17:27.404012Z"
+    },
+    {
+      "id": "node-mtl-07",
+      "name": "MTL-Node-07",
+      "lat": 45.54304640107245,
+      "lng": -73.61406580613219,
+      "capacity": 7,
+      "current_load": 3,
+      "created_at": "2026-03-15T07:17:27.404014Z"
+    },
+    {
+      "id": "node-mtl-08",
+      "name": "MTL-Node-08",
+      "lat": 45.464704114431115,
+      "lng": -73.54451661521951,
+      "capacity": 4,
+      "current_load": 1,
+      "created_at": "2026-03-15T07:17:27.404016Z"
+    },
+    {
+      "id": "node-mtl-09",
+      "name": "MTL-Node-09",
+      "lat": 45.54540233087481,
+      "lng": -73.54909792631224,
+      "capacity": 5,
+      "current_load": 1,
+      "created_at": "2026-03-15T07:17:27.404018Z"
+    },
+    {
+      "id": "node-mtl-10",
+      "name": "MTL-Node-10",
+      "lat": 45.49502294397451,
+      "lng": -73.62425273350121,
+      "capacity": 6,
+      "current_load": 0,
+      "created_at": "2026-03-15T07:17:27.404020Z"
+    },
+    {
+      "id": "node-mtl-11",
+      "name": "MTL-Node-11",
+      "lat": 45.520856919756476,
+      "lng": -73.60206206605734,
+      "capacity": 6,
+      "current_load": 0,
+      "created_at": "2026-03-15T07:17:27.404022Z"
+    },
+    {
+      "id": "node-mtl-12",
+      "name": "MTL-Node-12",
+      "lat": 45.56293969478817,
+      "lng": -73.60639570297536,
+      "capacity": 7,
+      "current_load": 0,
+      "created_at": "2026-03-15T07:17:27.404024Z"
+    }
+  ],
+  "drones": [
+    {
+      "id": "drone-mtl-001",
+      "name": "DR-MTL-001",
+      "company_id": null,
+      "lat": 45.41574291960932,
+      "lng": -73.52078394837021,
+      "battery": 73,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404028Z",
+      "updated_at": "2026-03-15T07:17:27.404029Z"
+    },
+    {
+      "id": "drone-mtl-002",
+      "name": "DR-MTL-002",
+      "company_id": null,
+      "lat": 45.578721865672186,
+      "lng": -73.6111235135257,
+      "battery": 51,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404031Z",
+      "updated_at": "2026-03-15T07:17:27.404031Z"
+    },
+    {
+      "id": "drone-mtl-003",
+      "name": "DR-MTL-003",
+      "company_id": null,
+      "lat": 45.43225338549822,
+      "lng": -73.53227576822486,
+      "battery": 67,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404033Z",
+      "updated_at": "2026-03-15T07:17:27.404033Z"
+    },
+    {
+      "id": "drone-mtl-004",
+      "name": "DR-MTL-004",
+      "company_id": null,
+      "lat": 45.55039534182385,
+      "lng": -73.62391173590433,
+      "battery": 63,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404035Z",
+      "updated_at": "2026-03-15T07:17:27.404035Z"
+    },
+    {
+      "id": "drone-mtl-005",
+      "name": "DR-MTL-005",
+      "company_id": null,
+      "lat": 45.47561138828611,
+      "lng": -73.51386498810534,
+      "battery": 83,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404037Z",
+      "updated_at": "2026-03-15T07:17:27.404037Z"
+    },
+    {
+      "id": "drone-mtl-006",
+      "name": "DR-MTL-006",
+      "company_id": null,
+      "lat": 45.5562943229512,
+      "lng": -73.63180419109601,
+      "battery": 54,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404039Z",
+      "updated_at": "2026-03-15T07:17:27.404039Z"
+    },
+    {
+      "id": "drone-mtl-007",
+      "name": "DR-MTL-007",
+      "company_id": null,
+      "lat": 45.43403903275633,
+      "lng": -73.51021995780637,
+      "battery": 61,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404041Z",
+      "updated_at": "2026-03-15T07:17:27.404041Z"
+    },
+    {
+      "id": "drone-mtl-008",
+      "name": "DR-MTL-008",
+      "company_id": null,
+      "lat": 45.58332539785415,
+      "lng": -73.56684551780033,
+      "battery": 70,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404043Z",
+      "updated_at": "2026-03-15T07:17:27.404043Z"
+    },
+    {
+      "id": "drone-mtl-009",
+      "name": "DR-MTL-009",
+      "company_id": null,
+      "lat": 45.57918756337206,
+      "lng": -73.57227308120288,
+      "battery": 58,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404045Z",
+      "updated_at": "2026-03-15T07:17:27.404045Z"
+    },
+    {
+      "id": "drone-mtl-010",
+      "name": "DR-MTL-010",
+      "company_id": null,
+      "lat": 45.47576456610139,
+      "lng": -73.5933708461156,
+      "battery": 50,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404047Z",
+      "updated_at": "2026-03-15T07:17:27.404047Z"
+    },
+    {
+      "id": "drone-mtl-011",
+      "name": "DR-MTL-011",
+      "company_id": null,
+      "lat": 45.42410929214721,
+      "lng": -73.56848068290492,
+      "battery": 59,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404049Z",
+      "updated_at": "2026-03-15T07:17:27.404049Z"
+    },
+    {
+      "id": "drone-mtl-012",
+      "name": "DR-MTL-012",
+      "company_id": null,
+      "lat": 45.53286307601635,
+      "lng": -73.48703983796757,
+      "battery": 77,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404051Z",
+      "updated_at": "2026-03-15T07:17:27.404051Z"
+    },
+    {
+      "id": "drone-mtl-013",
+      "name": "DR-MTL-013",
+      "company_id": null,
+      "lat": 45.414429133628076,
+      "lng": -73.54791236358128,
+      "battery": 68,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404053Z",
+      "updated_at": "2026-03-15T07:17:27.404054Z"
+    },
+    {
+      "id": "drone-mtl-014",
+      "name": "DR-MTL-014",
+      "company_id": null,
+      "lat": 45.564427685237625,
+      "lng": -73.56723828302364,
+      "battery": 91,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404055Z",
+      "updated_at": "2026-03-15T07:17:27.404056Z"
+    },
+    {
+      "id": "drone-mtl-015",
+      "name": "DR-MTL-015",
+      "company_id": null,
+      "lat": 45.499888496171366,
+      "lng": -73.51153072075964,
+      "battery": 88,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404057Z",
+      "updated_at": "2026-03-15T07:17:27.404058Z"
+    },
+    {
+      "id": "drone-mtl-016",
+      "name": "DR-MTL-016",
+      "company_id": null,
+      "lat": 45.5201510606404,
+      "lng": -73.62523081794447,
+      "battery": 97,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404060Z",
+      "updated_at": "2026-03-15T07:17:27.404060Z"
+    },
+    {
+      "id": "drone-mtl-017",
+      "name": "DR-MTL-017",
+      "company_id": null,
+      "lat": 45.509703028052016,
+      "lng": -73.54276547709951,
+      "battery": 34,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404064Z",
+      "updated_at": "2026-03-15T07:17:27.404064Z"
+    },
+    {
+      "id": "drone-mtl-018",
+      "name": "DR-MTL-018",
+      "company_id": null,
+      "lat": 45.521325972886245,
+      "lng": -73.6434504423412,
+      "battery": 65,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404066Z",
+      "updated_at": "2026-03-15T07:17:27.404067Z"
+    },
+    {
+      "id": "drone-mtl-019",
+      "name": "DR-MTL-019",
+      "company_id": null,
+      "lat": 45.53170534710311,
+      "lng": -73.50891582109014,
+      "battery": 42,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404069Z",
+      "updated_at": "2026-03-15T07:17:27.404069Z"
+    },
+    {
+      "id": "drone-mtl-020",
+      "name": "DR-MTL-020",
+      "company_id": null,
+      "lat": 45.538840039667924,
+      "lng": -73.64803339770629,
+      "battery": 26,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404071Z",
+      "updated_at": "2026-03-15T07:17:27.404071Z"
+    },
+    {
+      "id": "drone-mtl-021",
+      "name": "DR-MTL-021",
+      "company_id": null,
+      "lat": 45.54529289060134,
+      "lng": -73.65390878345805,
+      "battery": 30,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404075Z",
+      "updated_at": "2026-03-15T07:17:27.404075Z"
+    },
+    {
+      "id": "drone-mtl-022",
+      "name": "DR-MTL-022",
+      "company_id": null,
+      "lat": 45.53592786985764,
+      "lng": -73.64269391875543,
+      "battery": 60,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404077Z",
+      "updated_at": "2026-03-15T07:17:27.404077Z"
+    },
+    {
+      "id": "drone-mtl-023",
+      "name": "DR-MTL-023",
+      "company_id": null,
+      "lat": 45.50356907788223,
+      "lng": -73.59126639046879,
+      "battery": 88,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404079Z",
+      "updated_at": "2026-03-15T07:17:27.404079Z"
+    },
+    {
+      "id": "drone-mtl-024",
+      "name": "DR-MTL-024",
+      "company_id": null,
+      "lat": 45.51145596536783,
+      "lng": -73.54573867909286,
+      "battery": 64,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404081Z",
+      "updated_at": "2026-03-15T07:17:27.404081Z"
+    },
+    {
+      "id": "drone-mtl-025",
+      "name": "DR-MTL-025",
+      "company_id": null,
+      "lat": 45.53875059676611,
+      "lng": -73.65166643272198,
+      "battery": 82,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404083Z",
+      "updated_at": "2026-03-15T07:17:27.404083Z"
+    },
+    {
+      "id": "drone-mtl-026",
+      "name": "DR-MTL-026",
+      "company_id": null,
+      "lat": 45.49033293296968,
+      "lng": -73.52259243939646,
+      "battery": 68,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404085Z",
+      "updated_at": "2026-03-15T07:17:27.404085Z"
+    },
+    {
+      "id": "drone-mtl-027",
+      "name": "DR-MTL-027",
+      "company_id": null,
+      "lat": 45.469907594647495,
+      "lng": -73.51639220499273,
+      "battery": 29,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404087Z",
+      "updated_at": "2026-03-15T07:17:27.404087Z"
+    },
+    {
+      "id": "drone-mtl-028",
+      "name": "DR-MTL-028",
+      "company_id": null,
+      "lat": 45.47798363475877,
+      "lng": -73.50243821050371,
+      "battery": 46,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404089Z",
+      "updated_at": "2026-03-15T07:17:27.404089Z"
+    },
+    {
+      "id": "drone-mtl-029",
+      "name": "DR-MTL-029",
+      "company_id": null,
+      "lat": 45.44157295724419,
+      "lng": -73.63260630472341,
+      "battery": 100,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404091Z",
+      "updated_at": "2026-03-15T07:17:27.404091Z"
+    },
+    {
+      "id": "drone-mtl-030",
+      "name": "DR-MTL-030",
+      "company_id": null,
+      "lat": 45.42053119652993,
+      "lng": -73.52816989881877,
+      "battery": 61,
+      "status": "idle",
+      "destination_lat": null,
+      "destination_lng": null,
+      "current_node_id": null,
+      "created_at": "2026-03-15T07:17:27.404093Z",
+      "updated_at": "2026-03-15T07:17:27.404093Z"
+    }
+  ],
+  "packages": [
+    {
+      "id": "pkg-001",
+      "pickup": {
+        "lat": 45.52522641341165,
+        "lng": -73.59033772246724
+      },
+      "dropoff": {
+        "lat": 45.5172022788629,
+        "lng": -73.61438654211022
+      },
+      "assigned_drone_id": "drone-mtl-026"
+    },
+    {
+      "id": "pkg-002",
+      "pickup": {
+        "lat": 45.55065187330183,
+        "lng": -73.59775044581211
+      },
+      "dropoff": {
+        "lat": 45.560619390701916,
+        "lng": -73.61189603265369
+      },
+      "assigned_drone_id": "drone-mtl-008"
+    },
+    {
+      "id": "pkg-003",
+      "pickup": {
+        "lat": 45.50069254248525,
+        "lng": -73.62880506887164
+      },
+      "dropoff": {
+        "lat": 45.46860293431438,
+        "lng": -73.64193945274079
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-004",
+      "pickup": {
+        "lat": 45.52607822169647,
+        "lng": -73.60113793648318
+      },
+      "dropoff": {
+        "lat": 45.50657328173042,
+        "lng": -73.59798331960366
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-005",
+      "pickup": {
+        "lat": 45.47625765918468,
+        "lng": -73.5531332135618
+      },
+      "dropoff": {
+        "lat": 45.473537686515336,
+        "lng": -73.54390856367283
+      },
+      "assigned_drone_id": "drone-mtl-024"
+    },
+    {
+      "id": "pkg-006",
+      "pickup": {
+        "lat": 45.43874443367065,
+        "lng": -73.60716844474541
+      },
+      "dropoff": {
+        "lat": 45.43072685888809,
+        "lng": -73.62391109652417
+      },
+      "assigned_drone_id": "drone-mtl-018"
+    },
+    {
+      "id": "pkg-007",
+      "pickup": {
+        "lat": 45.56875597987457,
+        "lng": -73.60541995718134
+      },
+      "dropoff": {
+        "lat": 45.5854106524503,
+        "lng": -73.620643674388
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-008",
+      "pickup": {
+        "lat": 45.552465708565265,
+        "lng": -73.54300908207327
+      },
+      "dropoff": {
+        "lat": 45.53386896074301,
+        "lng": -73.56280169999066
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-009",
+      "pickup": {
+        "lat": 45.571654663695604,
+        "lng": -73.61903821985497
+      },
+      "dropoff": {
+        "lat": 45.59146293007483,
+        "lng": -73.61277568275729
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-010",
+      "pickup": {
+        "lat": 45.43795886909729,
+        "lng": -73.61626782519309
+      },
+      "dropoff": {
+        "lat": 45.40757736813309,
+        "lng": -73.59109473730445
+      },
+      "assigned_drone_id": "drone-mtl-002"
+    },
+    {
+      "id": "pkg-011",
+      "pickup": {
+        "lat": 45.54690515012828,
+        "lng": -73.61418657026411
+      },
+      "dropoff": {
+        "lat": 45.531533919456386,
+        "lng": -73.61082852298416
+      },
+      "assigned_drone_id": "drone-mtl-030"
+    },
+    {
+      "id": "pkg-012",
+      "pickup": {
+        "lat": 45.55518436738124,
+        "lng": -73.61878977552604
+      },
+      "dropoff": {
+        "lat": 45.53823391269346,
+        "lng": -73.60694188696212
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-013",
+      "pickup": {
+        "lat": 45.46702604194127,
+        "lng": -73.55929914085175
+      },
+      "dropoff": {
+        "lat": 45.46617992895526,
+        "lng": -73.5678482461825
+      },
+      "assigned_drone_id": "drone-mtl-021"
+    },
+    {
+      "id": "pkg-014",
+      "pickup": {
+        "lat": 45.5036931750882,
+        "lng": -73.61185700805113
+      },
+      "dropoff": {
+        "lat": 45.469849237736554,
+        "lng": -73.63251153142127
+      },
+      "assigned_drone_id": "drone-mtl-028"
+    },
+    {
+      "id": "pkg-015",
+      "pickup": {
+        "lat": 45.46263398041758,
+        "lng": -73.52518487618144
+      },
+      "dropoff": {
+        "lat": 45.45226593184292,
+        "lng": -73.53863102019542
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-016",
+      "pickup": {
+        "lat": 45.566500569885164,
+        "lng": -73.60709021113294
+      },
+      "dropoff": {
+        "lat": 45.56005983244316,
+        "lng": -73.6317836845729
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-017",
+      "pickup": {
+        "lat": 45.547496330255164,
+        "lng": -73.55172595347234
+      },
+      "dropoff": {
+        "lat": 45.529785223218305,
+        "lng": -73.52419074729514
+      },
+      "assigned_drone_id": "drone-mtl-012"
+    },
+    {
+      "id": "pkg-018",
+      "pickup": {
+        "lat": 45.55751571245683,
+        "lng": -73.62274078871508
+      },
+      "dropoff": {
+        "lat": 45.54842315182278,
+        "lng": -73.60909654110235
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-019",
+      "pickup": {
+        "lat": 45.46641481314878,
+        "lng": -73.53881874829258
+      },
+      "dropoff": {
+        "lat": 45.45155767922129,
+        "lng": -73.53150890464282
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-020",
+      "pickup": {
+        "lat": 45.55558940334346,
+        "lng": -73.53455994644952
+      },
+      "dropoff": {
+        "lat": 45.56817361294977,
+        "lng": -73.54807804554669
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-021",
+      "pickup": {
+        "lat": 45.47713258179227,
+        "lng": -73.53197803080168
+      },
+      "dropoff": {
+        "lat": 45.460786883760434,
+        "lng": -73.5691014547576
+      },
+      "assigned_drone_id": "drone-mtl-017"
+    },
+    {
+      "id": "pkg-022",
+      "pickup": {
+        "lat": 45.548538364563974,
+        "lng": -73.60606082908218
+      },
+      "dropoff": {
+        "lat": 45.56306989921929,
+        "lng": -73.61342418857184
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-023",
+      "pickup": {
+        "lat": 45.57698783564003,
+        "lng": -73.59466769901312
+      },
+      "dropoff": {
+        "lat": 45.56971703778614,
+        "lng": -73.59070506749018
+      },
+      "assigned_drone_id": "drone-mtl-006"
+    },
+    {
+      "id": "pkg-024",
+      "pickup": {
+        "lat": 45.51421228934711,
+        "lng": -73.57294178887513
+      },
+      "dropoff": {
+        "lat": 45.5206179873039,
+        "lng": -73.60379936061979
+      },
+      "assigned_drone_id": "drone-mtl-019"
+    },
+    {
+      "id": "pkg-025",
+      "pickup": {
+        "lat": 45.57907687852864,
+        "lng": -73.59093783667602
+      },
+      "dropoff": {
+        "lat": 45.58788876115565,
+        "lng": -73.56927447665123
+      },
+      "assigned_drone_id": "drone-mtl-005"
+    },
+    {
+      "id": "pkg-026",
+      "pickup": {
+        "lat": 45.565163775077274,
+        "lng": -73.6139344379617
+      },
+      "dropoff": {
+        "lat": 45.553643615425514,
+        "lng": -73.62074149175767
+      },
+      "assigned_drone_id": "drone-mtl-029"
+    },
+    {
+      "id": "pkg-027",
+      "pickup": {
+        "lat": 45.4947570166833,
+        "lng": -73.59204404479365
+      },
+      "dropoff": {
+        "lat": 45.45081685427816,
+        "lng": -73.56228211501367
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-028",
+      "pickup": {
+        "lat": 45.5403161754677,
+        "lng": -73.55091874407371
+      },
+      "dropoff": {
+        "lat": 45.56246635284443,
+        "lng": -73.52694797742684
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-029",
+      "pickup": {
+        "lat": 45.45285541001135,
+        "lng": -73.55061741484384
+      },
+      "dropoff": {
+        "lat": 45.440217422122366,
+        "lng": -73.52155463571292
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-030",
+      "pickup": {
+        "lat": 45.54170282399966,
+        "lng": -73.60269039070819
+      },
+      "dropoff": {
+        "lat": 45.52722482727924,
+        "lng": -73.59346739945916
+      },
+      "assigned_drone_id": "drone-mtl-020"
+    },
+    {
+      "id": "pkg-031",
+      "pickup": {
+        "lat": 45.49298012032101,
+        "lng": -73.58919120535947
+      },
+      "dropoff": {
+        "lat": 45.47843058804342,
+        "lng": -73.55198155152469
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-032",
+      "pickup": {
+        "lat": 45.43756559747081,
+        "lng": -73.60929724150196
+      },
+      "dropoff": {
+        "lat": 45.44913787524488,
+        "lng": -73.58741486459651
+      },
+      "assigned_drone_id": "drone-mtl-016"
+    },
+    {
+      "id": "pkg-033",
+      "pickup": {
+        "lat": 45.45735439626261,
+        "lng": -73.547459732817
+      },
+      "dropoff": {
+        "lat": 45.488725152589154,
+        "lng": -73.53033833432083
+      },
+      "assigned_drone_id": "drone-mtl-023"
+    },
+    {
+      "id": "pkg-034",
+      "pickup": {
+        "lat": 45.430516892191754,
+        "lng": -73.61531533072998
+      },
+      "dropoff": {
+        "lat": 45.45154958865255,
+        "lng": -73.58096861450463
+      },
+      "assigned_drone_id": "drone-mtl-001"
+    },
+    {
+      "id": "pkg-035",
+      "pickup": {
+        "lat": 45.51104207804992,
+        "lng": -73.56783334725355
+      },
+      "dropoff": {
+        "lat": 45.52879238078671,
+        "lng": -73.55700777758982
+      },
+      "assigned_drone_id": "drone-mtl-007"
+    },
+    {
+      "id": "pkg-036",
+      "pickup": {
+        "lat": 45.44793936355733,
+        "lng": -73.61326205956867
+      },
+      "dropoff": {
+        "lat": 45.42416393843898,
+        "lng": -73.61506919587855
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-037",
+      "pickup": {
+        "lat": 45.42715031967699,
+        "lng": -73.61659474817627
+      },
+      "dropoff": {
+        "lat": 45.44081879985177,
+        "lng": -73.63702003149218
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-038",
+      "pickup": {
+        "lat": 45.524465692544396,
+        "lng": -73.5844547365981
+      },
+      "dropoff": {
+        "lat": 45.516473321206455,
+        "lng": -73.60065418416737
+      },
+      "assigned_drone_id": "drone-mtl-022"
+    },
+    {
+      "id": "pkg-039",
+      "pickup": {
+        "lat": 45.55038777453703,
+        "lng": -73.5545541159598
+      },
+      "dropoff": {
+        "lat": 45.56658342594183,
+        "lng": -73.554581009832
+      },
+      "assigned_drone_id": "drone-mtl-027"
+    },
+    {
+      "id": "pkg-040",
+      "pickup": {
+        "lat": 45.531944485139206,
+        "lng": -73.60396495157254
+      },
+      "dropoff": {
+        "lat": 45.56667060590727,
+        "lng": -73.60417030004555
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-041",
+      "pickup": {
+        "lat": 45.42434287260245,
+        "lng": -73.6149402853201
+      },
+      "dropoff": {
+        "lat": 45.41088765481197,
+        "lng": -73.58465067279246
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-042",
+      "pickup": {
+        "lat": 45.442113756140586,
+        "lng": -73.61965865111188
+      },
+      "dropoff": {
+        "lat": 45.422508701732816,
+        "lng": -73.61017617685624
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-043",
+      "pickup": {
+        "lat": 45.459822293742064,
+        "lng": -73.54388449446624
+      },
+      "dropoff": {
+        "lat": 45.436377194785386,
+        "lng": -73.53815752394232
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-044",
+      "pickup": {
+        "lat": 45.507590454505944,
+        "lng": -73.60746606699702
+      },
+      "dropoff": {
+        "lat": 45.52287744129946,
+        "lng": -73.61710387350435
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-045",
+      "pickup": {
+        "lat": 45.51930705465795,
+        "lng": -73.56946776848258
+      },
+      "dropoff": {
+        "lat": 45.49685576023944,
+        "lng": -73.5997422365974
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-046",
+      "pickup": {
+        "lat": 45.575559835576634,
+        "lng": -73.60630382836864
+      },
+      "dropoff": {
+        "lat": 45.592645233823546,
+        "lng": -73.60060438691126
+      },
+      "assigned_drone_id": null
+    },
+    {
+      "id": "pkg-047",
+      "pickup": {
+        "lat": 45.55609425959899,
+        "lng": -73.59661695528182
+      },
+      "dropoff": {
+        "lat": 45.55868105618383,
+        "lng": -73.58674923992999
+      },
+      "assigned_drone_id": "drone-mtl-015"
+    },
+    {
+      "id": "pkg-048",
+      "pickup": {
+        "lat": 45.47739878047842,
+        "lng": -73.54629123449169
+      },
+      "dropoff": {
+        "lat": 45.46909154046101,
+        "lng": -73.5165593314864
+      },
+      "assigned_drone_id": "drone-mtl-025"
+    }
+  ],
+  "flight_plans": [
+    {
+      "drone_id": "drone-mtl-001",
+      "waypoints": [
+        {
+          "lat": 45.41574291960932,
+          "lng": -73.52078394837021,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-002",
+      "waypoints": [
+        {
+          "lat": 45.578721865672186,
+          "lng": -73.6111235135257,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56293969478817,
+          "lng": -73.60639570297536,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-003",
+      "waypoints": [
+        {
+          "lat": 45.43225338549822,
+          "lng": -73.53227576822486,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.547496330255164,
+          "lng": -73.55172595347234,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.529785223218305,
+          "lng": -73.52419074729514,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-004",
+      "waypoints": [
+        {
+          "lat": 45.55039534182385,
+          "lng": -73.62391173590433,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.47713258179227,
+          "lng": -73.53197803080168,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.460786883760434,
+          "lng": -73.5691014547576,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-005",
+      "waypoints": [
+        {
+          "lat": 45.47561138828611,
+          "lng": -73.51386498810534,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.57907687852864,
+          "lng": -73.59093783667602,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.58788876115565,
+          "lng": -73.56927447665123,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-006",
+      "waypoints": [
+        {
+          "lat": 45.5562943229512,
+          "lng": -73.63180419109601,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.57698783564003,
+          "lng": -73.59466769901312,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.56971703778614,
+          "lng": -73.59070506749018,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56293969478817,
+          "lng": -73.60639570297536,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-007",
+      "waypoints": [
+        {
+          "lat": 45.43403903275633,
+          "lng": -73.51021995780637,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.51104207804992,
+          "lng": -73.56783334725355,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.52879238078671,
+          "lng": -73.55700777758982,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-008",
+      "waypoints": [
+        {
+          "lat": 45.58332539785415,
+          "lng": -73.56684551780033,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.55065187330183,
+          "lng": -73.59775044581211,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.560619390701916,
+          "lng": -73.61189603265369,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-009",
+      "waypoints": [
+        {
+          "lat": 45.57918756337206,
+          "lng": -73.57227308120288,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.52522641341165,
+          "lng": -73.59033772246724,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5172022788629,
+          "lng": -73.61438654211022,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-010",
+      "waypoints": [
+        {
+          "lat": 45.47576456610139,
+          "lng": -73.5933708461156,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.52522641341165,
+          "lng": -73.59033772246724,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5172022788629,
+          "lng": -73.61438654211022,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.480325336821295,
+          "lng": -73.58082203267676,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-011",
+      "waypoints": [
+        {
+          "lat": 45.42410929214721,
+          "lng": -73.56848068290492,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.47739878047842,
+          "lng": -73.54629123449169,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.46909154046101,
+          "lng": -73.5165593314864,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.4322774176551,
+          "lng": -73.6095204197619,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-012",
+      "waypoints": [
+        {
+          "lat": 45.53286307601635,
+          "lng": -73.48703983796757,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.547496330255164,
+          "lng": -73.55172595347234,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.529785223218305,
+          "lng": -73.52419074729514,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54540233087481,
+          "lng": -73.54909792631224,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-013",
+      "waypoints": [
+        {
+          "lat": 45.414429133628076,
+          "lng": -73.54791236358128,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.52522641341165,
+          "lng": -73.59033772246724,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5172022788629,
+          "lng": -73.61438654211022,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-014",
+      "waypoints": [
+        {
+          "lat": 45.564427685237625,
+          "lng": -73.56723828302364,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.55609425959899,
+          "lng": -73.59661695528182,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.55868105618383,
+          "lng": -73.58674923992999,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-015",
+      "waypoints": [
+        {
+          "lat": 45.499888496171366,
+          "lng": -73.51153072075964,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.55609425959899,
+          "lng": -73.59661695528182,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.55868105618383,
+          "lng": -73.58674923992999,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-016",
+      "waypoints": [
+        {
+          "lat": 45.5201510606404,
+          "lng": -73.62523081794447,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.43756559747081,
+          "lng": -73.60929724150196,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.44913787524488,
+          "lng": -73.58741486459651,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.520856919756476,
+          "lng": -73.60206206605734,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-017",
+      "waypoints": [
+        {
+          "lat": 45.509703028052016,
+          "lng": -73.54276547709951,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.47713258179227,
+          "lng": -73.53197803080168,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.460786883760434,
+          "lng": -73.5691014547576,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-018",
+      "waypoints": [
+        {
+          "lat": 45.521325972886245,
+          "lng": -73.6434504423412,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.43874443367065,
+          "lng": -73.60716844474541,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.43072685888809,
+          "lng": -73.62391109652417,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.520856919756476,
+          "lng": -73.60206206605734,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-019",
+      "waypoints": [
+        {
+          "lat": 45.53170534710311,
+          "lng": -73.50891582109014,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.51421228934711,
+          "lng": -73.57294178887513,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5206179873039,
+          "lng": -73.60379936061979,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54540233087481,
+          "lng": -73.54909792631224,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-020",
+      "waypoints": [
+        {
+          "lat": 45.538840039667924,
+          "lng": -73.64803339770629,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-021",
+      "waypoints": [
+        {
+          "lat": 45.54529289060134,
+          "lng": -73.65390878345805,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.46702604194127,
+          "lng": -73.55929914085175,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.46617992895526,
+          "lng": -73.5678482461825,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-022",
+      "waypoints": [
+        {
+          "lat": 45.53592786985764,
+          "lng": -73.64269391875543,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.524465692544396,
+          "lng": -73.5844547365981,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.54677959706762,
+          "lng": -73.50250165428623,
+          "eta": 10,
+          "status": "reroute"
+        },
+        {
+          "lat": 45.516473321206455,
+          "lng": -73.60065418416737,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": true
+    },
+    {
+      "drone_id": "drone-mtl-023",
+      "waypoints": [
+        {
+          "lat": 45.50356907788223,
+          "lng": -73.59126639046879,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.45735439626261,
+          "lng": -73.547459732817,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.488725152589154,
+          "lng": -73.53033833432083,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-024",
+      "waypoints": [
+        {
+          "lat": 45.51145596536783,
+          "lng": -73.54573867909286,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.47625765918468,
+          "lng": -73.5531332135618,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.473537686515336,
+          "lng": -73.54390856367283,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-025",
+      "waypoints": [
+        {
+          "lat": 45.53875059676611,
+          "lng": -73.65166643272198,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.47739878047842,
+          "lng": -73.54629123449169,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.46909154046101,
+          "lng": -73.5165593314864,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-026",
+      "waypoints": [
+        {
+          "lat": 45.49033293296968,
+          "lng": -73.52259243939646,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.52522641341165,
+          "lng": -73.59033772246724,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5172022788629,
+          "lng": -73.61438654211022,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-027",
+      "waypoints": [
+        {
+          "lat": 45.469907594647495,
+          "lng": -73.51639220499273,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.55038777453703,
+          "lng": -73.5545541159598,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.56658342594183,
+          "lng": -73.554581009832,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-028",
+      "waypoints": [
+        {
+          "lat": 45.47798363475877,
+          "lng": -73.50243821050371,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.5036931750882,
+          "lng": -73.61185700805113,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.469849237736554,
+          "lng": -73.63251153142127,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-029",
+      "waypoints": [
+        {
+          "lat": 45.44157295724419,
+          "lng": -73.63260630472341,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.565163775077274,
+          "lng": -73.6139344379617,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.553643615425514,
+          "lng": -73.62074149175767,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.438244724164676,
+          "lng": -73.60898975710899,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    },
+    {
+      "drone_id": "drone-mtl-030",
+      "waypoints": [
+        {
+          "lat": 45.42053119652993,
+          "lng": -73.52816989881877,
+          "eta": 0,
+          "status": "depart"
+        },
+        {
+          "lat": 45.54690515012828,
+          "lng": -73.61418657026411,
+          "eta": 6,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.531533919456386,
+          "lng": -73.61082852298416,
+          "eta": 14,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 20,
+          "status": "recharge"
+        }
+      ],
+      "rerouted": false
+    }
+  ],
+  "risk_zones": [
+    {
+      "id": "risk-circle-01",
+      "type": "circle",
+      "center": {
+        "lat": 45.5217,
+        "lng": -73.57730000000001
+      },
+      "radius_m": 700
+    },
+    {
+      "id": "risk-circle-02",
+      "type": "circle",
+      "center": {
+        "lat": 45.4717,
+        "lng": -73.5273
+      },
+      "radius_m": 550
+    },
+    {
+      "id": "risk-poly-01",
+      "type": "polygon",
+      "points": [
+        {
+          "lat": 45.5417,
+          "lng": -73.5573
+        },
+        {
+          "lat": 45.5617,
+          "lng": -73.5173
+        },
+        {
+          "lat": 45.5217,
+          "lng": -73.5073
+        },
+        {
+          "lat": 45.5117,
+          "lng": -73.5473
+        }
+      ]
+    }
+  ],
+  "congestion_forecast": [
+    {
+      "timestamp": "2026-03-15T07:17:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.258
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.6
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.155
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.502
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.746
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.155
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.432
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.262
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.213
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.018
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.018
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.017
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T07:27:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.292
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.634
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.19
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.536
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.78
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.19
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.466
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.297
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.247
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.052
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.052
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.051
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T07:37:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.323
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.665
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.22
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.567
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.811
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.22
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.497
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.327
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.278
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.083
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.083
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.082
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T07:47:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.346
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.688
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.244
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.59
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.834
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.244
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.52
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.35
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.301
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.106
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.106
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.105
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T07:57:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.36
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.702
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.257
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.604
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.848
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.257
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.534
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.364
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.315
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.12
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.12
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.119
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:07:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.362
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.704
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.26
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.606
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.85
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.26
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.536
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.366
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.317
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.122
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.122
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.121
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:17:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.353
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.695
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.251
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.597
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.841
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.251
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.527
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.357
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.308
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.113
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.113
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.112
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:27:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.334
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.675
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.231
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.578
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.822
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.231
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.507
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.338
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.288
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.094
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.094
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.093
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:37:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.306
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.647
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.203
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.55
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.794
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.203
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.479
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.31
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.26
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.066
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.066
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.065
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:47:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.272
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.614
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.17
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.516
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.76
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.17
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.446
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.276
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.227
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.032
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.032
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.031
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:57:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.237
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.579
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.135
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.481
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.725
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.135
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.411
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.242
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.192
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.0
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.0
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.0
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T09:07:27.404876Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.205
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.546
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.102
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.449
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.693
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.102
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.378
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.209
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.159
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.0
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.0
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.0
+        }
+      ]
+    }
+  ]
+}

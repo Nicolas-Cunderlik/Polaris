@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
+import { loadMockScenario } from '@/lib/mockData';
 import type { DroneWithCompany, Node } from '@/types/database';
+import type { MockScenario } from '@/types/mock';
 import { Zap, MapPin, Activity } from 'lucide-react';
 import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
 import { toast } from 'sonner';
@@ -21,21 +24,32 @@ const FleetMapPage: React.FC = () => {
   const leafletMapRef = useRef<any>(null);
   const droneMarkersRef = useRef<Map<string, any>>(new Map());
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
+  const overlayLayersRef = useRef<{ risk?: any; flights?: any; heat?: any }>({});
   const droneAnimationRef = useRef<Map<string, number>>(new Map());
   const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
   const hasFitBoundsRef = useRef(false);
   const [leafletReady, setLeafletReady] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const [mockScenario, setMockScenario] = useState<MockScenario | null>(null);
+  const [mockDrones, setMockDrones] = useState<DroneWithCompany[]>([]);
+  const [showOverlays, setShowOverlays] = useState(true);
   const { profile } = useAuth();
+  const mockEnabled = import.meta.env.VITE_ML_MOCK === '1';
 
-  const companyDrones = profile?.role === 'admin'
-    ? drones
-    : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
+  const companyDrones = mockEnabled
+    ? mockDrones
+    : profile?.role === 'admin'
+      ? drones
+      : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
   const displayDrones = apiAvailable ? companyDrones : [];
   const displayNodes = apiAvailable ? nodes : [];
 
   useEffect(() => {
     loadData();
+
+    if (mockEnabled) {
+      return;
+    }
 
     const dronesChannel = subscribeToDrones((payload) => {
       setApiAvailable(true);
@@ -58,7 +72,7 @@ const FleetMapPage: React.FC = () => {
         clearInterval(simulationInterval.current);
       }
     };
-  }, []);
+  }, [mockEnabled]);
 
   useEffect(() => {
     const L = (window as any).L;
@@ -180,6 +194,136 @@ const FleetMapPage: React.FC = () => {
   }, [displayDrones, mapReady]);
 
   useEffect(() => {
+    if (!mockEnabled || !mockScenario) return;
+
+    const start = performance.now();
+    const flightPlans = new Map(
+      mockScenario.flight_plans.map((plan) => [plan.drone_id, plan.waypoints])
+    );
+
+    const speedScale = 2; // seconds per simulated minute in the eta field
+    const tick = () => {
+      const now = performance.now();
+      const elapsedSec = (now - start) / 1000;
+
+      const nextDrones = mockScenario.drones.map((drone) => {
+        const waypoints = flightPlans.get(drone.id);
+        if (!waypoints || waypoints.length < 2) {
+          return drone as DroneWithCompany;
+        }
+
+        const totalDuration =
+          waypoints[waypoints.length - 1].eta * speedScale || 1;
+        const t = elapsedSec % totalDuration;
+
+        let idx = 0;
+        for (let i = 0; i < waypoints.length - 1; i += 1) {
+          const startEta = waypoints[i].eta * speedScale;
+          const endEta = waypoints[i + 1].eta * speedScale;
+          if (t >= startEta && t <= endEta) {
+            idx = i;
+            break;
+          }
+        }
+
+        const from = waypoints[idx];
+        const to = waypoints[Math.min(idx + 1, waypoints.length - 1)];
+        const segStart = from.eta * speedScale;
+        const segEnd = Math.max(segStart + 0.001, to.eta * speedScale);
+        const segProgress = Math.min(1, Math.max(0, (t - segStart) / (segEnd - segStart)));
+
+        const lat = from.lat + (to.lat - from.lat) * segProgress;
+        const lng = from.lng + (to.lng - from.lng) * segProgress;
+        const status = segProgress >= 0.9 ? to.status : from.status;
+
+        return {
+          ...(drone as DroneWithCompany),
+          lat,
+          lng,
+          status: status === 'reroute' ? 'en_route' : status,
+          updated_at: new Date().toISOString(),
+        };
+      });
+
+      setMockDrones(nextDrones);
+    };
+
+    const interval = setInterval(tick, 1000 / 24);
+    tick();
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [mockEnabled, mockScenario]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map || !mapReady) return;
+
+    Object.values(overlayLayersRef.current).forEach((layer) => layer?.remove());
+    overlayLayersRef.current = {};
+
+    if (!mockEnabled || !mockScenario || !showOverlays) return;
+
+    const riskLayer = L.layerGroup();
+    mockScenario.risk_zones.forEach((zone) => {
+      if (zone.type === 'circle') {
+        L.circle([zone.center.lat, zone.center.lng], {
+          radius: zone.radius_m,
+          color: '#ef4444',
+          weight: 2,
+          fillColor: '#ef4444',
+          fillOpacity: 0.15,
+        }).addTo(riskLayer);
+      } else {
+        L.polygon(zone.points.map((point) => [point.lat, point.lng]), {
+          color: '#f97316',
+          weight: 2,
+          fillColor: '#f97316',
+          fillOpacity: 0.12,
+        }).addTo(riskLayer);
+      }
+    });
+    riskLayer.addTo(map);
+
+    const flightLayer = L.layerGroup();
+    mockScenario.flight_plans.forEach((plan) => {
+      const points = plan.waypoints.map((point) => [point.lat, point.lng]);
+      L.polyline(points, {
+        color: plan.rerouted ? '#f97316' : '#2563eb',
+        weight: 2,
+        opacity: 0.8,
+        dashArray: plan.rerouted ? '6 6' : undefined,
+      }).addTo(flightLayer);
+    });
+    flightLayer.addTo(map);
+
+    const heatLayer = L.layerGroup();
+    const latestBucket =
+      mockScenario.congestion_forecast[mockScenario.congestion_forecast.length - 1];
+    if (latestBucket) {
+      latestBucket.node_loads.forEach((load) => {
+        const node = mockScenario.nodes.find((item) => item.id === load.node_id);
+        if (!node) return;
+        const congestion = Math.min(1, Math.max(0, load.congestion));
+        const radius = 120 + 380 * congestion;
+        const color = congestion > 0.7 ? '#ef4444' : congestion > 0.4 ? '#f97316' : '#22c55e';
+        L.circle([node.lat, node.lng], {
+          radius,
+          color,
+          weight: 1,
+          fillColor: color,
+          fillOpacity: 0.18,
+        }).addTo(heatLayer);
+      });
+    }
+    heatLayer.addTo(map);
+
+    overlayLayersRef.current = { risk: riskLayer, flights: flightLayer, heat: heatLayer };
+  }, [mockEnabled, mockScenario, showOverlays, mapReady]);
+
+  useEffect(() => {
     const L = (window as any).L;
     const map = leafletMapRef.current;
     if (!L || !map || !mapReady || hasFitBoundsRef.current) return;
@@ -197,10 +341,18 @@ const FleetMapPage: React.FC = () => {
 
   const loadData = async () => {
     try {
-      const [dronesData, nodesData] = await Promise.all([getDrones(), getNodes()]);
-      setApiAvailable(true);
-      setDrones(dronesData);
-      setNodes(nodesData);
+      if (mockEnabled) {
+        const scenario = await loadMockScenario();
+        setMockScenario(scenario);
+        setApiAvailable(true);
+        setMockDrones(scenario.drones as DroneWithCompany[]);
+        setNodes(scenario.nodes as Node[]);
+      } else {
+        const [dronesData, nodesData] = await Promise.all([getDrones(), getNodes()]);
+        setApiAvailable(true);
+        setDrones(dronesData);
+        setNodes(nodesData);
+      }
     } catch (error) {
       toast.error('Failed to load fleet data');
       console.error(error);
@@ -214,6 +366,7 @@ const FleetMapPage: React.FC = () => {
 
   const runSimulationCycle = async () => {
     try {
+      if (mockEnabled) return;
       const [currentDrones, currentNodes] = await Promise.all([getDrones(), getNodes()]);
       await runSimulation(currentDrones, currentNodes);
     } catch (error) {
@@ -250,8 +403,26 @@ const FleetMapPage: React.FC = () => {
             <p className="text-muted-foreground">Real-time drone fleet monitoring</p>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Activity className="h-4 w-4 animate-pulse text-primary" />
-            <span>Live Updates</span>
+            {mockEnabled && (
+              <Badge variant="outline" className="border-primary/40 text-primary">
+                ML Mock Mode
+              </Badge>
+            )}
+            {mockEnabled && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowOverlays((prev) => !prev)}
+              >
+                {showOverlays ? 'Hide ML Overlays' : 'Show ML Overlays'}
+              </Button>
+            )}
+            {!mockEnabled && (
+              <>
+                <Activity className="h-4 w-4 animate-pulse text-primary" />
+                <span>Live Updates</span>
+              </>
+            )}
           </div>
         </div>
 
