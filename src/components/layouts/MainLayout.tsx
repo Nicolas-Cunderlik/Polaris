@@ -41,10 +41,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <Plane className="h-5 w-5 text-primary" />
-              </div>
-              <span className="text-lg font-bold gradient-text">Drone Cloud</span>
+              <img src="https://i.postimg.cc/wBJsqfhs/polaris-logo.png" alt="Polaris Logo" className="h-10 w-18" />
             </Link>
             <nav className="hidden md:flex items-center gap-1">
               {navItems.map((item) => {
