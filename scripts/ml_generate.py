@@ -11,12 +11,12 @@ random.seed(SEED)
 CENTER_LAT = 45.5017
 CENTER_LNG = -73.5673
 
-NODES_MIN = 8
-NODES_MAX = 12
-DRONES_MIN = 28
-DRONES_MAX = 40
-PACKAGES_MIN = 40
-PACKAGES_MAX = 60
+NODES_MIN = 18
+NODES_MAX = 26
+DRONES_MIN = 70
+DRONES_MAX = 90
+PACKAGES_MIN = 120
+PACKAGES_MAX = 160
 
 ALPHA = 1.0
 BETA = 0.8
@@ -98,18 +98,22 @@ def score_node(drone, node):
     return ALPHA * distance + BETA * battery_cost + GAMMA * load_factor
 
 
-def build_nodes(count):
+def build_nodes(count, risk_zones):
     nodes = []
     for i in range(count):
-        nodes.append({
-            'id': f'node-mtl-{i+1:02d}',
-            'name': f'MTL-Node-{i+1:02d}',
-            'lat': jitter(CENTER_LAT, 0.07),
-            'lng': jitter(CENTER_LNG, 0.07),
-            'capacity': random.randint(4, 8),
-            'current_load': random.randint(0, 3),
-            'created_at': datetime.utcnow().isoformat() + 'Z'
-        })
+        for _ in range(40):
+            candidate = {
+                'id': f'node-mtl-{i+1:02d}',
+                'name': f'MTL-Node-{i+1:02d}',
+                'lat': jitter(CENTER_LAT, 0.07),
+                'lng': jitter(CENTER_LNG, 0.07),
+                'capacity': random.randint(4, 8),
+                'current_load': random.randint(0, 3),
+                'created_at': datetime.utcnow().isoformat() + 'Z'
+            }
+            if not is_point_in_risk({'lat': candidate['lat'], 'lng': candidate['lng']}, risk_zones, buffer_m=350):
+                nodes.append(candidate)
+                break
     return nodes
 
 
@@ -190,6 +194,54 @@ def route_crosses_risk_zone(route, risk_zones):
     return False
 
 
+def point_in_polygon(point, polygon):
+    x = point['lng']
+    y = point['lat']
+    inside = False
+    j = len(polygon) - 1
+    for i in range(len(polygon)):
+        xi = polygon[i]['lng']
+        yi = polygon[i]['lat']
+        xj = polygon[j]['lng']
+        yj = polygon[j]['lat']
+        intersect = ((yi > y) != (yj > y)) and (x < (xj - xi) * (y - yi) / (yj - yi + 1e-12) + xi)
+        if intersect:
+            inside = not inside
+        j = i
+    return inside
+
+
+def is_point_in_risk(point, risk_zones, buffer_m=200):
+    for zone in risk_zones:
+        if zone['type'] == 'circle':
+            center = zone['center']
+            radius_km = (zone['radius_m'] + buffer_m) / 1000.0
+            if haversine_km(point['lat'], point['lng'], center['lat'], center['lng']) <= radius_km:
+                return True
+        else:
+            if point_in_polygon(point, zone['points']):
+                return True
+    return False
+
+
+def path_is_safe(points, risk_zones):
+    return all(not is_point_in_risk(point, risk_zones) for point in points)
+
+
+def create_detour_point(start, end, risk_zones):
+    for _ in range(40):
+        candidate = {
+            'lat': jitter((start['lat'] + end['lat']) / 2.0, 0.06),
+            'lng': jitter((start['lng'] + end['lng']) / 2.0, 0.06),
+        }
+        if not is_point_in_risk(candidate, risk_zones, buffer_m=300):
+            return candidate
+    return {
+        'lat': jitter(CENTER_LAT, 0.08),
+        'lng': jitter(CENTER_LNG, 0.08),
+    }
+
+
 def curve_points(start, end, count, bend=0.015):
     mid_lat = (start['lat'] + end['lat']) / 2.0
     mid_lng = (start['lng'] + end['lng']) / 2.0
@@ -235,12 +287,8 @@ def build_flight_plans(drones, nodes, packages, risk_zones):
 
         rerouted = route_crosses_risk_zone(key_points, risk_zones)
         if rerouted:
-            detour = {
-                'lat': jitter(CENTER_LAT, 0.08),
-                'lng': jitter(CENTER_LNG, 0.08),
-                'status': 'reroute'
-            }
-            key_points.insert(2, detour)
+            detour = create_detour_point(key_points[1], key_points[2], risk_zones)
+            key_points.insert(2, { **detour, 'status': 'reroute' })
 
         waypoints = []
         eta = 0
@@ -249,8 +297,15 @@ def build_flight_plans(drones, nodes, packages, risk_zones):
             end = key_points[idx + 1]
             waypoints.append({ 'lat': start['lat'], 'lng': start['lng'], 'eta': eta, 'status': start['status'] })
 
-            seg_points = curve_points(start, end, random.randint(4, 8))
+            seg_points = curve_points(start, end, random.randint(6, 10), bend=0.018)
+            if not path_is_safe(seg_points, risk_zones):
+                detour = create_detour_point(start, end, risk_zones)
+                mid_points = curve_points(start, detour, random.randint(4, 7), bend=0.02)
+                seg_points = mid_points + curve_points(detour, end, random.randint(4, 7), bend=0.02)
+
             for point in seg_points:
+                if is_point_in_risk(point, risk_zones, buffer_m=350):
+                    continue
                 eta += random.randint(1, 2)
                 waypoints.append({ 'lat': point['lat'], 'lng': point['lng'], 'eta': eta, 'status': 'flying' })
 
@@ -318,10 +373,10 @@ def build_congestion_forecast(nodes):
 
 
 def main():
-    nodes = build_nodes(random.randint(NODES_MIN, NODES_MAX))
+    risk_zones = build_risk_zones()
+    nodes = build_nodes(random.randint(NODES_MIN, NODES_MAX), risk_zones)
     drones = build_drones(random.randint(DRONES_MIN, DRONES_MAX))
     packages = build_packages(random.randint(PACKAGES_MIN, PACKAGES_MAX), nodes)
-    risk_zones = build_risk_zones()
     flight_plans = build_flight_plans(drones, nodes, packages, risk_zones)
     congestion_forecast = build_congestion_forecast(nodes)
 

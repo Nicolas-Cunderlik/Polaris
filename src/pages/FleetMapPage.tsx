@@ -333,33 +333,75 @@ const FleetMapPage: React.FC = () => {
     flightLayer.addTo(map);
 
     const heatLayer = L.layerGroup();
-    const grid = new Map<string, { lat: number; lng: number; count: number }>();
-    const gridSize = 0.01;
+    const points: Array<{ lat: number; lng: number; weight: number }> = [];
+
     mockScenario.flight_plans.forEach((plan) => {
       plan.waypoints.forEach((point, index) => {
-        if (index % 2 !== 0) return;
-        const latKey = Math.round(point.lat / gridSize) * gridSize;
-        const lngKey = Math.round(point.lng / gridSize) * gridSize;
-        const key = `${latKey.toFixed(4)}|${lngKey.toFixed(4)}`;
-        const existing = grid.get(key);
-        if (existing) {
-          existing.count += 1;
-        } else {
-          grid.set(key, { lat: latKey, lng: lngKey, count: 1 });
-        }
+        if (index % 3 !== 0) return;
+        points.push({ lat: point.lat, lng: point.lng, weight: 1 });
       });
     });
 
+    const latestBucket =
+      mockScenario.congestion_forecast[mockScenario.congestion_forecast.length - 1];
+    if (latestBucket) {
+      latestBucket.node_loads.forEach((load) => {
+        const node = mockScenario.nodes.find((item) => item.id === load.node_id);
+        if (!node) return;
+        const intensity = Math.min(1, Math.max(0, load.congestion));
+        if (intensity < 0.35) return;
+        const extra = Math.round(6 + intensity * 8);
+        for (let i = 0; i < extra; i += 1) {
+          points.push({
+            lat: node.lat + (Math.random() - 0.5) * 0.01,
+            lng: node.lng + (Math.random() - 0.5) * 0.01,
+            weight: 1.2 + intensity,
+          });
+        }
+      });
+    }
+
+    const grid = new Map<string, { lat: number; lng: number; value: number }>();
+    const gridSize = 0.008;
+    const sigma = 0.02;
+    const radiusCells = Math.ceil((sigma * 2) / gridSize);
+
+    points.forEach((point) => {
+      const baseLat = Math.round(point.lat / gridSize) * gridSize;
+      const baseLng = Math.round(point.lng / gridSize) * gridSize;
+      for (let dx = -radiusCells; dx <= radiusCells; dx += 1) {
+        for (let dy = -radiusCells; dy <= radiusCells; dy += 1) {
+          const lat = baseLat + dx * gridSize;
+          const lng = baseLng + dy * gridSize;
+          const dist = Math.hypot(lat - point.lat, lng - point.lng);
+          const kernel = Math.exp(-(dist * dist) / (2 * sigma * sigma)) * point.weight;
+          if (kernel < 0.02) continue;
+          const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
+          const existing = grid.get(key);
+          if (existing) {
+            existing.value += kernel;
+          } else {
+            grid.set(key, { lat, lng, value: kernel });
+          }
+        }
+      }
+    });
+
+    const values = Array.from(grid.values()).map((cell) => cell.value);
+    const maxValue = values.length > 0 ? Math.max(...values) : 1;
+
     grid.forEach((cell) => {
-      const intensity = Math.min(1, cell.count / 12);
-      const radius = 180 + 420 * intensity;
-      const color = intensity > 0.7 ? '#ef4444' : intensity > 0.4 ? '#f97316' : '#22c55e';
+      const intensity = Math.min(1, cell.value / maxValue);
+      if (intensity < 0.08) return;
+      const radius = 240 + 520 * intensity;
+      const color =
+        intensity > 0.72 ? '#ef4444' : intensity > 0.42 ? '#f97316' : '#22c55e';
       L.circle([cell.lat, cell.lng], {
         radius,
         color,
         weight: 0,
         fillColor: color,
-        fillOpacity: 0.18,
+        fillOpacity: 0.22,
       }).addTo(heatLayer);
     });
     heatLayer.addTo(map);
