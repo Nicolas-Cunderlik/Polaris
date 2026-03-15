@@ -51,11 +51,8 @@ const LoginPage: React.FC = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-3 text-center">
           <div className="flex justify-center">
-            <div className="p-3 bg-primary/10 rounded-full">
-              <Plane className="h-8 w-8 text-primary" />
-            </div>
+            <img src="https://i.postimg.cc/wBJsqfhs/polaris-logo.png" alt="Polaris Logo" className="h-12 w-18" />
           </div>
-          <CardTitle className="text-2xl font-bold gradient-text">Polaris Control Center</CardTitle>
           <CardDescription>
             Sign in with Auth0 to access fleet monitoring, analytics, and infrastructure tools.
           </CardDescription>
