@@ -6,7 +6,7 @@
       "lng": -73.5673
     },
     "ml_model": "linear_regression",
-    "generated_at": "2026-03-15T07:17:27.406729Z"
+    "generated_at": "2026-03-15T07:55:38.375574Z"
   },
   "nodes": [
     {
@@ -16,7 +16,7 @@
       "lng": -73.59280549687169,
       "capacity": 8,
       "current_load": 2,
-      "created_at": "2026-03-15T07:17:27.403760Z"
+      "created_at": "2026-03-15T07:55:38.373446Z"
     },
     {
       "id": "node-mtl-02",
@@ -25,7 +25,7 @@
       "lng": -73.60898975710899,
       "capacity": 5,
       "current_load": 3,
-      "created_at": "2026-03-15T07:17:27.404001Z"
+      "created_at": "2026-03-15T07:55:38.373546Z"
     },
     {
       "id": "node-mtl-03",
@@ -34,7 +34,7 @@
       "lng": -73.58082203267676,
       "capacity": 7,
       "current_load": 1,
-      "created_at": "2026-03-15T07:17:27.404006Z"
+      "created_at": "2026-03-15T07:55:38.373549Z"
     },
     {
       "id": "node-mtl-04",
@@ -43,7 +43,7 @@
       "lng": -73.53547578518281,
       "capacity": 6,
       "current_load": 3,
-      "created_at": "2026-03-15T07:17:27.404008Z"
+      "created_at": "2026-03-15T07:55:38.373552Z"
     },
     {
       "id": "node-mtl-05",
@@ -52,7 +52,7 @@
       "lng": -73.6095204197619,
       "capacity": 4,
       "current_load": 3,
-      "created_at": "2026-03-15T07:17:27.404010Z"
+      "created_at": "2026-03-15T07:55:38.373554Z"
     },
     {
       "id": "node-mtl-06",
@@ -61,7 +61,7 @@
       "lng": -73.57873205080935,
       "capacity": 7,
       "current_load": 1,
-      "created_at": "2026-03-15T07:17:27.404012Z"
+      "created_at": "2026-03-15T07:55:38.373556Z"
     },
     {
       "id": "node-mtl-07",
@@ -70,7 +70,7 @@
       "lng": -73.61406580613219,
       "capacity": 7,
       "current_load": 3,
-      "created_at": "2026-03-15T07:17:27.404014Z"
+      "created_at": "2026-03-15T07:55:38.373558Z"
     },
     {
       "id": "node-mtl-08",
@@ -79,7 +79,7 @@
       "lng": -73.54451661521951,
       "capacity": 4,
       "current_load": 1,
-      "created_at": "2026-03-15T07:17:27.404016Z"
+      "created_at": "2026-03-15T07:55:38.373561Z"
     },
     {
       "id": "node-mtl-09",
@@ -88,7 +88,7 @@
       "lng": -73.54909792631224,
       "capacity": 5,
       "current_load": 1,
-      "created_at": "2026-03-15T07:17:27.404018Z"
+      "created_at": "2026-03-15T07:55:38.373563Z"
     },
     {
       "id": "node-mtl-10",
@@ -97,7 +97,7 @@
       "lng": -73.62425273350121,
       "capacity": 6,
       "current_load": 0,
-      "created_at": "2026-03-15T07:17:27.404020Z"
+      "created_at": "2026-03-15T07:55:38.373565Z"
     },
     {
       "id": "node-mtl-11",
@@ -106,7 +106,7 @@
       "lng": -73.60206206605734,
       "capacity": 6,
       "current_load": 0,
-      "created_at": "2026-03-15T07:17:27.404022Z"
+      "created_at": "2026-03-15T07:55:38.373567Z"
     },
     {
       "id": "node-mtl-12",
@@ -115,7 +115,7 @@
       "lng": -73.60639570297536,
       "capacity": 7,
       "current_load": 0,
-      "created_at": "2026-03-15T07:17:27.404024Z"
+      "created_at": "2026-03-15T07:55:38.373569Z"
     }
   ],
   "drones": [
@@ -130,8 +130,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404028Z",
-      "updated_at": "2026-03-15T07:17:27.404029Z"
+      "created_at": "2026-03-15T07:55:38.373572Z",
+      "updated_at": "2026-03-15T07:55:38.373573Z"
     },
     {
       "id": "drone-mtl-002",
@@ -144,8 +144,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404031Z",
-      "updated_at": "2026-03-15T07:17:27.404031Z"
+      "created_at": "2026-03-15T07:55:38.373575Z",
+      "updated_at": "2026-03-15T07:55:38.373575Z"
     },
     {
       "id": "drone-mtl-003",
@@ -158,8 +158,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404033Z",
-      "updated_at": "2026-03-15T07:17:27.404033Z"
+      "created_at": "2026-03-15T07:55:38.373577Z",
+      "updated_at": "2026-03-15T07:55:38.373578Z"
     },
     {
       "id": "drone-mtl-004",
@@ -172,8 +172,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404035Z",
-      "updated_at": "2026-03-15T07:17:27.404035Z"
+      "created_at": "2026-03-15T07:55:38.373579Z",
+      "updated_at": "2026-03-15T07:55:38.373580Z"
     },
     {
       "id": "drone-mtl-005",
@@ -186,8 +186,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404037Z",
-      "updated_at": "2026-03-15T07:17:27.404037Z"
+      "created_at": "2026-03-15T07:55:38.373582Z",
+      "updated_at": "2026-03-15T07:55:38.373582Z"
     },
     {
       "id": "drone-mtl-006",
@@ -200,8 +200,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404039Z",
-      "updated_at": "2026-03-15T07:17:27.404039Z"
+      "created_at": "2026-03-15T07:55:38.373584Z",
+      "updated_at": "2026-03-15T07:55:38.373584Z"
     },
     {
       "id": "drone-mtl-007",
@@ -214,8 +214,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404041Z",
-      "updated_at": "2026-03-15T07:17:27.404041Z"
+      "created_at": "2026-03-15T07:55:38.373586Z",
+      "updated_at": "2026-03-15T07:55:38.373586Z"
     },
     {
       "id": "drone-mtl-008",
@@ -228,8 +228,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404043Z",
-      "updated_at": "2026-03-15T07:17:27.404043Z"
+      "created_at": "2026-03-15T07:55:38.373588Z",
+      "updated_at": "2026-03-15T07:55:38.373588Z"
     },
     {
       "id": "drone-mtl-009",
@@ -242,8 +242,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404045Z",
-      "updated_at": "2026-03-15T07:17:27.404045Z"
+      "created_at": "2026-03-15T07:55:38.373590Z",
+      "updated_at": "2026-03-15T07:55:38.373590Z"
     },
     {
       "id": "drone-mtl-010",
@@ -256,8 +256,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404047Z",
-      "updated_at": "2026-03-15T07:17:27.404047Z"
+      "created_at": "2026-03-15T07:55:38.373592Z",
+      "updated_at": "2026-03-15T07:55:38.373592Z"
     },
     {
       "id": "drone-mtl-011",
@@ -270,8 +270,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404049Z",
-      "updated_at": "2026-03-15T07:17:27.404049Z"
+      "created_at": "2026-03-15T07:55:38.373594Z",
+      "updated_at": "2026-03-15T07:55:38.373594Z"
     },
     {
       "id": "drone-mtl-012",
@@ -284,8 +284,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404051Z",
-      "updated_at": "2026-03-15T07:17:27.404051Z"
+      "created_at": "2026-03-15T07:55:38.373596Z",
+      "updated_at": "2026-03-15T07:55:38.373596Z"
     },
     {
       "id": "drone-mtl-013",
@@ -298,8 +298,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404053Z",
-      "updated_at": "2026-03-15T07:17:27.404054Z"
+      "created_at": "2026-03-15T07:55:38.373598Z",
+      "updated_at": "2026-03-15T07:55:38.373599Z"
     },
     {
       "id": "drone-mtl-014",
@@ -312,8 +312,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404055Z",
-      "updated_at": "2026-03-15T07:17:27.404056Z"
+      "created_at": "2026-03-15T07:55:38.373600Z",
+      "updated_at": "2026-03-15T07:55:38.373601Z"
     },
     {
       "id": "drone-mtl-015",
@@ -326,8 +326,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404057Z",
-      "updated_at": "2026-03-15T07:17:27.404058Z"
+      "created_at": "2026-03-15T07:55:38.373603Z",
+      "updated_at": "2026-03-15T07:55:38.373604Z"
     },
     {
       "id": "drone-mtl-016",
@@ -340,8 +340,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404060Z",
-      "updated_at": "2026-03-15T07:17:27.404060Z"
+      "created_at": "2026-03-15T07:55:38.373607Z",
+      "updated_at": "2026-03-15T07:55:38.373607Z"
     },
     {
       "id": "drone-mtl-017",
@@ -354,8 +354,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404064Z",
-      "updated_at": "2026-03-15T07:17:27.404064Z"
+      "created_at": "2026-03-15T07:55:38.373609Z",
+      "updated_at": "2026-03-15T07:55:38.373609Z"
     },
     {
       "id": "drone-mtl-018",
@@ -368,8 +368,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404066Z",
-      "updated_at": "2026-03-15T07:17:27.404067Z"
+      "created_at": "2026-03-15T07:55:38.373611Z",
+      "updated_at": "2026-03-15T07:55:38.373612Z"
     },
     {
       "id": "drone-mtl-019",
@@ -382,8 +382,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404069Z",
-      "updated_at": "2026-03-15T07:17:27.404069Z"
+      "created_at": "2026-03-15T07:55:38.373630Z",
+      "updated_at": "2026-03-15T07:55:38.373631Z"
     },
     {
       "id": "drone-mtl-020",
@@ -396,8 +396,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404071Z",
-      "updated_at": "2026-03-15T07:17:27.404071Z"
+      "created_at": "2026-03-15T07:55:38.373632Z",
+      "updated_at": "2026-03-15T07:55:38.373633Z"
     },
     {
       "id": "drone-mtl-021",
@@ -410,8 +410,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404075Z",
-      "updated_at": "2026-03-15T07:17:27.404075Z"
+      "created_at": "2026-03-15T07:55:38.373634Z",
+      "updated_at": "2026-03-15T07:55:38.373635Z"
     },
     {
       "id": "drone-mtl-022",
@@ -424,8 +424,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404077Z",
-      "updated_at": "2026-03-15T07:17:27.404077Z"
+      "created_at": "2026-03-15T07:55:38.373637Z",
+      "updated_at": "2026-03-15T07:55:38.373637Z"
     },
     {
       "id": "drone-mtl-023",
@@ -438,8 +438,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404079Z",
-      "updated_at": "2026-03-15T07:17:27.404079Z"
+      "created_at": "2026-03-15T07:55:38.373639Z",
+      "updated_at": "2026-03-15T07:55:38.373639Z"
     },
     {
       "id": "drone-mtl-024",
@@ -452,8 +452,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404081Z",
-      "updated_at": "2026-03-15T07:17:27.404081Z"
+      "created_at": "2026-03-15T07:55:38.373641Z",
+      "updated_at": "2026-03-15T07:55:38.373641Z"
     },
     {
       "id": "drone-mtl-025",
@@ -466,8 +466,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404083Z",
-      "updated_at": "2026-03-15T07:17:27.404083Z"
+      "created_at": "2026-03-15T07:55:38.373643Z",
+      "updated_at": "2026-03-15T07:55:38.373643Z"
     },
     {
       "id": "drone-mtl-026",
@@ -480,8 +480,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404085Z",
-      "updated_at": "2026-03-15T07:17:27.404085Z"
+      "created_at": "2026-03-15T07:55:38.373645Z",
+      "updated_at": "2026-03-15T07:55:38.373645Z"
     },
     {
       "id": "drone-mtl-027",
@@ -494,8 +494,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404087Z",
-      "updated_at": "2026-03-15T07:17:27.404087Z"
+      "created_at": "2026-03-15T07:55:38.373647Z",
+      "updated_at": "2026-03-15T07:55:38.373647Z"
     },
     {
       "id": "drone-mtl-028",
@@ -508,8 +508,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404089Z",
-      "updated_at": "2026-03-15T07:17:27.404089Z"
+      "created_at": "2026-03-15T07:55:38.373649Z",
+      "updated_at": "2026-03-15T07:55:38.373649Z"
     },
     {
       "id": "drone-mtl-029",
@@ -522,8 +522,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404091Z",
-      "updated_at": "2026-03-15T07:17:27.404091Z"
+      "created_at": "2026-03-15T07:55:38.373651Z",
+      "updated_at": "2026-03-15T07:55:38.373651Z"
     },
     {
       "id": "drone-mtl-030",
@@ -536,8 +536,8 @@
       "destination_lat": null,
       "destination_lng": null,
       "current_node_id": null,
-      "created_at": "2026-03-15T07:17:27.404093Z",
-      "updated_at": "2026-03-15T07:17:27.404093Z"
+      "created_at": "2026-03-15T07:55:38.373653Z",
+      "updated_at": "2026-03-15T07:55:38.373653Z"
     }
   ],
   "packages": [
@@ -551,7 +551,7 @@
         "lat": 45.5172022788629,
         "lng": -73.61438654211022
       },
-      "assigned_drone_id": "drone-mtl-026"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-002",
@@ -563,7 +563,7 @@
         "lat": 45.560619390701916,
         "lng": -73.61189603265369
       },
-      "assigned_drone_id": "drone-mtl-008"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-003",
@@ -575,7 +575,7 @@
         "lat": 45.46860293431438,
         "lng": -73.64193945274079
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-017"
     },
     {
       "id": "pkg-004",
@@ -599,7 +599,7 @@
         "lat": 45.473537686515336,
         "lng": -73.54390856367283
       },
-      "assigned_drone_id": "drone-mtl-024"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-006",
@@ -611,7 +611,7 @@
         "lat": 45.43072685888809,
         "lng": -73.62391109652417
       },
-      "assigned_drone_id": "drone-mtl-018"
+      "assigned_drone_id": "drone-mtl-012"
     },
     {
       "id": "pkg-007",
@@ -623,7 +623,7 @@
         "lat": 45.5854106524503,
         "lng": -73.620643674388
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-002"
     },
     {
       "id": "pkg-008",
@@ -635,7 +635,7 @@
         "lat": 45.53386896074301,
         "lng": -73.56280169999066
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-027"
     },
     {
       "id": "pkg-009",
@@ -647,7 +647,7 @@
         "lat": 45.59146293007483,
         "lng": -73.61277568275729
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-024"
     },
     {
       "id": "pkg-010",
@@ -659,7 +659,7 @@
         "lat": 45.40757736813309,
         "lng": -73.59109473730445
       },
-      "assigned_drone_id": "drone-mtl-002"
+      "assigned_drone_id": "drone-mtl-011"
     },
     {
       "id": "pkg-011",
@@ -671,7 +671,7 @@
         "lat": 45.531533919456386,
         "lng": -73.61082852298416
       },
-      "assigned_drone_id": "drone-mtl-030"
+      "assigned_drone_id": "drone-mtl-028"
     },
     {
       "id": "pkg-012",
@@ -683,7 +683,7 @@
         "lat": 45.53823391269346,
         "lng": -73.60694188696212
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-010"
     },
     {
       "id": "pkg-013",
@@ -695,7 +695,7 @@
         "lat": 45.46617992895526,
         "lng": -73.5678482461825
       },
-      "assigned_drone_id": "drone-mtl-021"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-014",
@@ -707,7 +707,7 @@
         "lat": 45.469849237736554,
         "lng": -73.63251153142127
       },
-      "assigned_drone_id": "drone-mtl-028"
+      "assigned_drone_id": "drone-mtl-021"
     },
     {
       "id": "pkg-015",
@@ -719,7 +719,7 @@
         "lat": 45.45226593184292,
         "lng": -73.53863102019542
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-019"
     },
     {
       "id": "pkg-016",
@@ -743,7 +743,7 @@
         "lat": 45.529785223218305,
         "lng": -73.52419074729514
       },
-      "assigned_drone_id": "drone-mtl-012"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-018",
@@ -755,7 +755,7 @@
         "lat": 45.54842315182278,
         "lng": -73.60909654110235
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-006"
     },
     {
       "id": "pkg-019",
@@ -767,7 +767,7 @@
         "lat": 45.45155767922129,
         "lng": -73.53150890464282
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-015"
     },
     {
       "id": "pkg-020",
@@ -791,7 +791,7 @@
         "lat": 45.460786883760434,
         "lng": -73.5691014547576
       },
-      "assigned_drone_id": "drone-mtl-017"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-022",
@@ -815,7 +815,7 @@
         "lat": 45.56971703778614,
         "lng": -73.59070506749018
       },
-      "assigned_drone_id": "drone-mtl-006"
+      "assigned_drone_id": "drone-mtl-030"
     },
     {
       "id": "pkg-024",
@@ -827,7 +827,7 @@
         "lat": 45.5206179873039,
         "lng": -73.60379936061979
       },
-      "assigned_drone_id": "drone-mtl-019"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-025",
@@ -839,7 +839,7 @@
         "lat": 45.58788876115565,
         "lng": -73.56927447665123
       },
-      "assigned_drone_id": "drone-mtl-005"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-026",
@@ -851,7 +851,7 @@
         "lat": 45.553643615425514,
         "lng": -73.62074149175767
       },
-      "assigned_drone_id": "drone-mtl-029"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-027",
@@ -863,7 +863,7 @@
         "lat": 45.45081685427816,
         "lng": -73.56228211501367
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-013"
     },
     {
       "id": "pkg-028",
@@ -887,7 +887,7 @@
         "lat": 45.440217422122366,
         "lng": -73.52155463571292
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-007"
     },
     {
       "id": "pkg-030",
@@ -899,7 +899,7 @@
         "lat": 45.52722482727924,
         "lng": -73.59346739945916
       },
-      "assigned_drone_id": "drone-mtl-020"
+      "assigned_drone_id": "drone-mtl-023"
     },
     {
       "id": "pkg-031",
@@ -911,7 +911,7 @@
         "lat": 45.47843058804342,
         "lng": -73.55198155152469
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-018"
     },
     {
       "id": "pkg-032",
@@ -923,7 +923,7 @@
         "lat": 45.44913787524488,
         "lng": -73.58741486459651
       },
-      "assigned_drone_id": "drone-mtl-016"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-033",
@@ -935,7 +935,7 @@
         "lat": 45.488725152589154,
         "lng": -73.53033833432083
       },
-      "assigned_drone_id": "drone-mtl-023"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-034",
@@ -947,7 +947,7 @@
         "lat": 45.45154958865255,
         "lng": -73.58096861450463
       },
-      "assigned_drone_id": "drone-mtl-001"
+      "assigned_drone_id": "drone-mtl-025"
     },
     {
       "id": "pkg-035",
@@ -959,7 +959,7 @@
         "lat": 45.52879238078671,
         "lng": -73.55700777758982
       },
-      "assigned_drone_id": "drone-mtl-007"
+      "assigned_drone_id": "drone-mtl-005"
     },
     {
       "id": "pkg-036",
@@ -971,7 +971,7 @@
         "lat": 45.42416393843898,
         "lng": -73.61506919587855
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-029"
     },
     {
       "id": "pkg-037",
@@ -995,7 +995,7 @@
         "lat": 45.516473321206455,
         "lng": -73.60065418416737
       },
-      "assigned_drone_id": "drone-mtl-022"
+      "assigned_drone_id": "drone-mtl-026"
     },
     {
       "id": "pkg-039",
@@ -1007,7 +1007,7 @@
         "lat": 45.56658342594183,
         "lng": -73.554581009832
       },
-      "assigned_drone_id": "drone-mtl-027"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-040",
@@ -1019,7 +1019,7 @@
         "lat": 45.56667060590727,
         "lng": -73.60417030004555
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-014"
     },
     {
       "id": "pkg-041",
@@ -1079,7 +1079,7 @@
         "lat": 45.49685576023944,
         "lng": -73.5997422365974
       },
-      "assigned_drone_id": null
+      "assigned_drone_id": "drone-mtl-020"
     },
     {
       "id": "pkg-046",
@@ -1103,7 +1103,7 @@
         "lat": 45.55868105618383,
         "lng": -73.58674923992999
       },
-      "assigned_drone_id": "drone-mtl-015"
+      "assigned_drone_id": null
     },
     {
       "id": "pkg-048",
@@ -1115,7 +1115,7 @@
         "lat": 45.46909154046101,
         "lng": -73.5165593314864
       },
-      "assigned_drone_id": "drone-mtl-025"
+      "assigned_drone_id": "drone-mtl-016"
     }
   ],
   "flight_plans": [
@@ -1129,22 +1129,166 @@
           "status": "depart"
         },
         {
+          "lat": 45.41579884932309,
+          "lng": -73.535478814037,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.416817338656834,
+          "lng": -73.55059782559438,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.41879838761057,
+          "lng": -73.56614098304236,
+          "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42174199618431,
+          "lng": -73.58210828638097,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42564816437803,
+          "lng": -73.59849973561018,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
           "lat": 45.430516892191754,
           "lng": -73.61531533072998,
-          "eta": 6,
+          "eta": 10,
           "status": "pickup"
+        },
+        {
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 14,
+          "status": "service"
+        },
+        {
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 14,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.434847158568154,
+          "lng": -73.61091153072135,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4387355597934,
+          "lng": -73.60634010613342,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44218209586751,
+          "lng": -73.60160105696622,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.445186766790485,
+          "lng": -73.59669438321976,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.447749572562316,
+          "lng": -73.59162008489399,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.449870513183,
+          "lng": -73.58637816198895,
+          "eta": 24,
+          "status": "flying"
         },
         {
           "lat": 45.45154958865255,
           "lng": -73.58096861450463,
-          "eta": 14,
+          "eta": 28,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 30,
+          "status": "service"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 30,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.453463320512974,
+          "lng": -73.57530452460622,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.454952786225334,
+          "lng": -73.56979276747904,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45601798578966,
+          "lng": -73.56443334312308,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45665891920593,
+          "lng": -73.55922625153832,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45687558647414,
+          "lng": -73.55417149272478,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4566679875943,
+          "lng": -73.54926906668246,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45603612256642,
+          "lng": -73.54451897341137,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45497999139047,
+          "lng": -73.53992121291148,
+          "eta": 42,
+          "status": "flying"
         },
         {
           "lat": 45.453499594066486,
           "lng": -73.53547578518281,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 45,
+          "status": "charging"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 52,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1159,22 +1303,148 @@
           "status": "depart"
         },
         {
-          "lat": 45.43795886909729,
-          "lng": -73.61626782519309,
-          "eta": 6,
+          "lat": 45.580409814556326,
+          "lng": -73.60807834145821,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.58025720041862,
+          "lng": -73.60598539979,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.578264023259095,
+          "lng": -73.60484468852114,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.574430283077746,
+          "lng": -73.60465620765159,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56875597987457,
+          "lng": -73.60541995718134,
+          "eta": 7,
           "status": "pickup"
         },
         {
-          "lat": 45.40757736813309,
-          "lng": -73.59109473730445,
-          "eta": 14,
+          "lat": 45.56875597987457,
+          "lng": -73.60541995718134,
+          "eta": 10,
+          "status": "service"
+        },
+        {
+          "lat": 45.56875597987457,
+          "lng": -73.60541995718134,
+          "eta": 10,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.56865242813357,
+          "lng": -73.61110406305768,
+          "eta": 12,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57026611952062,
+          "lng": -73.6154684877165,
+          "eta": 13,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57359705403577,
+          "lng": -73.61851323115783,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.578645231679,
+          "lng": -73.62023829338168,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5854106524503,
+          "lng": -73.620643674388,
+          "eta": 20,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.5854106524503,
+          "lng": -73.620643674388,
+          "eta": 23,
+          "status": "service"
+        },
+        {
+          "lat": 45.5854106524503,
+          "lng": -73.620643674388,
+          "eta": 23,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.584648585149374,
+          "lng": -73.61599139793762,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5834528414053,
+          "lng": -73.61210641361616,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.581823421218054,
+          "lng": -73.60898872142361,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57976032458764,
+          "lng": -73.60663832135994,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.577263551514065,
+          "lng": -73.6050552134252,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57433310199734,
+          "lng": -73.60423939761938,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57096897603744,
+          "lng": -73.60419087394246,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56717117363439,
+          "lng": -73.60490964239446,
+          "eta": 34,
+          "status": "flying"
         },
         {
           "lat": 45.56293969478817,
           "lng": -73.60639570297536,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 38,
+          "status": "charging"
+        },
+        {
+          "lat": 45.56293969478817,
+          "lng": -73.60639570297536,
+          "eta": 45,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1189,22 +1459,184 @@
           "status": "depart"
         },
         {
-          "lat": 45.547496330255164,
-          "lng": -73.55172595347234,
+          "lat": 45.430607009037196,
+          "lng": -73.54161271699428,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42999123935285,
+          "lng": -73.55117433366325,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43040607644521,
+          "lng": -73.56096061823185,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.431851520314254,
+          "lng": -73.57097157070002,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43432757095999,
+          "lng": -73.58120719106779,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43783422838241,
+          "lng": -73.59166747933517,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44237149258153,
+          "lng": -73.60235243550213,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 15,
           "status": "pickup"
         },
         {
-          "lat": 45.529785223218305,
-          "lng": -73.52419074729514,
-          "eta": 14,
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 19,
+          "status": "service"
+        },
+        {
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 19,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.44541278710074,
+          "lng": -73.60924672402517,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44275896730609,
+          "lng": -73.60644316779089,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.439977904173396,
+          "lng": -73.60485139086582,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43706959770262,
+          "lng": -73.60447139324994,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4340340478938,
+          "lng": -73.60530317494329,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43087125474692,
+          "lng": -73.60734673594582,
+          "eta": 28,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42758121826198,
+          "lng": -73.61060207625758,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 33,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 37,
+          "status": "service"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 37,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.42913404808733,
+          "lng": -73.60699411419175,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.433676509646574,
+          "lng": -73.59872687485178,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43779132311673,
+          "lng": -73.59026747785865,
+          "eta": 42,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44147848849777,
+          "lng": -73.5816159232123,
+          "eta": 43,
+          "status": "flying"
+        },
+        {
+          "lat": 45.444738005789716,
+          "lng": -73.57277221091276,
+          "eta": 45,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44756987499256,
+          "lng": -73.56373634096005,
+          "eta": 46,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4499740961063,
+          "lng": -73.55450831335416,
+          "eta": 48,
+          "status": "flying"
+        },
+        {
+          "lat": 45.451950669130945,
+          "lng": -73.54508812809507,
+          "eta": 49,
+          "status": "flying"
         },
         {
           "lat": 45.453499594066486,
           "lng": -73.53547578518281,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 53,
+          "status": "charging"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 60,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1219,22 +1651,172 @@
           "status": "depart"
         },
         {
-          "lat": 45.47713258179227,
-          "lng": -73.53197803080168,
-          "eta": 6,
+          "lat": 45.55116336357812,
+          "lng": -73.62007555473659,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.551497921065376,
+          "lng": -73.6166089370498,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55139901428562,
+          "lng": -73.61351188284392,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.550866643238834,
+          "lng": -73.61078439211897,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.549900807925034,
+          "lng": -73.60842646487497,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.548501508344216,
+          "lng": -73.60643810111188,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54666874449639,
+          "lng": -73.60481930082972,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54440251638153,
+          "lng": -73.6035700640285,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.460786883760434,
-          "lng": -73.5691014547576,
-          "eta": 14,
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.54239457766317,
+          "lng": -73.59665485284683,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.541844430079905,
+          "lng": -73.59241866404675,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54005238124988,
+          "lng": -73.58998182430794,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.537018431173095,
+          "lng": -73.58934433363041,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.532742579849554,
+          "lng": -73.59050619201415,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 30,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 32,
+          "status": "service"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 32,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.5279805939888,
+          "lng": -73.5968423062366,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52908548355968,
+          "lng": -73.59998861131595,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53053949599187,
+          "lng": -73.60290631469722,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53234263128536,
+          "lng": -73.6055954163804,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53449488944017,
+          "lng": -73.60805591636547,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.536996270456285,
+          "lng": -73.61028781465248,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53984677433371,
+          "lng": -73.61229111124138,
+          "eta": 42,
+          "status": "flying"
         },
         {
           "lat": 45.54304640107245,
           "lng": -73.61406580613219,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 46,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 56,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1249,22 +1831,130 @@
           "status": "depart"
         },
         {
-          "lat": 45.57907687852864,
-          "lng": -73.59093783667602,
-          "eta": 6,
+          "lat": 45.47675653493528,
+          "lng": -73.52604102128886,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48087217723622,
+          "lng": -73.53752587379543,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48795831518899,
+          "lng": -73.54831954562508,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49801494879355,
+          "lng": -73.55842203677778,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51104207804992,
+          "lng": -73.56783334725355,
+          "eta": 9,
           "status": "pickup"
         },
         {
-          "lat": 45.58788876115565,
-          "lng": -73.56927447665123,
+          "lat": 45.51104207804992,
+          "lng": -73.56783334725355,
+          "eta": 11,
+          "status": "service"
+        },
+        {
+          "lat": 45.51104207804992,
+          "lng": -73.56783334725355,
+          "eta": 11,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.5149917085292,
+          "lng": -73.56842246732745,
+          "eta": 12,
+          "status": "flying"
+        },
+        {
+          "lat": 45.518741554042506,
+          "lng": -73.56763447039802,
           "eta": 14,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52229161458986,
+          "lng": -73.56546935646526,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52564189017127,
+          "lng": -73.56192712552921,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52879238078671,
+          "lng": -73.55700777758982,
+          "eta": 20,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.52879238078671,
+          "lng": -73.55700777758982,
+          "eta": 23,
+          "status": "service"
+        },
+        {
+          "lat": 45.52879238078671,
+          "lng": -73.55700777758982,
+          "eta": 23,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.51914800004376,
+          "lng": -73.54888428839028,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.509088820507614,
+          "lng": -73.54317745071253,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49861484217827,
+          "lng": -73.53988726455657,
+          "eta": 28,
+          "status": "flying"
+        },
+        {
+          "lat": 45.487726065055746,
+          "lng": -73.53901372992243,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47642248914003,
+          "lng": -73.54055684681006,
+          "eta": 31,
+          "status": "flying"
         },
         {
           "lat": 45.464704114431115,
           "lng": -73.54451661521951,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 34,
+          "status": "charging"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 40,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1279,22 +1969,148 @@
           "status": "depart"
         },
         {
-          "lat": 45.57698783564003,
-          "lng": -73.59466769901312,
+          "lat": 45.55945131009255,
+          "lng": -73.62924646239674,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.561151942613776,
+          "lng": -73.627061257809,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.561396220514894,
+          "lng": -73.62524857733281,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56018414379592,
+          "lng": -73.62380842096817,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55751571245683,
+          "lng": -73.62274078871508,
+          "eta": 9,
           "status": "pickup"
         },
         {
-          "lat": 45.56971703778614,
-          "lng": -73.59070506749018,
-          "eta": 14,
+          "lat": 45.55751571245683,
+          "lng": -73.62274078871508,
+          "eta": 13,
+          "status": "service"
+        },
+        {
+          "lat": 45.55751571245683,
+          "lng": -73.62274078871508,
+          "eta": 13,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.55919691632142,
+          "lng": -73.61818035679846,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56020524809113,
+          "lng": -73.61438102598288,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56054070776598,
+          "lng": -73.61134279626832,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56020329534596,
+          "lng": -73.60906566765476,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55919301083106,
+          "lng": -73.60754964014224,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.557509854221294,
+          "lng": -73.60679471373074,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55515382551666,
+          "lng": -73.60680088842025,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.552124924717155,
+          "lng": -73.60756816421079,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54842315182278,
+          "lng": -73.60909654110235,
+          "eta": 30,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.54842315182278,
+          "lng": -73.60909654110235,
+          "eta": 33,
+          "status": "service"
+        },
+        {
+          "lat": 45.54842315182278,
+          "lng": -73.60909654110235,
+          "eta": 33,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.5524398671131,
+          "lng": -73.61308649724633,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55589987905478,
+          "lng": -73.61481139150561,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.558803187647854,
+          "lng": -73.61427122388022,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56114979289232,
+          "lng": -73.61146599437014,
+          "eta": 40,
+          "status": "flying"
         },
         {
           "lat": 45.56293969478817,
           "lng": -73.60639570297536,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 44,
+          "status": "charging"
+        },
+        {
+          "lat": 45.56293969478817,
+          "lng": -73.60639570297536,
+          "eta": 50,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1309,22 +2125,154 @@
           "status": "depart"
         },
         {
-          "lat": 45.51104207804992,
-          "lng": -73.56783334725355,
+          "lat": 45.432724633086266,
+          "lng": -73.51653726338641,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43245778965246,
+          "lng": -73.52249239083777,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43323850245493,
+          "lng": -73.52808534016046,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43506677149367,
+          "lng": -73.53331611135448,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43794259676869,
+          "lng": -73.53818470441983,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44186597827997,
+          "lng": -73.5426911193565,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44683691602753,
+          "lng": -73.54683535616451,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45285541001135,
+          "lng": -73.55061741484384,
+          "eta": 14,
           "status": "pickup"
         },
         {
-          "lat": 45.52879238078671,
-          "lng": -73.55700777758982,
-          "eta": 14,
+          "lat": 45.45285541001135,
+          "lng": -73.55061741484384,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.45285541001135,
+          "lng": -73.55061741484384,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.45313848377007,
+          "lng": -73.54516365017959,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.452016221860504,
+          "lng": -73.53953048993435,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44948862428271,
+          "lng": -73.53371793410815,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44555569103667,
+          "lng": -73.52772598270101,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.440217422122366,
+          "lng": -73.52155463571292,
+          "eta": 26,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.440217422122366,
+          "lng": -73.52155463571292,
+          "eta": 29,
+          "status": "service"
+        },
+        {
+          "lat": 45.440217422122366,
+          "lng": -73.52155463571292,
+          "eta": 29,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.43890724085829,
+          "lng": -73.52640796042546,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43866627106053,
+          "lng": -73.53030642211333,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43949451272907,
+          "lng": -73.53325002077653,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44139196586396,
+          "lng": -73.5352387564151,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.444358630465146,
+          "lng": -73.53627262902899,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44839450653266,
+          "lng": -73.53635163861823,
+          "eta": 38,
+          "status": "flying"
         },
         {
           "lat": 45.453499594066486,
           "lng": -73.53547578518281,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 48,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1339,22 +2287,166 @@
           "status": "depart"
         },
         {
-          "lat": 45.55065187330183,
-          "lng": -73.59775044581211,
+          "lat": 45.56947350505559,
+          "lng": -73.57402620317231,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55630401198183,
+          "lng": -73.58176378156654,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54381691863288,
+          "lng": -73.59005825298303,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.532012225008756,
+          "lng": -73.5989096174218,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52088993110944,
+          "lng": -73.60831787488281,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51045003693494,
+          "lng": -73.6182830253661,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
+          "eta": 12,
           "status": "pickup"
         },
         {
-          "lat": 45.560619390701916,
-          "lng": -73.61189603265369,
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
           "eta": 14,
+          "status": "service"
+        },
+        {
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
+          "eta": 14,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.494324196453725,
+          "lng": -73.62610886618909,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48862932042511,
+          "lng": -73.6246520922683,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48360791439939,
+          "lng": -73.62443474710929,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47925997837659,
+          "lng": -73.62545683071204,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47558551235668,
+          "lng": -73.62771834307657,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47258451633968,
+          "lng": -73.63121928420287,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.470256990325574,
+          "lng": -73.63595965409094,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 26,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 30,
+          "status": "service"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 30,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.484936851216915,
+          "lng": -73.63902715780847,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50058935604828,
+          "lng": -73.63474591566933,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5155604488085,
+          "lng": -73.62909572632338,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52985012949756,
+          "lng": -73.62207658977066,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54345839811547,
+          "lng": -73.61368850601113,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55638525466222,
+          "lng": -73.60393147504482,
+          "eta": 38,
+          "status": "flying"
         },
         {
           "lat": 45.56863069913781,
           "lng": -73.59280549687169,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 46,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1369,22 +2461,160 @@
           "status": "depart"
         },
         {
-          "lat": 45.52522641341165,
-          "lng": -73.59033772246724,
-          "eta": 6,
+          "lat": 45.55930833446052,
+          "lng": -73.5766084338872,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.539330339268304,
+          "lng": -73.58159365681911,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.519253577795425,
+          "lng": -73.58722874999864,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49907805004189,
+          "lng": -73.59351371342584,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.478803756007686,
+          "lng": -73.60044854710063,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45843069569282,
+          "lng": -73.60803325102304,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.5172022788629,
-          "lng": -73.61438654211022,
-          "eta": 14,
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 15,
+          "status": "service"
+        },
+        {
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 15,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.43571609682544,
+          "lng": -73.60898454479212,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.432345000064714,
+          "lng": -73.60293637069228,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42784557881512,
+          "lng": -73.5981233028936,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.422217833076644,
+          "lng": -73.59454534139607,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.415461762849304,
+          "lng": -73.59220248619968,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 26,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 28,
+          "status": "service"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 28,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.42917084558497,
+          "lng": -73.59573442392994,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45034666272933,
+          "lng": -73.59910958436127,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47110481956619,
+          "lng": -73.60122021859843,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.491445316095536,
+          "lng": -73.6020663266414,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51136815231737,
+          "lng": -73.60164790849024,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53087332823169,
+          "lng": -73.59996496414489,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.549960843838505,
+          "lng": -73.59701749360536,
+          "eta": 39,
+          "status": "flying"
         },
         {
           "lat": 45.56863069913781,
           "lng": -73.59280549687169,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 41,
+          "status": "charging"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 48,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1399,22 +2629,136 @@
           "status": "depart"
         },
         {
-          "lat": 45.52522641341165,
-          "lng": -73.59033772246724,
+          "lat": 45.48613758590276,
+          "lng": -73.59876611221257,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49683482773604,
+          "lng": -73.60357338148721,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50785629160123,
+          "lng": -73.60779265393957,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.519201977498355,
+          "lng": -73.61142392956963,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5308718854274,
+          "lng": -73.61446720837739,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.542866015388356,
+          "lng": -73.61692249036287,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55518436738124,
+          "lng": -73.61878977552604,
+          "eta": 9,
           "status": "pickup"
         },
         {
-          "lat": 45.5172022788629,
-          "lng": -73.61438654211022,
+          "lat": 45.55518436738124,
+          "lng": -73.61878977552604,
+          "eta": 12,
+          "status": "service"
+        },
+        {
+          "lat": 45.55518436738124,
+          "lng": -73.61878977552604,
+          "eta": 12,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.55378609349214,
+          "lng": -73.61186299097211,
+          "eta": 13,
+          "status": "flying"
+        },
+        {
+          "lat": 45.551391911078795,
+          "lng": -73.60721480983872,
           "eta": 14,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54800182014124,
+          "lng": -73.60484523212594,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54361582067946,
+          "lng": -73.60475425783375,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53823391269346,
+          "lng": -73.60694188696212,
+          "eta": 19,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.53823391269346,
+          "lng": -73.60694188696212,
+          "eta": 22,
+          "status": "service"
+        },
+        {
+          "lat": 45.53823391269346,
+          "lng": -73.60694188696212,
+          "eta": 22,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.53035489463793,
+          "lng": -73.59538491338706,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.520624528022935,
+          "lng": -73.58699444117099,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.509042812848506,
+          "lng": -73.58177047031391,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49560974911462,
+          "lng": -73.57971300081584,
+          "eta": 28,
+          "status": "flying"
         },
         {
           "lat": 45.480325336821295,
           "lng": -73.58082203267676,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 31,
+          "status": "charging"
+        },
+        {
+          "lat": 45.480325336821295,
+          "lng": -73.58082203267676,
+          "eta": 37,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1429,22 +2773,130 @@
           "status": "depart"
         },
         {
-          "lat": 45.47739878047842,
-          "lng": -73.54629123449169,
+          "lat": 45.422104825470434,
+          "lng": -73.57931869746588,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42248754982704,
+          "lng": -73.58951641897517,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42525746521706,
+          "lng": -73.5990738474328,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43041457164047,
+          "lng": -73.60799098283877,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 9,
           "status": "pickup"
         },
         {
-          "lat": 45.46909154046101,
-          "lng": -73.5165593314864,
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 13,
+          "status": "service"
+        },
+        {
+          "lat": 45.43795886909729,
+          "lng": -73.61626782519309,
+          "eta": 13,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.4368923032286,
+          "lng": -73.60864516454207,
           "eta": 14,
+          "status": "flying"
+        },
+        {
+          "lat": 45.434226930309784,
+          "lng": -73.60239336229222,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42996275034082,
+          "lng": -73.59751241844351,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42409976332172,
+          "lng": -73.594002332996,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.41663796925248,
+          "lng": -73.59186310594964,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 22,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 26,
+          "status": "service"
+        },
+        {
+          "lat": 45.40757736813309,
+          "lng": -73.59109473730445,
+          "eta": 26,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.40847119526348,
+          "lng": -73.59657645307642,
+          "eta": 28,
+          "status": "flying"
+        },
+        {
+          "lat": 45.411388113780866,
+          "lng": -73.60115987920814,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.41632812368526,
+          "lng": -73.60484501569962,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42329122497668,
+          "lng": -73.60763186255089,
+          "eta": 32,
+          "status": "flying"
         },
         {
           "lat": 45.4322774176551,
           "lng": -73.6095204197619,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 34,
+          "status": "charging"
+        },
+        {
+          "lat": 45.4322774176551,
+          "lng": -73.6095204197619,
+          "eta": 42,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1459,22 +2911,190 @@
           "status": "depart"
         },
         {
-          "lat": 45.547496330255164,
-          "lng": -73.55172595347234,
+          "lat": 45.52003497656911,
+          "lng": -73.49762157434556,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.507799495251845,
+          "lng": -73.50889478237289,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49615663206458,
+          "lng": -73.52085946204956,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48510638700729,
+          "lng": -73.53351561337553,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.474648760079994,
+          "lng": -73.54686323635084,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46478375128268,
+          "lng": -73.5609023309755,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45551136061535,
+          "lng": -73.57563289724946,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44683158807801,
+          "lng": -73.59105493517278,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43874443367065,
+          "lng": -73.60716844474541,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.529785223218305,
-          "lng": -73.52419074729514,
-          "eta": 14,
+          "lat": 45.43874443367065,
+          "lng": -73.60716844474541,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.43874443367065,
+          "lng": -73.60716844474541,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.435555490942875,
+          "lng": -73.60740360207816,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43294107348642,
+          "lng": -73.60804504373826,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.430901181301294,
+          "lng": -73.60909276972569,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42943581438745,
+          "lng": -73.61054678004044,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42854497274495,
+          "lng": -73.61240707468251,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42822865637376,
+          "lng": -73.61467365365193,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42848686527388,
+          "lng": -73.61734651694869,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.429319599445336,
+          "lng": -73.62042566457276,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43072685888809,
+          "lng": -73.62391109652417,
+          "eta": 29,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.43072685888809,
+          "lng": -73.62391109652417,
+          "eta": 32,
+          "status": "service"
+        },
+        {
+          "lat": 45.43072685888809,
+          "lng": -73.62391109652417,
+          "eta": 32,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.446333069328176,
+          "lng": -73.61633870731183,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46157591507062,
+          "lng": -73.6082579589383,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.476455396115426,
+          "lng": -73.59966885140358,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49097151246258,
+          "lng": -73.59057138470769,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5051242641121,
+          "lng": -73.58096555885061,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.518913651063976,
+          "lng": -73.57085137383234,
+          "eta": 41,
+          "status": "flying"
+        },
+        {
+          "lat": 45.532339673318205,
+          "lng": -73.56022882965289,
+          "eta": 42,
+          "status": "flying"
         },
         {
           "lat": 45.54540233087481,
           "lng": -73.54909792631224,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 46,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54540233087481,
+          "lng": -73.54909792631224,
+          "eta": 56,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1489,22 +3109,172 @@
           "status": "depart"
         },
         {
-          "lat": 45.52522641341165,
-          "lng": -73.59033772246724,
+          "lat": 45.42309343719348,
+          "lng": -73.55487218545066,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4318229949524,
+          "lng": -73.56131793188642,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44061780690484,
+          "lng": -73.56724960288848,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44947787305079,
+          "lng": -73.57266719845687,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45840319339026,
+          "lng": -73.57757071859157,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46739376792324,
+          "lng": -73.58196016329259,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47644959664974,
+          "lng": -73.58583553255995,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48557067956977,
+          "lng": -73.58919682639365,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4947570166833,
+          "lng": -73.59204404479365,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.5172022788629,
-          "lng": -73.61438654211022,
-          "eta": 14,
+          "lat": 45.4947570166833,
+          "lng": -73.59204404479365,
+          "eta": 15,
+          "status": "service"
+        },
+        {
+          "lat": 45.4947570166833,
+          "lng": -73.59204404479365,
+          "eta": 15,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.49110953329835,
+          "lng": -73.58568907611571,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48599169910703,
+          "lng": -73.57989196625697,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47940351410935,
+          "lng": -73.57465271521737,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47134497830531,
+          "lng": -73.56997132299696,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.461816091694914,
+          "lng": -73.56584778959574,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45081685427816,
+          "lng": -73.56228211501367,
+          "eta": 25,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.45081685427816,
+          "lng": -73.56228211501367,
+          "eta": 28,
+          "status": "service"
+        },
+        {
+          "lat": 45.45081685427816,
+          "lng": -73.56228211501367,
+          "eta": 28,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.45308532879564,
+          "lng": -73.55812593052755,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45480147987199,
+          "lng": -73.55419985840065,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45596530750721,
+          "lng": -73.55050389863297,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.456576811701325,
+          "lng": -73.5470380512245,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4566359924543,
+          "lng": -73.54380231617525,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45614284976615,
+          "lng": -73.54079669348522,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45509738363688,
+          "lng": -73.5380211831544,
+          "eta": 37,
+          "status": "flying"
         },
         {
           "lat": 45.453499594066486,
           "lng": -73.53547578518281,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 47,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1519,22 +3289,172 @@
           "status": "depart"
         },
         {
-          "lat": 45.55609425959899,
-          "lng": -73.59661695528182,
+          "lat": 45.55609945279605,
+          "lng": -73.5710232943899,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54900047878267,
+          "lng": -73.57529552427924,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.543130763197524,
+          "lng": -73.58005497269168,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.538490306040615,
+          "lng": -73.58530163962726,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53507910731192,
+          "lng": -73.59103552508591,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53289716701145,
+          "lng": -73.59725662906769,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.531944485139206,
+          "lng": -73.60396495157254,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.55868105618383,
-          "lng": -73.58674923992999,
-          "eta": 14,
+          "lat": 45.531944485139206,
+          "lng": -73.60396495157254,
+          "eta": 16,
+          "status": "service"
+        },
+        {
+          "lat": 45.531944485139206,
+          "lng": -73.60396495157254,
+          "eta": 16,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.53673792636037,
+          "lng": -73.60866362357552,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54158717863961,
+          "lng": -73.61180585007622,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.546492241976935,
+          "lng": -73.61339163107463,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.551453116372386,
+          "lng": -73.61342096657079,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55646980182592,
+          "lng": -73.61189385656465,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56154229833754,
+          "lng": -73.60881030105625,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56667060590727,
+          "lng": -73.60417030004555,
+          "eta": 28,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.56667060590727,
+          "lng": -73.60417030004555,
+          "eta": 32,
+          "status": "service"
+        },
+        {
+          "lat": 45.56667060590727,
+          "lng": -73.60417030004555,
+          "eta": 32,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.56933789563924,
+          "lng": -73.60395030720889,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.571392809972394,
+          "lng": -73.60346962360433,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57283534890674,
+          "lng": -73.60272824923192,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.573665512442275,
+          "lng": -73.60172618409158,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.573883300579006,
+          "lng": -73.60046342818336,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57348871331692,
+          "lng": -73.59893998150727,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.572481750656024,
+          "lng": -73.5971558440633,
+          "eta": 41,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57086241259633,
+          "lng": -73.59511101585144,
+          "eta": 43,
+          "status": "flying"
         },
         {
           "lat": 45.56863069913781,
           "lng": -73.59280549687169,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 46,
+          "status": "charging"
+        },
+        {
+          "lat": 45.56863069913781,
+          "lng": -73.59280549687169,
+          "eta": 56,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1549,22 +3469,166 @@
           "status": "depart"
         },
         {
-          "lat": 45.55609425959899,
-          "lng": -73.59661695528182,
+          "lat": 45.494477363509226,
+          "lng": -73.51289684805324,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48948918948422,
+          "lng": -73.51467944428826,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48492397409635,
+          "lng": -73.51687850946468,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48078171734559,
+          "lng": -73.5194940435825,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47706241923197,
+          "lng": -73.52252604664172,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47376607975548,
+          "lng": -73.52597451864233,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47089269891612,
+          "lng": -73.52983945958435,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46844227671389,
+          "lng": -73.53412086946777,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46641481314878,
+          "lng": -73.53881874829258,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.55868105618383,
-          "lng": -73.58674923992999,
-          "eta": 14,
+          "lat": 45.46641481314878,
+          "lng": -73.53881874829258,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.46641481314878,
+          "lng": -73.53881874829258,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.46543925678444,
+          "lng": -73.53312153771327,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.464081403306885,
+          "lng": -73.52897530953419,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46234125271615,
+          "lng": -73.52638006375537,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.460218805012225,
+          "lng": -73.52533580037684,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45771406019511,
+          "lng": -73.52584251939857,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.454827018264794,
+          "lng": -73.52790022082056,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45155767922129,
+          "lng": -73.53150890464282,
+          "eta": 30,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.45155767922129,
+          "lng": -73.53150890464282,
+          "eta": 32,
+          "status": "service"
+        },
+        {
+          "lat": 45.45155767922129,
+          "lng": -73.53150890464282,
+          "eta": 32,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.450030288537064,
+          "lng": -73.53672063963289,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.449990283140515,
+          "lng": -73.54071486133202,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45143766303164,
+          "lng": -73.54349156974024,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.454372428210455,
+          "lng": -73.54505076485759,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.458794578676944,
+          "lng": -73.54539244668399,
+          "eta": 39,
+          "status": "flying"
         },
         {
           "lat": 45.464704114431115,
           "lng": -73.54451661521951,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 43,
+          "status": "charging"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 51,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1579,22 +3643,166 @@
           "status": "depart"
         },
         {
-          "lat": 45.43756559747081,
-          "lng": -73.60929724150196,
+          "lat": 45.51776415319682,
+          "lng": -73.61392884194883,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51453235215991,
+          "lng": -73.60303673111434,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51045565752966,
+          "lng": -73.59255448544101,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50553406930607,
+          "lng": -73.58248210492883,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49976758748916,
+          "lng": -73.57281958957782,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.493156212078915,
+          "lng": -73.56356693938795,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48569994307533,
+          "lng": -73.55472415435923,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47739878047842,
+          "lng": -73.54629123449169,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.44913787524488,
-          "lng": -73.58741486459651,
-          "eta": 14,
+          "lat": 45.47739878047842,
+          "lng": -73.54629123449169,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.47739878047842,
+          "lng": -73.54629123449169,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.47963212967036,
+          "lng": -73.53963627916363,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48041832318436,
+          "lng": -73.53366117909978,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47975736102042,
+          "lng": -73.52836593430013,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.477649243178554,
+          "lng": -73.52375054476468,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.474093969658746,
+          "lng": -73.51981501049345,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46909154046101,
+          "lng": -73.5165593314864,
+          "eta": 28,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.46909154046101,
+          "lng": -73.5165593314864,
+          "eta": 31,
+          "status": "service"
+        },
+        {
+          "lat": 45.46909154046101,
+          "lng": -73.5165593314864,
+          "eta": 31,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.4725477041795,
+          "lng": -73.52780287931725,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47686515609612,
+          "lng": -73.53888765400254,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48204389621085,
+          "lng": -73.54981365554224,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48808392452373,
+          "lng": -73.5605808839364,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49498524103472,
+          "lng": -73.57118933918498,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50274784574384,
+          "lng": -73.581639021288,
+          "eta": 41,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51137173865109,
+          "lng": -73.59192993024544,
+          "eta": 43,
+          "status": "flying"
         },
         {
           "lat": 45.520856919756476,
           "lng": -73.60206206605734,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 46,
+          "status": "charging"
+        },
+        {
+          "lat": 45.520856919756476,
+          "lng": -73.60206206605734,
+          "eta": 56,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1609,22 +3817,196 @@
           "status": "depart"
         },
         {
-          "lat": 45.47713258179227,
-          "lng": -73.53197803080168,
+          "lat": 45.504941246728684,
+          "lng": -73.55179114980402,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50111961947046,
+          "lng": -73.56095039299274,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49823814627731,
+          "lng": -73.57024320666568,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49629682714924,
+          "lng": -73.57966959082282,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.495295662086264,
+          "lng": -73.58922954546416,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49523465108838,
+          "lng": -73.59892307058972,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.496113794155576,
+          "lng": -73.60875016619948,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49793309128787,
+          "lng": -73.61871083229346,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.460786883760434,
-          "lng": -73.5691014547576,
-          "eta": 14,
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.50069254248525,
+          "lng": -73.62880506887164,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.495340646357576,
+          "lng": -73.62792087574017,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49043534625707,
+          "lng": -73.62762257488797,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48597664218375,
+          "lng": -73.62791016631498,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48196453413759,
+          "lng": -73.6287836500212,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47839902211861,
+          "lng": -73.63024302600665,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.475280106126796,
+          "lng": -73.63228829427135,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47260778616215,
+          "lng": -73.63491945481526,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47038206222469,
+          "lng": -73.63813650763841,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 31,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 35,
+          "status": "service"
+        },
+        {
+          "lat": 45.46860293431438,
+          "lng": -73.64193945274079,
+          "eta": 35,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.475640558816835,
+          "lng": -73.63538977431791,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48207790590932,
+          "lng": -73.62872175433603,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48791497559184,
+          "lng": -73.62193539279508,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.493151767864376,
+          "lng": -73.61503068969506,
+          "eta": 42,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49778828272695,
+          "lng": -73.60800764503603,
+          "eta": 43,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50182452017954,
+          "lng": -73.60086625881792,
+          "eta": 45,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50526048022216,
+          "lng": -73.59360653104079,
+          "eta": 47,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50809616285482,
+          "lng": -73.5862284617046,
+          "eta": 48,
+          "status": "flying"
         },
         {
           "lat": 45.5103315680775,
           "lng": -73.57873205080935,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 52,
+          "status": "charging"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 60,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1639,22 +4021,154 @@
           "status": "depart"
         },
         {
-          "lat": 45.43874443367065,
-          "lng": -73.60716844474541,
+          "lat": 45.52111561608415,
+          "lng": -73.63640937093923,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51995300934818,
+          "lng": -73.62944220433133,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51783815267834,
+          "lng": -73.62254894251753,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.514771046074614,
+          "lng": -73.61572958549777,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.510751689537024,
+          "lng": -73.60898413327209,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50578008306556,
+          "lng": -73.60231258584048,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49985622666022,
+          "lng": -73.59571494320294,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49298012032101,
+          "lng": -73.58919120535947,
+          "eta": 14,
           "status": "pickup"
         },
         {
-          "lat": 45.43072685888809,
-          "lng": -73.62391109652417,
-          "eta": 14,
+          "lat": 45.49298012032101,
+          "lng": -73.58919120535947,
+          "eta": 16,
+          "status": "service"
+        },
+        {
+          "lat": 45.49298012032101,
+          "lng": -73.58919120535947,
+          "eta": 16,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.49271040709911,
+          "lng": -73.58309970689653,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49183776341414,
+          "lng": -73.57726681964337,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49036218926611,
+          "lng": -73.57169254360002,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48828368465503,
+          "lng": -73.56637687876648,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.485602249580886,
+          "lng": -73.56131982514275,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48231788404368,
+          "lng": -73.55652138272882,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47843058804342,
+          "lng": -73.55198155152469,
+          "eta": 29,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.47843058804342,
+          "lng": -73.55198155152469,
+          "eta": 33,
+          "status": "service"
+        },
+        {
+          "lat": 45.47843058804342,
+          "lng": -73.55198155152469,
+          "eta": 33,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.48259077327718,
+          "lng": -73.56541950669842,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.488913499065355,
+          "lng": -73.57714653573854,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.497398765407965,
+          "lng": -73.58716263864505,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.508046572305005,
+          "lng": -73.595467815418,
+          "eta": 39,
+          "status": "flying"
         },
         {
           "lat": 45.520856919756476,
           "lng": -73.60206206605734,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 41,
+          "status": "charging"
+        },
+        {
+          "lat": 45.520856919756476,
+          "lng": -73.60206206605734,
+          "eta": 51,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1669,22 +4183,178 @@
           "status": "depart"
         },
         {
-          "lat": 45.51421228934711,
-          "lng": -73.57294178887513,
+          "lat": 45.523401513439914,
+          "lng": -73.50900783651474,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.515003369156,
+          "lng": -73.50965459949984,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50651091425138,
+          "lng": -73.51085611004548,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49792414872604,
+          "lng": -73.51261236815162,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.489243072579995,
+          "lng": -73.5149233738183,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48046768581324,
+          "lng": -73.51778912704549,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.471597988425756,
+          "lng": -73.5212096278332,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46263398041758,
+          "lng": -73.52518487618144,
+          "eta": 12,
           "status": "pickup"
         },
         {
-          "lat": 45.5206179873039,
-          "lng": -73.60379936061979,
-          "eta": 14,
+          "lat": 45.46263398041758,
+          "lng": -73.52518487618144,
+          "eta": 15,
+          "status": "service"
+        },
+        {
+          "lat": 45.46263398041758,
+          "lng": -73.52518487618144,
+          "eta": 15,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.45813834811334,
+          "lng": -73.52401851396901,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45447862253586,
+          "lng": -73.5235172463101,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45165480368516,
+          "lng": -73.52368107320467,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44966689156121,
+          "lng": -73.52450999465273,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44851488616402,
+          "lng": -73.52600401065429,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4481987874936,
+          "lng": -73.52816312120933,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44871859554994,
+          "lng": -73.53098732631787,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45007431033306,
+          "lng": -73.5344766259799,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45226593184292,
+          "lng": -73.53863102019542,
+          "eta": 29,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.45226593184292,
+          "lng": -73.53863102019542,
+          "eta": 33,
+          "status": "service"
+        },
+        {
+          "lat": 45.45226593184292,
+          "lng": -73.53863102019542,
+          "eta": 33,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.466372400398846,
+          "lng": -73.54226811026558,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48021177939002,
+          "lng": -73.54519126107981,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49378406881645,
+          "lng": -73.54740047263812,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50708926867815,
+          "lng": -73.54889574494052,
+          "eta": 39,
+          "status": "flying"
+        },
+        {
+          "lat": 45.520127378975104,
+          "lng": -73.54967707798701,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53289839970733,
+          "lng": -73.54974447177759,
+          "eta": 41,
+          "status": "flying"
         },
         {
           "lat": 45.54540233087481,
           "lng": -73.54909792631224,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 44,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54540233087481,
+          "lng": -73.54909792631224,
+          "eta": 54,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1699,25 +4369,181 @@
           "status": "depart"
         },
         {
-          "lat": 45.54170282399966,
-          "lng": -73.60269039070819,
-          "eta": 6,
+          "lat": 45.54118647700687,
+          "lng": -73.63575825967403,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.541820626422805,
+          "lng": -73.62383361387997,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54074248791578,
+          "lng": -73.6122594603241,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53795206148579,
+          "lng": -73.60103579900643,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.533449347132816,
+          "lng": -73.59016262992695,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52723434485687,
+          "lng": -73.57963995308567,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51930705465795,
+          "lng": -73.56946776848258,
+          "eta": 14,
           "status": "pickup"
         },
         {
-          "lat": 45.52722482727924,
-          "lng": -73.59346739945916,
-          "eta": 14,
+          "lat": 45.51930705465795,
+          "lng": -73.56946776848258,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.51930705465795,
+          "lng": -73.56946776848258,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.50715414361041,
+          "lng": -73.57033520782524,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49546133788355,
+          "lng": -73.57319596279515,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4842286374774,
+          "lng": -73.57805003339236,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47345604239196,
+          "lng": -73.58489741961685,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.463143552627216,
+          "lng": -73.59373812146862,
+          "eta": 27,
+          "status": "reroute"
+        },
+        {
+          "lat": 45.463143552627216,
+          "lng": -73.59373812146862,
+          "eta": 27,
+          "status": "reroute"
+        },
+        {
+          "lat": 45.46899251280945,
+          "lng": -73.60199813920168,
+          "eta": 28,
+          "status": "flying"
+        },
+        {
+          "lat": 45.475288213661784,
+          "lng": -73.60672855958109,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.482030655184225,
+          "lng": -73.60792938260684,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48921983737678,
+          "lng": -73.60560060827895,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49685576023944,
+          "lng": -73.5997422365974,
+          "eta": 36,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.49685576023944,
+          "lng": -73.5997422365974,
+          "eta": 40,
+          "status": "service"
+        },
+        {
+          "lat": 45.49685576023944,
+          "lng": -73.5997422365974,
+          "eta": 40,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.505351517473095,
+          "lng": -73.60672658008839,
+          "eta": 41,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51352834786883,
+          "lng": -73.61187209081865,
+          "eta": 43,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52138625142662,
+          "lng": -73.61517876878814,
+          "eta": 45,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52892522814649,
+          "lng": -73.6166466139969,
+          "eta": 46,
+          "status": "flying"
+        },
+        {
+          "lat": 45.536145278028435,
+          "lng": -73.61627562644492,
+          "eta": 47,
+          "status": "flying"
         },
         {
           "lat": 45.54304640107245,
           "lng": -73.61406580613219,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 50,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 57,
+          "status": "charging"
         }
       ],
-      "rerouted": false
+      "rerouted": true
     },
     {
       "drone_id": "drone-mtl-021",
@@ -1729,22 +4555,160 @@
           "status": "depart"
         },
         {
-          "lat": 45.46702604194127,
-          "lng": -73.55929914085175,
+          "lat": 45.539578442816214,
+          "lng": -73.64026902318975,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53256124737232,
+          "lng": -73.62924396551489,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.524241304269694,
+          "lng": -73.6208336104335,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51461861350832,
+          "lng": -73.61503795794559,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5036931750882,
+          "lng": -73.61185700805113,
+          "eta": 10,
           "status": "pickup"
         },
         {
-          "lat": 45.46617992895526,
-          "lng": -73.5678482461825,
+          "lat": 45.5036931750882,
+          "lng": -73.61185700805113,
+          "eta": 13,
+          "status": "service"
+        },
+        {
+          "lat": 45.5036931750882,
+          "lng": -73.61185700805113,
+          "eta": 13,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.49778532791745,
+          "lng": -73.61128637799766,
           "eta": 14,
+          "status": "flying"
+        },
+        {
+          "lat": 45.492414333168504,
+          "lng": -73.61143214221786,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48758019084138,
+          "lng": -73.61229430071171,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48328290093605,
+          "lng": -73.61387285347918,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.479522463452525,
+          "lng": -73.61616780052032,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47629887839082,
+          "lng": -73.61917914183508,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47361214575092,
+          "lng": -73.6229068774235,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.471462265532836,
+          "lng": -73.62735100728557,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.469849237736554,
+          "lng": -73.63251153142127,
+          "eta": 29,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.469849237736554,
+          "lng": -73.63251153142127,
+          "eta": 31,
+          "status": "service"
+        },
+        {
+          "lat": 45.469849237736554,
+          "lng": -73.63251153142127,
+          "eta": 31,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.48124997402746,
+          "lng": -73.63181892230158,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49233604409453,
+          "lng": -73.63047881501751,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.503107447937765,
+          "lng": -73.6284912095691,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.513564185557186,
+          "lng": -73.62585610595639,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52370625695277,
+          "lng": -73.62257350417933,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.533533662124526,
+          "lng": -73.61864340423793,
+          "eta": 38,
+          "status": "flying"
         },
         {
           "lat": 45.54304640107245,
           "lng": -73.61406580613219,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 46,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1759,31 +4723,151 @@
           "status": "depart"
         },
         {
-          "lat": 45.524465692544396,
-          "lng": -73.5844547365981,
+          "lat": 45.525867925046064,
+          "lng": -73.63690743520252,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51553980352707,
+          "lng": -73.6317230948366,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50494350530066,
+          "lng": -73.62714089765774,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49407903036683,
+          "lng": -73.62316084366589,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48294637872558,
+          "lng": -73.61978293286104,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.471545550376916,
+          "lng": -73.61700716524322,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45987654532083,
+          "lng": -73.61483354081244,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.54677959706762,
-          "lng": -73.50250165428623,
-          "eta": 10,
-          "status": "reroute"
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 15,
+          "status": "service"
         },
         {
-          "lat": 45.516473321206455,
-          "lng": -73.60065418416737,
-          "eta": 14,
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 15,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.44366608373621,
+          "lng": -73.61106748170323,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4391519013138,
+          "lng": -73.6101509064015,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.434396816290125,
+          "lng": -73.61051233366348,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.429400828665194,
+          "lng": -73.61215176348915,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 24,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 28,
+          "status": "service"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 28,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.445703048608785,
+          "lng": -73.62031503242787,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.466552012219566,
+          "lng": -73.62339564170767,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48671082927132,
+          "lng": -73.62431102371802,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.506179499764045,
+          "lng": -73.6230611784589,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.524958023697764,
+          "lng": -73.61964610593029,
+          "eta": 37,
+          "status": "flying"
         },
         {
           "lat": 45.54304640107245,
           "lng": -73.61406580613219,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 41,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 49,
+          "status": "charging"
         }
       ],
-      "rerouted": true
+      "rerouted": false
     },
     {
       "drone_id": "drone-mtl-023",
@@ -1795,22 +4879,172 @@
           "status": "depart"
         },
         {
-          "lat": 45.45735439626261,
-          "lng": -73.547459732817,
+          "lat": 45.50741214603925,
+          "lng": -73.59519217839285,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51179008414951,
+          "lng": -73.5983533703536,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51670289221302,
+          "lng": -73.60074996635107,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5221505702298,
+          "lng": -73.60238196638528,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52813311819983,
+          "lng": -73.60324937045621,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53465053612312,
+          "lng": -73.60335217856384,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.488725152589154,
-          "lng": -73.53033833432083,
-          "eta": 14,
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 16,
+          "status": "service"
+        },
+        {
+          "lat": 45.54170282399966,
+          "lng": -73.60269039070819,
+          "eta": 16,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.54219894475627,
+          "lng": -73.59816968002352,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.542036245413854,
+          "lng": -73.59461120841841,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.541214725972374,
+          "lng": -73.59201497589291,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53973438643185,
+          "lng": -73.59038098244699,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53759522679228,
+          "lng": -73.58970922808065,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.534797247053646,
+          "lng": -73.58999971279391,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53134044721597,
+          "lng": -73.59125243658674,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 31,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 35,
+          "status": "service"
+        },
+        {
+          "lat": 45.52722482727924,
+          "lng": -73.59346739945916,
+          "eta": 35,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.52820078575086,
+          "lng": -73.5906669138021,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.528294568259106,
+          "lng": -73.5881403044524,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52750617480396,
+          "lng": -73.5858875714101,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52583560538543,
+          "lng": -73.58390871467518,
+          "eta": 42,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52328286000352,
+          "lng": -73.58220373424764,
+          "eta": 44,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51984793865823,
+          "lng": -73.58077263012748,
+          "eta": 46,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51553084134956,
+          "lng": -73.57961540231473,
+          "eta": 47,
+          "status": "flying"
         },
         {
           "lat": 45.5103315680775,
           "lng": -73.57873205080935,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 51,
+          "status": "charging"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 59,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1825,22 +5059,142 @@
           "status": "depart"
         },
         {
-          "lat": 45.47625765918468,
-          "lng": -73.5531332135618,
+          "lat": 45.5187890398892,
+          "lng": -73.56527528664596,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52847544698264,
+          "lng": -73.5823735444987,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54051518664819,
+          "lng": -73.59703345265112,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55490825888586,
+          "lng": -73.6092550111032,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.571654663695604,
+          "lng": -73.61903821985497,
+          "eta": 11,
           "status": "pickup"
         },
         {
-          "lat": 45.473537686515336,
-          "lng": -73.54390856367283,
-          "eta": 14,
+          "lat": 45.571654663695604,
+          "lng": -73.61903821985497,
+          "eta": 13,
+          "status": "service"
+        },
+        {
+          "lat": 45.571654663695604,
+          "lng": -73.61903821985497,
+          "eta": 13,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.57708141147904,
+          "lng": -73.62181838410854,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.581642494114625,
+          "lng": -73.62337361089196,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.58533791160235,
+          "lng": -73.62370390020526,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.58816766394225,
+          "lng": -73.62280925204846,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.590131751134294,
+          "lng": -73.62068966642153,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.59123017317849,
+          "lng": -73.61734514332446,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.59146293007483,
+          "lng": -73.61277568275729,
+          "eta": 25,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.59146293007483,
+          "lng": -73.61277568275729,
+          "eta": 28,
+          "status": "service"
+        },
+        {
+          "lat": 45.59146293007483,
+          "lng": -73.61277568275729,
+          "eta": 28,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.57838292480565,
+          "lng": -73.60264880017074,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56512616417764,
+          "lng": -73.5943030951556,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55169264819082,
+          "lng": -73.58773856771188,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.538082376845196,
+          "lng": -73.58295521783961,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52429535014075,
+          "lng": -73.57995304553876,
+          "eta": 37,
+          "status": "flying"
         },
         {
           "lat": 45.5103315680775,
           "lng": -73.57873205080935,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.5103315680775,
+          "lng": -73.57873205080935,
+          "eta": 50,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1855,22 +5209,142 @@
           "status": "depart"
         },
         {
-          "lat": 45.47739878047842,
-          "lng": -73.54629123449169,
-          "eta": 6,
+          "lat": 45.524671365117705,
+          "lng": -73.64512563478317,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.510749281634055,
+          "lng": -73.63915538261288,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49698434631514,
+          "lng": -73.63375567621111,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48337655916097,
+          "lng": -73.62892651557785,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46992592017155,
+          "lng": -73.6246679007131,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.456632429346875,
+          "lng": -73.62097983161689,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.443496086686935,
+          "lng": -73.61786230828918,
+          "eta": 12,
+          "status": "flying"
+        },
+        {
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 15,
           "status": "pickup"
         },
         {
-          "lat": 45.46909154046101,
-          "lng": -73.5165593314864,
-          "eta": 14,
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 18,
+          "status": "service"
+        },
+        {
+          "lat": 45.430516892191754,
+          "lng": -73.61531533072998,
+          "eta": 18,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.440007946572905,
+          "lng": -73.61139551287005,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.446856743409555,
+          "lng": -73.60600093231753,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45106328270171,
+          "lng": -73.59913158907246,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45262756444938,
+          "lng": -73.59078748313482,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 26,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 28,
+          "status": "service"
+        },
+        {
+          "lat": 45.45154958865255,
+          "lng": -73.58096861450463,
+          "eta": 28,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.46984639806207,
+          "lng": -73.59054709240193,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48814448400881,
+          "lng": -73.59864605051331,
+          "eta": 31,
+          "status": "flying"
+        },
+        {
+          "lat": 45.506443846492786,
+          "lng": -73.60526548883882,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.524744485514006,
+          "lng": -73.61040540737845,
+          "eta": 34,
+          "status": "flying"
         },
         {
           "lat": 45.54304640107245,
           "lng": -73.61406580613219,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 38,
+          "status": "charging"
+        },
+        {
+          "lat": 45.54304640107245,
+          "lng": -73.61406580613219,
+          "eta": 44,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1885,25 +5359,211 @@
           "status": "depart"
         },
         {
-          "lat": 45.52522641341165,
-          "lng": -73.59033772246724,
+          "lat": 45.493021859831714,
+          "lng": -73.53092285005363,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.496161549003695,
+          "lng": -73.53908251113737,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49975200048562,
+          "lng": -73.5470714226477,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50379321427749,
+          "lng": -73.55488958458461,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.508285190379304,
+          "lng": -73.56253699694813,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51322792879105,
+          "lng": -73.5700136597382,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.518621429512756,
+          "lng": -73.57731957295486,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.524465692544396,
+          "lng": -73.5844547365981,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.5172022788629,
-          "lng": -73.61438654211022,
-          "eta": 14,
+          "lat": 45.524465692544396,
+          "lng": -73.5844547365981,
+          "eta": 17,
+          "status": "service"
+        },
+        {
+          "lat": 45.524465692544396,
+          "lng": -73.5844547365981,
+          "eta": 17,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.52772079447126,
+          "lng": -73.59218731949343,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53165207908806,
+          "lng": -73.59969872203254,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.536259546394824,
+          "lng": -73.60698894421546,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54154319639153,
+          "lng": -73.61405798604217,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.547503029078186,
+          "lng": -73.62090584751266,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.554139044454786,
+          "lng": -73.62753252862696,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56145124252134,
+          "lng": -73.63393802938504,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.569439623277844,
+          "lng": -73.64012234978692,
+          "eta": 31,
+          "status": "reroute"
+        },
+        {
+          "lat": 45.569439623277844,
+          "lng": -73.64012234978692,
+          "eta": 31,
+          "status": "reroute"
+        },
+        {
+          "lat": 45.56361072134845,
+          "lng": -73.6283828126805,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55658229338605,
+          "lng": -73.61870787937535,
+          "eta": 34,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54835433939065,
+          "lng": -73.61109754987145,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53892685936225,
+          "lng": -73.60555182416883,
+          "eta": 37,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52829985330085,
+          "lng": -73.60207070226747,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.516473321206455,
+          "lng": -73.60065418416737,
+          "eta": 40,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.516473321206455,
+          "lng": -73.60065418416737,
+          "eta": 43,
+          "status": "service"
+        },
+        {
+          "lat": 45.516473321206455,
+          "lng": -73.60065418416737,
+          "eta": 43,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.51165912105881,
+          "lng": -73.58955325784581,
+          "eta": 45,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50531932051854,
+          "lng": -73.57915019745633,
+          "eta": 46,
+          "status": "flying"
+        },
+        {
+          "lat": 45.497453919585624,
+          "lng": -73.56944500299896,
+          "eta": 48,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48806291826009,
+          "lng": -73.56043767447372,
+          "eta": 49,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47714631654192,
+          "lng": -73.55212821188056,
+          "eta": 50,
+          "status": "flying"
         },
         {
           "lat": 45.464704114431115,
           "lng": -73.54451661521951,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 53,
+          "status": "charging"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 62,
+          "status": "charging"
         }
       ],
-      "rerouted": false
+      "rerouted": true
     },
     {
       "drone_id": "drone-mtl-027",
@@ -1915,22 +5575,142 @@
           "status": "depart"
         },
         {
-          "lat": 45.55038777453703,
-          "lng": -73.5545541159598,
+          "lat": 45.479064317961516,
+          "lng": -73.52492808094749,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48910013892884,
+          "lng": -73.53188613525451,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50001505754949,
+          "lng": -73.53726636791376,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51180907382346,
+          "lng": -73.54106877892528,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52448218775074,
+          "lng": -73.54329336828903,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.538034399331345,
+          "lng": -73.54394013600503,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.552465708565265,
+          "lng": -73.54300908207327,
+          "eta": 11,
           "status": "pickup"
         },
         {
-          "lat": 45.56658342594183,
-          "lng": -73.554581009832,
+          "lat": 45.552465708565265,
+          "lng": -73.54300908207327,
           "eta": 14,
+          "status": "service"
+        },
+        {
+          "lat": 45.552465708565265,
+          "lng": -73.54300908207327,
+          "eta": 14,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.54617894977832,
+          "lng": -73.54488646438008,
+          "eta": 15,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54117589560261,
+          "lng": -73.54780441732521,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.537456546038165,
+          "lng": -73.55176294090869,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53502090108496,
+          "lng": -73.5567620351305,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53386896074301,
+          "lng": -73.56280169999066,
+          "eta": 21,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.53386896074301,
+          "lng": -73.56280169999066,
+          "eta": 23,
+          "status": "service"
+        },
+        {
+          "lat": 45.53386896074301,
+          "lng": -73.56280169999066,
+          "eta": 23,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.52151839914603,
+          "lng": -73.55375582660368,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.509497072433724,
+          "lng": -73.54710929692006,
+          "eta": 25,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49780498060608,
+          "lng": -73.54286211093984,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48644212366309,
+          "lng": -73.54101426866302,
+          "eta": 27,
+          "status": "flying"
+        },
+        {
+          "lat": 45.475408501604775,
+          "lng": -73.54156577008956,
+          "eta": 29,
+          "status": "flying"
         },
         {
           "lat": 45.464704114431115,
           "lng": -73.54451661521951,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 32,
+          "status": "charging"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 42,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1945,22 +5725,178 @@
           "status": "depart"
         },
         {
-          "lat": 45.5036931750882,
-          "lng": -73.61185700805113,
+          "lat": 45.48334309673298,
+          "lng": -73.51534791215916,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48927717975168,
+          "lng": -73.5281343095052,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.495785883814875,
+          "lng": -73.54079740254186,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50286920892255,
+          "lng": -73.55333719126908,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51052715507471,
+          "lng": -73.5657536756869,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51875972227137,
+          "lng": -73.57804685579532,
+          "eta": 9,
+          "status": "flying"
+        },
+        {
+          "lat": 45.52756691051252,
+          "lng": -73.59021673159432,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53694871979816,
+          "lng": -73.60226330308393,
+          "eta": 13,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54690515012828,
+          "lng": -73.61418657026411,
+          "eta": 16,
           "status": "pickup"
         },
         {
-          "lat": 45.469849237736554,
-          "lng": -73.63251153142127,
-          "eta": 14,
+          "lat": 45.54690515012828,
+          "lng": -73.61418657026411,
+          "eta": 20,
+          "status": "service"
+        },
+        {
+          "lat": 45.54690515012828,
+          "lng": -73.61418657026411,
+          "eta": 20,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.54461657414385,
+          "lng": -73.61179816169984,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.54235889345555,
+          "lng": -73.6100459823103,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5401321080634,
+          "lng": -73.60893003209553,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.537936217967435,
+          "lng": -73.60845031105555,
+          "eta": 26,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5357712231676,
+          "lng": -73.60860681919033,
+          "eta": 28,
+          "status": "flying"
+        },
+        {
+          "lat": 45.53363712366392,
+          "lng": -73.60939955649985,
+          "eta": 29,
+          "status": "flying"
+        },
+        {
+          "lat": 45.531533919456386,
+          "lng": -73.61082852298416,
+          "eta": 33,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.531533919456386,
+          "lng": -73.61082852298416,
+          "eta": 36,
+          "status": "service"
+        },
+        {
+          "lat": 45.531533919456386,
+          "lng": -73.61082852298416,
+          "eta": 36,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.52419100729939,
+          "lng": -73.6009944820875,
+          "eta": 38,
+          "status": "flying"
+        },
+        {
+          "lat": 45.51655929129348,
+          "lng": -73.59160188474114,
+          "eta": 40,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50863877143868,
+          "lng": -73.5826507309451,
+          "eta": 42,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50042944773497,
+          "lng": -73.57414102069936,
+          "eta": 44,
+          "status": "flying"
+        },
+        {
+          "lat": 45.49193132018236,
+          "lng": -73.56607275400393,
+          "eta": 46,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48314438878084,
+          "lng": -73.55844593085882,
+          "eta": 48,
+          "status": "flying"
+        },
+        {
+          "lat": 45.47406865353043,
+          "lng": -73.55126055126401,
+          "eta": 49,
+          "status": "flying"
         },
         {
           "lat": 45.464704114431115,
           "lng": -73.54451661521951,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 51,
+          "status": "charging"
+        },
+        {
+          "lat": 45.464704114431115,
+          "lng": -73.54451661521951,
+          "eta": 58,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -1975,22 +5911,154 @@
           "status": "depart"
         },
         {
-          "lat": 45.565163775077274,
-          "lng": -73.6139344379617,
-          "eta": 6,
+          "lat": 45.44392420644051,
+          "lng": -73.6327624892549,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.4458310418062,
+          "lng": -73.63218318373615,
+          "eta": 4,
+          "status": "flying"
+        },
+        {
+          "lat": 45.447293463341275,
+          "lng": -73.63086838816717,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44831147104573,
+          "lng": -73.62881810254795,
+          "eta": 7,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44888506491956,
+          "lng": -73.62603232687849,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44901424496277,
+          "lng": -73.62251106115878,
+          "eta": 10,
+          "status": "flying"
+        },
+        {
+          "lat": 45.448699011175364,
+          "lng": -73.61825430538885,
+          "eta": 11,
+          "status": "flying"
+        },
+        {
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 13,
           "status": "pickup"
         },
         {
-          "lat": 45.553643615425514,
-          "lng": -73.62074149175767,
-          "eta": 14,
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 16,
+          "status": "service"
+        },
+        {
+          "lat": 45.44793936355733,
+          "lng": -73.61326205956867,
+          "eta": 16,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.44395411200361,
+          "lng": -73.61028387030606,
+          "eta": 17,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43997793273015,
+          "lng": -73.6086174325025,
+          "eta": 19,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43601082573696,
+          "lng": -73.60826274615795,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.432052791024034,
+          "lng": -73.60921981127245,
+          "eta": 21,
+          "status": "flying"
+        },
+        {
+          "lat": 45.428103828591375,
+          "lng": -73.61148862784599,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 26,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 29,
+          "status": "service"
+        },
+        {
+          "lat": 45.42416393843898,
+          "lng": -73.61506919587855,
+          "eta": 29,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.427651307748604,
+          "lng": -73.61967932395854,
+          "eta": 30,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43068244838276,
+          "lng": -73.62204010488854,
+          "eta": 32,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43325736034144,
+          "lng": -73.62215153866859,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.43537604362466,
+          "lng": -73.6200136252987,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.437038498232404,
+          "lng": -73.61562636477882,
+          "eta": 36,
+          "status": "flying"
         },
         {
           "lat": 45.438244724164676,
           "lng": -73.60898975710899,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 39,
+          "status": "charging"
+        },
+        {
+          "lat": 45.438244724164676,
+          "lng": -73.60898975710899,
+          "eta": 45,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -2005,22 +6073,148 @@
           "status": "depart"
         },
         {
-          "lat": 45.54690515012828,
-          "lng": -73.61418657026411,
+          "lat": 45.44038036137315,
+          "lng": -73.54132917020345,
+          "eta": 1,
+          "status": "flying"
+        },
+        {
+          "lat": 45.46106345408339,
+          "lng": -73.55326857970724,
+          "eta": 2,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48258047466066,
+          "lng": -73.56398812733015,
+          "eta": 3,
+          "status": "flying"
+        },
+        {
+          "lat": 45.50493142310496,
+          "lng": -73.5734878130722,
+          "eta": 5,
+          "status": "flying"
+        },
+        {
+          "lat": 45.5281162994163,
+          "lng": -73.58176763693339,
           "eta": 6,
+          "status": "flying"
+        },
+        {
+          "lat": 45.55213510359465,
+          "lng": -73.58882759891368,
+          "eta": 8,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57698783564003,
+          "lng": -73.59466769901312,
+          "eta": 11,
           "status": "pickup"
         },
         {
-          "lat": 45.531533919456386,
-          "lng": -73.61082852298416,
+          "lat": 45.57698783564003,
+          "lng": -73.59466769901312,
           "eta": 14,
+          "status": "service"
+        },
+        {
+          "lat": 45.57698783564003,
+          "lng": -73.59466769901312,
+          "eta": 14,
+          "status": "pickup"
+        },
+        {
+          "lat": 45.57758752928479,
+          "lng": -73.59101632217265,
+          "eta": 16,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57764109657872,
+          "lng": -73.58839337420648,
+          "eta": 18,
+          "status": "flying"
+        },
+        {
+          "lat": 45.577148537521836,
+          "lng": -73.58679885511461,
+          "eta": 20,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57610985211414,
+          "lng": -73.58623276489705,
+          "eta": 22,
+          "status": "flying"
+        },
+        {
+          "lat": 45.574525040355624,
+          "lng": -73.58669510355378,
+          "eta": 23,
+          "status": "flying"
+        },
+        {
+          "lat": 45.57239410224629,
+          "lng": -73.58818587108483,
+          "eta": 24,
+          "status": "flying"
+        },
+        {
+          "lat": 45.56971703778614,
+          "lng": -73.59070506749018,
+          "eta": 27,
           "status": "dropoff"
+        },
+        {
+          "lat": 45.56971703778614,
+          "lng": -73.59070506749018,
+          "eta": 31,
+          "status": "service"
+        },
+        {
+          "lat": 45.56971703778614,
+          "lng": -73.59070506749018,
+          "eta": 31,
+          "status": "dropoff"
+        },
+        {
+          "lat": 45.55087582497218,
+          "lng": -73.5732044481791,
+          "eta": 33,
+          "status": "flying"
+        },
+        {
+          "lat": 45.529833474193225,
+          "lng": -73.55893121029281,
+          "eta": 35,
+          "status": "flying"
+        },
+        {
+          "lat": 45.506589985449295,
+          "lng": -73.54788535383133,
+          "eta": 36,
+          "status": "flying"
+        },
+        {
+          "lat": 45.48114535874038,
+          "lng": -73.54006687879468,
+          "eta": 38,
+          "status": "flying"
         },
         {
           "lat": 45.453499594066486,
           "lng": -73.53547578518281,
-          "eta": 20,
-          "status": "recharge"
+          "eta": 40,
+          "status": "charging"
+        },
+        {
+          "lat": 45.453499594066486,
+          "lng": -73.53547578518281,
+          "eta": 50,
+          "status": "charging"
         }
       ],
       "rerouted": false
@@ -2070,31 +6264,31 @@
   ],
   "congestion_forecast": [
     {
-      "timestamp": "2026-03-15T07:17:27.404876Z",
+      "timestamp": "2026-03-15T07:55:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.258
+          "congestion": 0.262
         },
         {
           "node_id": "node-mtl-02",
-          "congestion": 0.6
+          "congestion": 0.596
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.155
+          "congestion": 0.158
         },
         {
           "node_id": "node-mtl-04",
-          "congestion": 0.502
+          "congestion": 0.501
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.746
+          "congestion": 0.74
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.155
+          "congestion": 0.158
         },
         {
           "node_id": "node-mtl-07",
@@ -2102,7 +6296,7 @@
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.262
+          "congestion": 0.26
         },
         {
           "node_id": "node-mtl-09",
@@ -2110,52 +6304,52 @@
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.018
+          "congestion": 0.021
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.018
+          "congestion": 0.021
         },
         {
           "node_id": "node-mtl-12",
-          "congestion": 0.017
+          "congestion": 0.021
         }
       ]
     },
     {
-      "timestamp": "2026-03-15T07:27:27.404876Z",
+      "timestamp": "2026-03-15T08:05:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.292
+          "congestion": 0.296
         },
         {
           "node_id": "node-mtl-02",
-          "congestion": 0.634
+          "congestion": 0.631
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.19
+          "congestion": 0.193
         },
         {
           "node_id": "node-mtl-04",
-          "congestion": 0.536
+          "congestion": 0.535
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.78
+          "congestion": 0.774
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.19
+          "congestion": 0.193
         },
         {
           "node_id": "node-mtl-07",
-          "congestion": 0.466
+          "congestion": 0.467
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.297
+          "congestion": 0.295
         },
         {
           "node_id": "node-mtl-09",
@@ -2163,52 +6357,52 @@
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.052
+          "congestion": 0.056
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.052
+          "congestion": 0.056
         },
         {
           "node_id": "node-mtl-12",
-          "congestion": 0.051
+          "congestion": 0.056
         }
       ]
     },
     {
-      "timestamp": "2026-03-15T07:37:27.404876Z",
+      "timestamp": "2026-03-15T08:15:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.323
+          "congestion": 0.327
         },
         {
           "node_id": "node-mtl-02",
-          "congestion": 0.665
+          "congestion": 0.661
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.22
+          "congestion": 0.224
         },
         {
           "node_id": "node-mtl-04",
-          "congestion": 0.567
+          "congestion": 0.566
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.811
+          "congestion": 0.805
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.22
+          "congestion": 0.224
         },
         {
           "node_id": "node-mtl-07",
-          "congestion": 0.497
+          "congestion": 0.498
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.327
+          "congestion": 0.326
         },
         {
           "node_id": "node-mtl-09",
@@ -2216,32 +6410,32 @@
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.083
+          "congestion": 0.086
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.083
+          "congestion": 0.086
         },
         {
           "node_id": "node-mtl-12",
-          "congestion": 0.082
+          "congestion": 0.087
         }
       ]
     },
     {
-      "timestamp": "2026-03-15T07:47:27.404876Z",
+      "timestamp": "2026-03-15T08:25:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.346
+          "congestion": 0.351
         },
         {
           "node_id": "node-mtl-02",
-          "congestion": 0.688
+          "congestion": 0.685
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.244
+          "congestion": 0.248
         },
         {
           "node_id": "node-mtl-04",
@@ -2249,52 +6443,52 @@
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.834
+          "congestion": 0.829
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.244
+          "congestion": 0.248
         },
         {
           "node_id": "node-mtl-07",
-          "congestion": 0.52
+          "congestion": 0.522
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.35
+          "congestion": 0.349
         },
         {
           "node_id": "node-mtl-09",
-          "congestion": 0.301
+          "congestion": 0.302
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.106
+          "congestion": 0.11
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.106
+          "congestion": 0.11
         },
         {
           "node_id": "node-mtl-12",
-          "congestion": 0.105
+          "congestion": 0.111
         }
       ]
     },
     {
-      "timestamp": "2026-03-15T07:57:27.404876Z",
+      "timestamp": "2026-03-15T08:35:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.36
+          "congestion": 0.365
         },
         {
           "node_id": "node-mtl-02",
-          "congestion": 0.702
+          "congestion": 0.699
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.257
+          "congestion": 0.262
         },
         {
           "node_id": "node-mtl-04",
@@ -2302,31 +6496,137 @@
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.848
+          "congestion": 0.843
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.257
+          "congestion": 0.262
         },
         {
           "node_id": "node-mtl-07",
-          "congestion": 0.534
+          "congestion": 0.536
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.364
+          "congestion": 0.363
         },
         {
           "node_id": "node-mtl-09",
-          "congestion": 0.315
+          "congestion": 0.316
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.12
+          "congestion": 0.124
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.12
+          "congestion": 0.124
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.125
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:45:38.374875Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.368
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.702
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.264
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.607
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.846
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.264
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.538
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.366
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.319
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.127
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.127
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.127
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T08:55:38.374875Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.359
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.694
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.256
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.598
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.837
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.256
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.53
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.358
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.31
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.119
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.119
         },
         {
           "node_id": "node-mtl-12",
@@ -2335,117 +6635,11 @@
       ]
     },
     {
-      "timestamp": "2026-03-15T08:07:27.404876Z",
+      "timestamp": "2026-03-15T09:05:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.362
-        },
-        {
-          "node_id": "node-mtl-02",
-          "congestion": 0.704
-        },
-        {
-          "node_id": "node-mtl-03",
-          "congestion": 0.26
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.606
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.85
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.26
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.536
-        },
-        {
-          "node_id": "node-mtl-08",
-          "congestion": 0.366
-        },
-        {
-          "node_id": "node-mtl-09",
-          "congestion": 0.317
-        },
-        {
-          "node_id": "node-mtl-10",
-          "congestion": 0.122
-        },
-        {
-          "node_id": "node-mtl-11",
-          "congestion": 0.122
-        },
-        {
-          "node_id": "node-mtl-12",
-          "congestion": 0.121
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-03-15T08:17:27.404876Z",
-      "node_loads": [
-        {
-          "node_id": "node-mtl-01",
-          "congestion": 0.353
-        },
-        {
-          "node_id": "node-mtl-02",
-          "congestion": 0.695
-        },
-        {
-          "node_id": "node-mtl-03",
-          "congestion": 0.251
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.597
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.841
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.251
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.527
-        },
-        {
-          "node_id": "node-mtl-08",
-          "congestion": 0.357
-        },
-        {
-          "node_id": "node-mtl-09",
-          "congestion": 0.308
-        },
-        {
-          "node_id": "node-mtl-10",
-          "congestion": 0.113
-        },
-        {
-          "node_id": "node-mtl-11",
-          "congestion": 0.113
-        },
-        {
-          "node_id": "node-mtl-12",
-          "congestion": 0.112
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-03-15T08:27:27.404876Z",
-      "node_loads": [
-        {
-          "node_id": "node-mtl-01",
-          "congestion": 0.334
+          "congestion": 0.34
         },
         {
           "node_id": "node-mtl-02",
@@ -2453,52 +6647,52 @@
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.231
+          "congestion": 0.237
         },
         {
           "node_id": "node-mtl-04",
-          "congestion": 0.578
+          "congestion": 0.579
         },
         {
           "node_id": "node-mtl-05",
-          "congestion": 0.822
+          "congestion": 0.818
         },
         {
           "node_id": "node-mtl-06",
-          "congestion": 0.231
+          "congestion": 0.237
         },
         {
           "node_id": "node-mtl-07",
-          "congestion": 0.507
+          "congestion": 0.511
         },
         {
           "node_id": "node-mtl-08",
-          "congestion": 0.338
+          "congestion": 0.339
         },
         {
           "node_id": "node-mtl-09",
-          "congestion": 0.288
+          "congestion": 0.291
         },
         {
           "node_id": "node-mtl-10",
-          "congestion": 0.094
+          "congestion": 0.099
         },
         {
           "node_id": "node-mtl-11",
-          "congestion": 0.094
+          "congestion": 0.099
         },
         {
           "node_id": "node-mtl-12",
-          "congestion": 0.093
+          "congestion": 0.1
         }
       ]
     },
     {
-      "timestamp": "2026-03-15T08:37:27.404876Z",
+      "timestamp": "2026-03-15T09:15:38.374875Z",
       "node_loads": [
         {
           "node_id": "node-mtl-01",
-          "congestion": 0.306
+          "congestion": 0.313
         },
         {
           "node_id": "node-mtl-02",
@@ -2506,190 +6700,190 @@
         },
         {
           "node_id": "node-mtl-03",
-          "congestion": 0.203
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.55
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.794
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.203
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.479
-        },
-        {
-          "node_id": "node-mtl-08",
-          "congestion": 0.31
-        },
-        {
-          "node_id": "node-mtl-09",
-          "congestion": 0.26
-        },
-        {
-          "node_id": "node-mtl-10",
-          "congestion": 0.066
-        },
-        {
-          "node_id": "node-mtl-11",
-          "congestion": 0.066
-        },
-        {
-          "node_id": "node-mtl-12",
-          "congestion": 0.065
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-03-15T08:47:27.404876Z",
-      "node_loads": [
-        {
-          "node_id": "node-mtl-01",
-          "congestion": 0.272
-        },
-        {
-          "node_id": "node-mtl-02",
-          "congestion": 0.614
-        },
-        {
-          "node_id": "node-mtl-03",
-          "congestion": 0.17
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.516
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.76
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.17
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.446
-        },
-        {
-          "node_id": "node-mtl-08",
-          "congestion": 0.276
-        },
-        {
-          "node_id": "node-mtl-09",
-          "congestion": 0.227
-        },
-        {
-          "node_id": "node-mtl-10",
-          "congestion": 0.032
-        },
-        {
-          "node_id": "node-mtl-11",
-          "congestion": 0.032
-        },
-        {
-          "node_id": "node-mtl-12",
-          "congestion": 0.031
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-03-15T08:57:27.404876Z",
-      "node_loads": [
-        {
-          "node_id": "node-mtl-01",
-          "congestion": 0.237
-        },
-        {
-          "node_id": "node-mtl-02",
-          "congestion": 0.579
-        },
-        {
-          "node_id": "node-mtl-03",
-          "congestion": 0.135
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.481
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.725
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.135
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.411
-        },
-        {
-          "node_id": "node-mtl-08",
-          "congestion": 0.242
-        },
-        {
-          "node_id": "node-mtl-09",
-          "congestion": 0.192
-        },
-        {
-          "node_id": "node-mtl-10",
-          "congestion": 0.0
-        },
-        {
-          "node_id": "node-mtl-11",
-          "congestion": 0.0
-        },
-        {
-          "node_id": "node-mtl-12",
-          "congestion": 0.0
-        }
-      ]
-    },
-    {
-      "timestamp": "2026-03-15T09:07:27.404876Z",
-      "node_loads": [
-        {
-          "node_id": "node-mtl-01",
-          "congestion": 0.205
-        },
-        {
-          "node_id": "node-mtl-02",
-          "congestion": 0.546
-        },
-        {
-          "node_id": "node-mtl-03",
-          "congestion": 0.102
-        },
-        {
-          "node_id": "node-mtl-04",
-          "congestion": 0.449
-        },
-        {
-          "node_id": "node-mtl-05",
-          "congestion": 0.693
-        },
-        {
-          "node_id": "node-mtl-06",
-          "congestion": 0.102
-        },
-        {
-          "node_id": "node-mtl-07",
-          "congestion": 0.378
-        },
-        {
-          "node_id": "node-mtl-08",
           "congestion": 0.209
         },
         {
+          "node_id": "node-mtl-04",
+          "congestion": 0.552
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.791
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.209
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.483
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.311
+        },
+        {
           "node_id": "node-mtl-09",
-          "congestion": 0.159
+          "congestion": 0.264
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.072
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.072
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.072
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T09:25:38.374875Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.28
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.615
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.177
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.519
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.758
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.177
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.451
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.279
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.231
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.04
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.04
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.04
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T09:35:38.374875Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.246
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.58
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.143
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.485
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.724
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.143
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.417
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.244
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.197
+        },
+        {
+          "node_id": "node-mtl-10",
+          "congestion": 0.005
+        },
+        {
+          "node_id": "node-mtl-11",
+          "congestion": 0.005
+        },
+        {
+          "node_id": "node-mtl-12",
+          "congestion": 0.006
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-03-15T09:45:38.374875Z",
+      "node_loads": [
+        {
+          "node_id": "node-mtl-01",
+          "congestion": 0.214
+        },
+        {
+          "node_id": "node-mtl-02",
+          "congestion": 0.548
+        },
+        {
+          "node_id": "node-mtl-03",
+          "congestion": 0.111
+        },
+        {
+          "node_id": "node-mtl-04",
+          "congestion": 0.453
+        },
+        {
+          "node_id": "node-mtl-05",
+          "congestion": 0.692
+        },
+        {
+          "node_id": "node-mtl-06",
+          "congestion": 0.111
+        },
+        {
+          "node_id": "node-mtl-07",
+          "congestion": 0.385
+        },
+        {
+          "node_id": "node-mtl-08",
+          "congestion": 0.212
+        },
+        {
+          "node_id": "node-mtl-09",
+          "congestion": 0.165
         },
         {
           "node_id": "node-mtl-10",

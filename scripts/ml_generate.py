@@ -190,6 +190,31 @@ def route_crosses_risk_zone(route, risk_zones):
     return False
 
 
+def curve_points(start, end, count, bend=0.015):
+    mid_lat = (start['lat'] + end['lat']) / 2.0
+    mid_lng = (start['lng'] + end['lng']) / 2.0
+    dx = end['lng'] - start['lng']
+    dy = end['lat'] - start['lat']
+    length = math.hypot(dx, dy) or 1.0
+    nx = -dy / length
+    ny = dx / length
+    control = {
+        'lat': mid_lat + ny * bend + (random.random() - 0.5) * bend,
+        'lng': mid_lng + nx * bend + (random.random() - 0.5) * bend,
+    }
+
+    points = []
+    for i in range(1, count + 1):
+        t = i / (count + 1)
+        a = (1 - t) ** 2
+        b = 2 * (1 - t) * t
+        c = t ** 2
+        lat = a * start['lat'] + b * control['lat'] + c * end['lat']
+        lng = a * start['lng'] + b * control['lng'] + c * end['lng']
+        points.append({'lat': lat, 'lng': lng})
+    return points
+
+
 def build_flight_plans(drones, nodes, packages, risk_zones):
     plans = []
     for drone in drones:
@@ -201,26 +226,47 @@ def build_flight_plans(drones, nodes, packages, risk_zones):
 
         best_node = min(nodes, key=lambda n: score_node(drone, n))
 
-        route = [
-            { 'lat': drone['lat'], 'lng': drone['lng'], 'eta': 0, 'status': 'depart' },
-            { 'lat': pickup['lat'], 'lng': pickup['lng'], 'eta': 6, 'status': 'pickup' },
-            { 'lat': dropoff['lat'], 'lng': dropoff['lng'], 'eta': 14, 'status': 'dropoff' },
-            { 'lat': best_node['lat'], 'lng': best_node['lng'], 'eta': 20, 'status': 'recharge' }
+        key_points = [
+            { 'lat': drone['lat'], 'lng': drone['lng'], 'status': 'depart' },
+            { 'lat': pickup['lat'], 'lng': pickup['lng'], 'status': 'pickup' },
+            { 'lat': dropoff['lat'], 'lng': dropoff['lng'], 'status': 'dropoff' },
+            { 'lat': best_node['lat'], 'lng': best_node['lng'], 'status': 'charging' }
         ]
 
-        rerouted = route_crosses_risk_zone(route, risk_zones)
+        rerouted = route_crosses_risk_zone(key_points, risk_zones)
         if rerouted:
             detour = {
                 'lat': jitter(CENTER_LAT, 0.08),
                 'lng': jitter(CENTER_LNG, 0.08),
-                'eta': 10,
                 'status': 'reroute'
             }
-            route.insert(2, detour)
+            key_points.insert(2, detour)
+
+        waypoints = []
+        eta = 0
+        for idx in range(len(key_points) - 1):
+            start = key_points[idx]
+            end = key_points[idx + 1]
+            waypoints.append({ 'lat': start['lat'], 'lng': start['lng'], 'eta': eta, 'status': start['status'] })
+
+            seg_points = curve_points(start, end, random.randint(4, 8))
+            for point in seg_points:
+                eta += random.randint(1, 2)
+                waypoints.append({ 'lat': point['lat'], 'lng': point['lng'], 'eta': eta, 'status': 'flying' })
+
+            eta += random.randint(2, 4)
+            waypoints.append({ 'lat': end['lat'], 'lng': end['lng'], 'eta': eta, 'status': end['status'] })
+
+            if end['status'] in ('pickup', 'dropoff'):
+                eta += random.randint(2, 4)
+                waypoints.append({ 'lat': end['lat'], 'lng': end['lng'], 'eta': eta, 'status': 'service' })
+            if end['status'] == 'charging':
+                eta += random.randint(6, 10)
+                waypoints.append({ 'lat': end['lat'], 'lng': end['lng'], 'eta': eta, 'status': 'charging' })
 
         plans.append({
             'drone_id': drone['id'],
-            'waypoints': route,
+            'waypoints': waypoints,
             'rerouted': rerouted
         })
 

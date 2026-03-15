@@ -33,6 +33,8 @@ const FleetMapPage: React.FC = () => {
   const [mockScenario, setMockScenario] = useState<MockScenario | null>(null);
   const [mockDrones, setMockDrones] = useState<DroneWithCompany[]>([]);
   const [showOverlays, setShowOverlays] = useState(true);
+  const mockStateRef = useRef<Map<string, { battery: number }>>(new Map());
+  const mockLastTickRef = useRef<number>(0);
   const { profile } = useAuth();
   const mockEnabled = import.meta.env.VITE_ML_MOCK === '1';
 
@@ -202,8 +204,20 @@ const FleetMapPage: React.FC = () => {
     );
 
     const speedScale = 2; // seconds per simulated minute in the eta field
+    const drainPerMinute = 0.6;
+    const chargePerMinute = 1.2;
+    mockLastTickRef.current = performance.now();
+    if (mockStateRef.current.size === 0) {
+      mockScenario.drones.forEach((drone) => {
+        mockStateRef.current.set(drone.id, { battery: drone.battery });
+      });
+    }
+
     const tick = () => {
       const now = performance.now();
+      const deltaSec = Math.max(0, (now - mockLastTickRef.current) / 1000);
+      const deltaSimMinutes = deltaSec / speedScale;
+      mockLastTickRef.current = now;
       const elapsedSec = (now - start) / 1000;
 
       const nextDrones = mockScenario.drones.map((drone) => {
@@ -234,13 +248,32 @@ const FleetMapPage: React.FC = () => {
 
         const lat = from.lat + (to.lat - from.lat) * segProgress;
         const lng = from.lng + (to.lng - from.lng) * segProgress;
-        const status = segProgress >= 0.9 ? to.status : from.status;
+        const rawStatus = segProgress >= 0.9 ? to.status : from.status;
+        const status =
+          rawStatus === 'charging'
+            ? 'charging'
+            : rawStatus === 'reroute'
+              ? 'en_route'
+              : rawStatus === 'service'
+                ? 'idle'
+                : rawStatus === 'pickup' || rawStatus === 'dropoff'
+                  ? 'en_route'
+                  : 'flying';
+
+        const state = mockStateRef.current.get(drone.id) ?? { battery: drone.battery };
+        if (status === 'charging') {
+          state.battery = Math.min(100, state.battery + chargePerMinute * deltaSimMinutes);
+        } else if (status === 'flying' || status === 'en_route') {
+          state.battery = Math.max(0, state.battery - drainPerMinute * deltaSimMinutes);
+        }
+        mockStateRef.current.set(drone.id, state);
 
         return {
           ...(drone as DroneWithCompany),
           lat,
           lng,
-          status: status === 'reroute' ? 'en_route' : status,
+          status,
+          battery: state.battery,
           updated_at: new Date().toISOString(),
         };
       });
@@ -292,32 +325,43 @@ const FleetMapPage: React.FC = () => {
       const points = plan.waypoints.map((point) => [point.lat, point.lng]);
       L.polyline(points, {
         color: plan.rerouted ? '#f97316' : '#2563eb',
-        weight: 2,
-        opacity: 0.8,
-        dashArray: plan.rerouted ? '6 6' : undefined,
+        weight: 1.5,
+        opacity: 0.2,
+        dashArray: plan.rerouted ? '4 6' : undefined,
       }).addTo(flightLayer);
     });
     flightLayer.addTo(map);
 
     const heatLayer = L.layerGroup();
-    const latestBucket =
-      mockScenario.congestion_forecast[mockScenario.congestion_forecast.length - 1];
-    if (latestBucket) {
-      latestBucket.node_loads.forEach((load) => {
-        const node = mockScenario.nodes.find((item) => item.id === load.node_id);
-        if (!node) return;
-        const congestion = Math.min(1, Math.max(0, load.congestion));
-        const radius = 120 + 380 * congestion;
-        const color = congestion > 0.7 ? '#ef4444' : congestion > 0.4 ? '#f97316' : '#22c55e';
-        L.circle([node.lat, node.lng], {
-          radius,
-          color,
-          weight: 1,
-          fillColor: color,
-          fillOpacity: 0.18,
-        }).addTo(heatLayer);
+    const grid = new Map<string, { lat: number; lng: number; count: number }>();
+    const gridSize = 0.01;
+    mockScenario.flight_plans.forEach((plan) => {
+      plan.waypoints.forEach((point, index) => {
+        if (index % 2 !== 0) return;
+        const latKey = Math.round(point.lat / gridSize) * gridSize;
+        const lngKey = Math.round(point.lng / gridSize) * gridSize;
+        const key = `${latKey.toFixed(4)}|${lngKey.toFixed(4)}`;
+        const existing = grid.get(key);
+        if (existing) {
+          existing.count += 1;
+        } else {
+          grid.set(key, { lat: latKey, lng: lngKey, count: 1 });
+        }
       });
-    }
+    });
+
+    grid.forEach((cell) => {
+      const intensity = Math.min(1, cell.count / 12);
+      const radius = 180 + 420 * intensity;
+      const color = intensity > 0.7 ? '#ef4444' : intensity > 0.4 ? '#f97316' : '#22c55e';
+      L.circle([cell.lat, cell.lng], {
+        radius,
+        color,
+        weight: 0,
+        fillColor: color,
+        fillOpacity: 0.18,
+      }).addTo(heatLayer);
+    });
     heatLayer.addTo(map);
 
     overlayLayersRef.current = { risk: riskLayer, flights: flightLayer, heat: heatLayer };
@@ -344,6 +388,9 @@ const FleetMapPage: React.FC = () => {
       if (mockEnabled) {
         const scenario = await loadMockScenario();
         setMockScenario(scenario);
+        mockStateRef.current = new Map(
+          scenario.drones.map((drone) => [drone.id, { battery: drone.battery }])
+        );
         setApiAvailable(true);
         setMockDrones(scenario.drones as DroneWithCompany[]);
         setNodes(scenario.nodes as Node[]);
