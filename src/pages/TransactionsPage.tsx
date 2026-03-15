@@ -8,26 +8,34 @@ import type { TransactionWithDetails } from '@/types/database';
 import { Receipt, Wallet, Clock, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
+import { useAuth } from '@/contexts/AuthContext';
 
 const TransactionsPage: React.FC = () => {
+  const { profile } = useAuth();
   const [transactions, setTransactions] = useState<TransactionWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
+  const companyContext =
+    profile?.role === 'admin' ? undefined : { company_id: profile?.company_id ?? null };
+  const scopeLabel = profile?.role === 'admin' ? 'Network' : 'Company';
 
   useEffect(() => {
     loadTransactions();
 
-    const channel = subscribeToTransactions((payload) => {
-      setTransactions(payload.data);
-    });
+    const channel = subscribeToTransactions(
+      (payload) => {
+        setTransactions(payload.data);
+      },
+      companyContext
+    );
 
     return () => {
       channel.unsubscribe();
     };
-  }, []);
+  }, [profile?.company_id, profile?.role]);
 
   const loadTransactions = async () => {
     try {
-      const data = await getTransactions(100);
+      const data = await getTransactions(100, companyContext);
       setTransactions(data);
     } catch (error) {
       toast.error('Failed to load transactions');
@@ -54,7 +62,7 @@ const TransactionsPage: React.FC = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Receipt className="h-4 w-4" />
-                Total Transactions
+                {scopeLabel} Transactions
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -65,7 +73,7 @@ const TransactionsPage: React.FC = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Wallet className="h-4 w-4" />
-                Total Volume
+                {scopeLabel} Volume
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -76,7 +84,7 @@ const TransactionsPage: React.FC = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
                 <Zap className="h-4 w-4" />
-                Avg Transaction
+                Avg {scopeLabel} Transaction
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -91,7 +99,7 @@ const TransactionsPage: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Receipt className="h-5 w-5" />
-              Transaction History
+              {scopeLabel} Transaction History
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -102,7 +110,11 @@ const TransactionsPage: React.FC = () => {
                 ))
               ) : transactions.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  No transactions yet. Drones will generate payments when charging.
+                  {profile?.role === 'admin'
+                    ? 'No transactions yet. Drones will generate payments when charging.'
+                    : profile?.company_id
+                      ? 'No company transactions yet. Your drones will generate payments when charging.'
+                      : 'Join or create a company to see transaction history for your fleet.'}
                 </div>
               ) : (
                 transactions.map((tx) => (
