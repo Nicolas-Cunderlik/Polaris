@@ -5,11 +5,22 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { getCompanies, getDrones, getNodes, createNode, registerDrone, deleteDrone } from '@/db/api';
+import {
+  getCompanies,
+  getDrones,
+  getNodes,
+  createNode,
+  registerDrone,
+  deleteDrone,
+  subscribeToDrones,
+  subscribeToNodes,
+} from '@/db/api';
 import { useAuth } from '@/contexts/AuthContext';
 import type { Node, DroneWithCompany, Company } from '@/types/database';
 import { Network, Plus, TrendingDown, AlertCircle, MapPin, Trash2, Plane } from 'lucide-react';
 import { toast } from 'sonner';
+import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
+import { runSimulation } from '@/lib/simulation';
 import {
   Select,
   SelectContent,
@@ -41,9 +52,32 @@ const InfrastructurePlannerPage: React.FC = () => {
   const [registering, setRegistering] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const { profile } = useAuth();
+  const simulationInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  useEffect(() => {
+    const dronesChannel = subscribeToDrones((payload) => {
+      setDrones(payload.data);
+    });
+
+    const nodesChannel = subscribeToNodes((payload) => {
+      setNodes(payload.data);
+    });
+
+    simulationInterval.current = setInterval(() => {
+      runSimulationCycle();
+    }, 2000);
+
+    return () => {
+      dronesChannel.unsubscribe();
+      nodesChannel.unsubscribe();
+      if (simulationInterval.current) {
+        clearInterval(simulationInterval.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -70,6 +104,15 @@ const InfrastructurePlannerPage: React.FC = () => {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const runSimulationCycle = async () => {
+    try {
+      const [currentDrones, currentNodes] = await Promise.all([getDrones(), getNodes()]);
+      await runSimulation(currentDrones, currentNodes);
+    } catch (error) {
+      console.error('Simulation error:', error);
     }
   };
 
@@ -197,6 +240,9 @@ const InfrastructurePlannerPage: React.FC = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<any>(null);
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneAnimationRef = useRef<Map<string, number>>(new Map());
+  const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
   const previewMarkerRef = useRef<any>(null);
 
   useEffect(() => {
@@ -242,12 +288,8 @@ const InfrastructurePlannerPage: React.FC = () => {
       if (existing) {
         existing.setLatLng([node.lat, node.lng]);
       } else {
-        const marker = L.circleMarker([node.lat, node.lng], {
-          color: '#22c55e',
-          radius: 10,
-          weight: 2,
-          fillColor: '#34d399',
-          fillOpacity: 0.7,
+        const marker = L.marker([node.lat, node.lng], {
+          icon: createNodeIcon(L),
         })
           .bindPopup(node.name)
           .addTo(map);
@@ -261,13 +303,66 @@ const InfrastructurePlannerPage: React.FC = () => {
     const map = leafletMapRef.current;
     if (!L || !map) return;
 
+    const nextIds = new Set(visibleDrones.map((drone) => drone.id));
+    droneMarkersRef.current.forEach((marker, id) => {
+      if (!nextIds.has(id)) {
+        const anim = droneAnimationRef.current.get(id);
+        if (anim) {
+          cancelAnimationFrame(anim);
+          droneAnimationRef.current.delete(id);
+        }
+        marker.remove();
+        droneMarkersRef.current.delete(id);
+        lastDronePositionRef.current.delete(id);
+      }
+    });
+
+    visibleDrones.forEach((drone) => {
+      const existing = droneMarkersRef.current.get(drone.id);
+      const nextPosition: [number, number] = [drone.lat, drone.lng];
+      const current = existing ? existing.getLatLng() : { lat: drone.lat, lng: drone.lng };
+      if (existing) {
+        const start: [number, number] = [current.lat, current.lng];
+        const end = nextPosition;
+        const duration = 1800;
+        const startTime = performance.now();
+        const prevAnim = droneAnimationRef.current.get(drone.id);
+        if (prevAnim) {
+          cancelAnimationFrame(prevAnim);
+        }
+        const animate = (time: number) => {
+          const progress = Math.min((time - startTime) / duration, 1);
+          const lat = start[0] + (end[0] - start[0]) * progress;
+          const lng = start[1] + (end[1] - start[1]) * progress;
+          existing.setLatLng([lat, lng]);
+          if (progress < 1) {
+            const id = requestAnimationFrame(animate);
+            droneAnimationRef.current.set(drone.id, id);
+          }
+        };
+        const id = requestAnimationFrame(animate);
+        droneAnimationRef.current.set(drone.id, id);
+      } else {
+        const marker = L.marker([drone.lat, drone.lng], {
+          icon: createDroneIcon(L),
+        })
+          .bindPopup(drone.name || drone.id)
+          .addTo(map);
+        droneMarkersRef.current.set(drone.id, marker);
+      }
+      lastDronePositionRef.current.set(drone.id, nextPosition);
+    });
+  }, [visibleDrones]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map) return;
+
     if (!previewMarkerRef.current) {
-      previewMarkerRef.current = L.circleMarker([newNode.lat, newNode.lng], {
-        color: '#3b82f6',
-        radius: 12,
-        weight: 2,
-        fillColor: '#60a5fa',
-        fillOpacity: 0.8,
+      previewMarkerRef.current = L.marker([newNode.lat, newNode.lng], {
+        icon: createNodeIcon(L, 0.6),
+        opacity: 0.7,
       }).addTo(map);
     } else {
       previewMarkerRef.current.setLatLng([newNode.lat, newNode.lng]);

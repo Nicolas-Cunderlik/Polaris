@@ -7,6 +7,7 @@ import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/a
 import { runSimulation } from '@/lib/simulation';
 import type { DroneWithCompany, Node } from '@/types/database';
 import { Zap, MapPin, Activity } from 'lucide-react';
+import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -80,14 +81,10 @@ const FleetMapPage: React.FC = () => {
     leafletMapRef.current = map;
     setMapReady(true);
 
-    L.tileLayer(
-      "https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=YOUR_TOKEN",
-      {
-        tileSize: 512,
-        zoomOffset: -1,
-        attribution: "© Mapbox © OpenStreetMap"
-      }
-    ).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB',
+    }).addTo(map);
 
     return () => {
       if (leafletMapRef.current) {
@@ -116,12 +113,8 @@ const FleetMapPage: React.FC = () => {
       if (existing) {
         existing.setLatLng([node.lat, node.lng]);
       } else {
-        const marker = L.circleMarker([node.lat, node.lng], {
-          color: '#22c55e',
-          radius: 4,
-          weight: 2,
-          fillColor: '#22c55e',
-          fillOpacity: 1,
+        const marker = L.marker([node.lat, node.lng], {
+          icon: createNodeIcon(L),
         })
           .bindPopup(node.name)
           .addTo(map);
@@ -175,12 +168,8 @@ const FleetMapPage: React.FC = () => {
         const id = requestAnimationFrame(animate);
         droneAnimationRef.current.set(drone.id, id);
       } else {
-        const marker = L.circleMarker([drone.lat, drone.lng], {
-          color: '#0ea5e9',
-          radius: 4,
-          weight: 2,
-          fillColor: '#0ea5e9',
-          fillOpacity: 1,
+        const marker = L.marker([drone.lat, drone.lng], {
+          icon: createDroneIcon(L),
         })
           .bindPopup(drone.name || drone.id)
           .addTo(map);
