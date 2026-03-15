@@ -5,6 +5,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
+import { seedData } from './seed.js';
+import { getDb } from './db.js';
 import {
   signUpUser,
   loginUser,
@@ -517,7 +519,54 @@ app.use((error, _req, res, _next) => {
   res.status(500).json({ error: error.message || 'Internal server error' });
 });
 
-const port = Number(process.env.PORT) || 5050;
-app.listen(port, () => {
-  console.log(`Polaris API running on http://localhost:${port}`);
-});
+const seedDatabase = async () => {
+  const db = await getDb();
+  if (!db) {
+    console.warn('No MongoDB URI configured; skipping database seeding.');
+    return;
+  }
+
+  try {
+    const companyCount = await db.collection('companies').countDocuments();
+    if (companyCount === 0) {
+      await db.collection('companies').insertMany(seedData.companies);
+      console.log('Seeded companies');
+    }
+
+    const profileCount = await db.collection('profiles').countDocuments();
+    if (profileCount === 0) {
+      await db.collection('profiles').insertMany(seedData.profiles);
+      console.log('Seeded profiles');
+    }
+
+    const nodeCount = await db.collection('nodes').countDocuments();
+    if (nodeCount === 0) {
+      await db.collection('nodes').insertMany(seedData.nodes);
+      console.log('Seeded nodes');
+    }
+
+    const droneCount = await db.collection('drones').countDocuments();
+    if (droneCount === 0) {
+      await db.collection('drones').insertMany(seedData.drones);
+      console.log('Seeded drones');
+    }
+
+    const transactionCount = await db.collection('transactions').countDocuments();
+    if (transactionCount === 0) {
+      await db.collection('transactions').insertMany(seedData.transactions);
+      console.log('Seeded transactions');
+    }
+  } catch (error) {
+    console.error('Database seed failed:', error);
+  }
+};
+
+const startServer = async () => {
+  await seedDatabase();
+  const port = Number(process.env.PORT) || 5050;
+  app.listen(port, () => {
+    console.log(`Polaris API running on http://localhost:${port}`);
+  });
+};
+
+startServer();
