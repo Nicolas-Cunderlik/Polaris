@@ -4,6 +4,7 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
+import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
 import {
   signUpUser,
   loginUser,
@@ -33,6 +34,16 @@ import {
 
 const app = express();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
+const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'JBFqnCBsd6RMkjVDRZzb';
+const ELEVENLABS_MODEL = process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
+const ELEVENLABS_OUTPUT_FORMAT = process.env.ELEVENLABS_OUTPUT_FORMAT || 'mp3_44100_128';
+const MAX_TTS_TEXT_LENGTH = 1200;
+const elevenlabs = ELEVENLABS_API_KEY
+  ? new ElevenLabsClient({
+      apiKey: ELEVENLABS_API_KEY,
+    })
+  : null;
 
 const corsOrigins = (process.env.CORS_ORIGIN || '')
   .split(',')
@@ -443,19 +454,54 @@ app.post('/api/ai-analytics', async (req, res, next) => {
 
 app.post('/api/text-to-speech', async (req, res, next) => {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      res.json({
+    const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
+
+    if (!text) {
+      res.status(400).json({
         audioBase64: null,
-        message: 'GEMINI_API_KEY not configured yet. Add it to enable TTS.',
+        message: 'Text is required to generate audio.',
       });
       return;
     }
 
-    // Placeholder: integration call would go here using apiKey.
+    if (text.length > MAX_TTS_TEXT_LENGTH) {
+      res.status(400).json({
+        audioBase64: null,
+        message: `Voice explanations are limited to ${MAX_TTS_TEXT_LENGTH} characters to control API usage.`,
+      });
+      return;
+    }
+
+    if (!elevenlabs) {
+      res.json({
+        audioBase64: null,
+        message: 'ELEVENLABS_API_KEY not configured yet. Add it to enable voice playback.',
+      });
+      return;
+    }
+
+    const audioStream = await elevenlabs.textToSpeech.convert(ELEVENLABS_VOICE_ID, {
+      text,
+      modelId: ELEVENLABS_MODEL,
+      outputFormat: ELEVENLABS_OUTPUT_FORMAT,
+    });
+
+    const reader = audioStream.getReader();
+    const chunks = [];
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) {
+        chunks.push(Buffer.from(value));
+      }
+    }
+
+    const audioBase64 = Buffer.concat(chunks).toString('base64');
+
     res.json({
-      audioBase64: null,
-      message: 'TTS integration placeholder. Wire this to your provider when ready.',
+      audioBase64,
+      message: 'Voice explanation generated.',
     });
   } catch (error) {
     next(error);
