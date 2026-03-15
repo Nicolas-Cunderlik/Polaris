@@ -201,10 +201,18 @@ export interface AIAnalysis {
   summary: string;
 }
 
-export const generateAIAnalysis = async (networkData: NetworkMetrics & { most_congested_node?: string }): Promise<AIAnalysis> => {
+export interface CompanyContext {
+  id?: string | null;
+  name?: string | null;
+}
+
+export const generateAIAnalysis = async (
+  networkData: NetworkMetrics & { most_congested_node?: string },
+  companyContext?: CompanyContext
+): Promise<AIAnalysis> => {
   return apiFetch<AIAnalysis>('/api/ai-analytics', {
     method: 'POST',
-    body: JSON.stringify({ networkData }),
+    body: JSON.stringify({ networkData, companyContext }),
   });
 };
 

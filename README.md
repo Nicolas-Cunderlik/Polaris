@@ -95,9 +95,6 @@ Configure environment variables and install relevant dependencies. The API serve
 
 Use username `admin` to create an admin profile on first sign-in. Other usernames default to the `operator` role.
 
-### Map Preview
-
-Set `VITE_GOOGLE_MAPS_API_KEY` in `.env` to load Google Maps embeds.
 
 ## Learn More
 

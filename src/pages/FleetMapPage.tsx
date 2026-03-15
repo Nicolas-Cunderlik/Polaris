@@ -5,13 +5,14 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
-import type { DroneWithCompany, NodeWithCompany } from '@/types/database';
+import type { DroneWithCompany, Node } from '@/types/database';
 import { Zap, MapPin, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
 
 const FleetMapPage: React.FC = () => {
   const [drones, setDrones] = useState<DroneWithCompany[]>([]);
-  const [nodes, setNodes] = useState<NodeWithCompany[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState(true);
   const [apiAvailable, setApiAvailable] = useState(true);
   const simulationInterval = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -19,10 +20,17 @@ const FleetMapPage: React.FC = () => {
   const leafletMapRef = useRef<any>(null);
   const droneMarkersRef = useRef<Map<string, any>>(new Map());
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneAnimationRef = useRef<Map<string, number>>(new Map());
+  const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
+  const hasFitBoundsRef = useRef(false);
   const [leafletReady, setLeafletReady] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const { profile } = useAuth();
 
-  const displayDrones = apiAvailable ? drones : [];
+  const companyDrones = profile?.role === 'admin'
+    ? drones
+    : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
+  const displayDrones = apiAvailable ? companyDrones : [];
   const displayNodes = apiAvailable ? nodes : [];
 
   useEffect(() => {
@@ -72,10 +80,14 @@ const FleetMapPage: React.FC = () => {
     leafletMapRef.current = map;
     setMapReady(true);
 
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB'
-    }).addTo(map);
+    L.tileLayer(
+      "https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=YOUR_TOKEN",
+      {
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: "© Mapbox © OpenStreetMap"
+      }
+    ).addTo(map);
 
     return () => {
       if (leafletMapRef.current) {
@@ -104,7 +116,13 @@ const FleetMapPage: React.FC = () => {
       if (existing) {
         existing.setLatLng([node.lat, node.lng]);
       } else {
-        const marker = L.circleMarker([node.lat, node.lng], { color: 'green', radius: 10 })
+        const marker = L.circleMarker([node.lat, node.lng], {
+          color: '#22c55e',
+          radius: 4,
+          weight: 2,
+          fillColor: '#22c55e',
+          fillOpacity: 1,
+        })
           .bindPopup(node.name)
           .addTo(map);
         nodeMarkersRef.current.set(node.id, marker);
@@ -117,47 +135,75 @@ const FleetMapPage: React.FC = () => {
     const map = leafletMapRef.current;
     if (!L || !map || !mapReady) return;
 
-    const icon = L.icon({
-      iconUrl: '/images/drone-icon.png',
-      iconSize: [30, 30],
-      iconAnchor: [15, 15],
-      popupAnchor: [0, -18]
-    });
-
     const nextIds = new Set(displayDrones.map((drone) => drone.id));
     droneMarkersRef.current.forEach((marker, id) => {
       if (!nextIds.has(id)) {
+        const anim = droneAnimationRef.current.get(id);
+        if (anim) {
+          cancelAnimationFrame(anim);
+          droneAnimationRef.current.delete(id);
+        }
         marker.remove();
         droneMarkersRef.current.delete(id);
+        lastDronePositionRef.current.delete(id);
       }
     });
 
     displayDrones.forEach((drone) => {
       const existing = droneMarkersRef.current.get(drone.id);
+      const nextPosition: [number, number] = [drone.lat, drone.lng];
+      const current = existing ? existing.getLatLng() : { lat: drone.lat, lng: drone.lng };
       if (existing) {
-        existing.setLatLng([drone.lat, drone.lng]);
+        const start: [number, number] = [current.lat, current.lng];
+        const end = nextPosition;
+        const duration = 1800;
+        const startTime = performance.now();
+        const prevAnim = droneAnimationRef.current.get(drone.id);
+        if (prevAnim) {
+          cancelAnimationFrame(prevAnim);
+        }
+        const animate = (time: number) => {
+          const progress = Math.min((time - startTime) / duration, 1);
+          const lat = start[0] + (end[0] - start[0]) * progress;
+          const lng = start[1] + (end[1] - start[1]) * progress;
+          existing.setLatLng([lat, lng]);
+          if (progress < 1) {
+            const id = requestAnimationFrame(animate);
+            droneAnimationRef.current.set(drone.id, id);
+          }
+        };
+        const id = requestAnimationFrame(animate);
+        droneAnimationRef.current.set(drone.id, id);
       } else {
-        const marker = L.marker([drone.lat, drone.lng], { icon })
+        const marker = L.circleMarker([drone.lat, drone.lng], {
+          color: '#0ea5e9',
+          radius: 4,
+          weight: 2,
+          fillColor: '#0ea5e9',
+          fillOpacity: 1,
+        })
           .bindPopup(drone.name || drone.id)
           .addTo(map);
         droneMarkersRef.current.set(drone.id, marker);
       }
+      lastDronePositionRef.current.set(drone.id, nextPosition);
     });
   }, [displayDrones, mapReady]);
 
   useEffect(() => {
     const L = (window as any).L;
     const map = leafletMapRef.current;
-    if (!L || !map || !mapReady) return;
+    if (!L || !map || !mapReady || hasFitBoundsRef.current) return;
 
     const points = [
       ...displayDrones.map((drone) => [drone.lat, drone.lng] as [number, number]),
-      ...displayNodes.map((node) => [node.lat, node.lng] as [number, number])
+      ...displayNodes.map((node) => [node.lat, node.lng] as [number, number]),
     ];
     if (points.length === 0) return;
 
     const bounds = L.latLngBounds(points);
     map.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
+    hasFitBoundsRef.current = true;
   }, [displayDrones, displayNodes, mapReady]);
 
   const loadData = async () => {
@@ -189,7 +235,7 @@ const FleetMapPage: React.FC = () => {
   const getBatteryBarColor = (battery: number) => {
     if (battery > 60) return 'bg-emerald-500';
     if (battery > 30) return 'bg-amber-500';
-    return 'bg-rose-500';
+        return 'bg-rose-500';
   };
 
   const getStatusBadge = (status: string) => {
@@ -291,9 +337,7 @@ const FleetMapPage: React.FC = () => {
                         {getStatusBadge(drone.status)}
                       </div>
                       <div className="flex items-center gap-3">
-                        <span
-                          className={`h-4 w-4 rounded-sm border-2 ${getBatteryBarColor(drone.battery).replace('bg-', 'border-')}`}
-                        />
+                        <span className="h-4 w-4 rounded-sm border-2 border-emerald-500" />
                         <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
                           <div
                             className={`h-full ${getBatteryBarColor(drone.battery)}`}

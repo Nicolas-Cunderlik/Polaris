@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -194,12 +194,85 @@ const InfrastructurePlannerPage: React.FC = () => {
     ? drones
     : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
 
-  const mapCenter = { lat: newNode.lat, lng: newNode.lng };
-  const mapZoom = 12;
-  const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
-  const mapSrc = mapsKey
-    ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=us`
-    : null;
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const leafletMapRef = useRef<any>(null);
+  const nodeMarkersRef = useRef<Map<string, any>>(new Map());
+  const previewMarkerRef = useRef<any>(null);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    if (!L || !mapRef.current || leafletMapRef.current) return;
+
+    const map = L.map(mapRef.current, {
+      center: [newNode.lat, newNode.lng],
+      zoom: 12,
+      zoomControl: false,
+      attributionControl: false,
+    });
+    leafletMapRef.current = map;
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB',
+    }).addTo(map);
+
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map) return;
+
+    const nextIds = new Set(nodes.map((node) => node.id));
+    nodeMarkersRef.current.forEach((marker, id) => {
+      if (!nextIds.has(id)) {
+        marker.remove();
+        nodeMarkersRef.current.delete(id);
+      }
+    });
+
+    nodes.forEach((node) => {
+      const existing = nodeMarkersRef.current.get(node.id);
+      if (existing) {
+        existing.setLatLng([node.lat, node.lng]);
+      } else {
+        const marker = L.circleMarker([node.lat, node.lng], {
+          color: '#22c55e',
+          radius: 10,
+          weight: 2,
+          fillColor: '#34d399',
+          fillOpacity: 0.7,
+        })
+          .bindPopup(node.name)
+          .addTo(map);
+        nodeMarkersRef.current.set(node.id, marker);
+      }
+    });
+  }, [nodes]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map) return;
+
+    if (!previewMarkerRef.current) {
+      previewMarkerRef.current = L.circleMarker([newNode.lat, newNode.lng], {
+        color: '#3b82f6',
+        radius: 12,
+        weight: 2,
+        fillColor: '#60a5fa',
+        fillOpacity: 0.8,
+      }).addTo(map);
+    } else {
+      previewMarkerRef.current.setLatLng([newNode.lat, newNode.lng]);
+    }
+  }, [newNode.lat, newNode.lng]);
 
   return (
     <MainLayout>
@@ -223,22 +296,8 @@ const InfrastructurePlannerPage: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4">
-                {mapSrc ? (
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src={mapSrc}
-                    title="Node Placement Map"
-                  />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
-                    Set VITE_GOOGLE_MAPS_API_KEY to load the map preview.
-                  </div>
-                )}
+              <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4 relative">
+                <div ref={mapRef} className="absolute inset-0" />
               </div>
 
               {simulationMode && impact && (

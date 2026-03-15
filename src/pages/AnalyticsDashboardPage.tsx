@@ -10,6 +10,7 @@ import { BarChart3, TrendingUp, AlertTriangle, Zap, Volume2, Loader2, Sparkles }
 import { toast } from 'sonner';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from '@/components/ui/chart';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AIRecommendation {
   title: string;
@@ -30,6 +31,7 @@ const AnalyticsDashboardPage: React.FC = () => {
   const [aiLoading, setAiLoading] = useState(false);
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const { profile } = useAuth();
 
   useEffect(() => {
     loadMetrics();
@@ -47,22 +49,28 @@ const AnalyticsDashboardPage: React.FC = () => {
     }
   };
 
-  const generateAIAnalysis = async () => {
+  const handleGenerateAIAnalysis = async () => {
     if (!metrics) return;
 
     setAiLoading(true);
     try {
       const nodes = await getNodes();
-      const mostCongestedNode = nodes.reduce((max, node) => {
-        const congestion = node.current_load / node.capacity;
-        const maxCongestion = max.current_load / max.capacity;
-        return congestion > maxCongestion ? node : max;
-      }, nodes[0]);
+      const mostCongestedNode =
+        nodes.length > 0
+          ? nodes.reduce((max, node) => {
+              const congestion = node.current_load / node.capacity;
+              const maxCongestion = max.current_load / max.capacity;
+              return congestion > maxCongestion ? node : max;
+            }, nodes[0])
+          : null;
 
-      const analysis = await generateAIAnalysis({
-        ...metrics,
-        most_congested_node: mostCongestedNode?.name,
-      });
+      const analysis = await generateAIAnalysis(
+        {
+          ...metrics,
+          most_congested_node: mostCongestedNode?.name,
+        },
+        { id: profile?.company_id ?? null }
+      );
 
       setAiAnalysis(analysis as AIAnalysis);
       toast.success('AI analysis generated');
@@ -142,7 +150,11 @@ const AnalyticsDashboardPage: React.FC = () => {
             <p className="text-muted-foreground">AI-powered network insights and recommendations</p>
           </div>
           <div className="flex gap-2">
-            <Button onClick={generateAIAnalysis} disabled={aiLoading || loading} className="gap-2">
+            <Button
+              onClick={handleGenerateAIAnalysis}
+              disabled={aiLoading || loading}
+              className="gap-2"
+            >
               {aiLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (

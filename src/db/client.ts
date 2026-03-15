@@ -20,12 +20,16 @@ const buildUrl = (path: string) => {
 
 export const apiFetch = async <T>(path: string, options: RequestInit = {}): Promise<T> => {
   const url = buildUrl(path);
+  const baseHeaders = {
+    'Content-Type': 'application/json',
+  };
+  const mergedHeaders =
+    options.headers instanceof Headers
+      ? new Headers({ ...baseHeaders, ...Object.fromEntries(options.headers.entries()) })
+      : { ...baseHeaders, ...(options.headers ?? {}) };
   const response = await fetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers ?? {}),
-    },
     ...options,
+    headers: mergedHeaders,
   });
 
   if (!response.ok) {
