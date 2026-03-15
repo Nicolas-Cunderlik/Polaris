@@ -5,12 +5,14 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "dev:api": "node --watch server/index.js",
+    "seed:large": "node server/seed-large.js",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
     "lint": "tsgo -p tsconfig.check.json; npx biome lint; .rules/check.sh;npx tailwindcss -i ./src/index.css -o /dev/null 2>&1 | grep -E '^(CssSyntaxError|Error):.*' || true;.rules/testBuild.sh"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.15.1",
+    "@elevenlabs/elevenlabs-js": "^2.39.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",

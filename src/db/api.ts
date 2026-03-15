@@ -217,8 +217,15 @@ export const createTransaction = async (
 };
 
 // Analytics API
-export const getNetworkMetrics = async (): Promise<NetworkMetrics> => {
-  return apiFetch<NetworkMetrics>('/api/metrics');
+export interface CompanyContext {
+  id?: string | null;
+  company_id?: string | null;
+}
+
+export const getNetworkMetrics = async (companyContext?: CompanyContext): Promise<NetworkMetrics> => {
+  const companyId = companyContext?.id ?? companyContext?.company_id ?? null;
+  const suffix = companyId ? `?company_id=${encodeURIComponent(companyId)}` : '';
+  return apiFetch<NetworkMetrics>(`/api/metrics${suffix}`);
 };
 
 export interface AIRecommendation {

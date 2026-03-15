@@ -19,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import type { Node, DroneWithCompany, Company } from '@/types/database';
 import { Network, Plus, TrendingDown, AlertCircle, MapPin, Trash2, Plane } from 'lucide-react';
 import { toast } from 'sonner';
-import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
+import { createDroneIcon, createNodeIcon, createPlacementPinIcon } from '@/lib/leafletIcons';
 import { runSimulation } from '@/lib/simulation';
 import {
   Select,
@@ -49,6 +49,7 @@ const InfrastructurePlannerPage: React.FC = () => {
     lng: -122.4194,
     company_id: '',
   });
+  const [dronePlacementSelected, setDronePlacementSelected] = useState(false);
   const [registering, setRegistering] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const { profile } = useAuth();
@@ -193,6 +194,7 @@ const InfrastructurePlannerPage: React.FC = () => {
         ...prev,
         name: '',
       }));
+      setDronePlacementSelected(false);
       loadData();
     } catch (error) {
       toast.error('Failed to register drone');
@@ -244,6 +246,10 @@ const InfrastructurePlannerPage: React.FC = () => {
   const droneAnimationRef = useRef<Map<string, number>>(new Map());
   const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
   const previewMarkerRef = useRef<any>(null);
+  const dronePreviewMarkerRef = useRef<any>(null);
+  const droneSelectionRingRef = useRef<any>(null);
+  const selectedCompanyName =
+    companies.find((company) => company.id === profile?.company_id)?.name || 'No company assigned';
 
   useEffect(() => {
     const L = (window as any).L;
@@ -262,13 +268,46 @@ const InfrastructurePlannerPage: React.FC = () => {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB',
     }).addTo(map);
 
+    map.on('click', (event: { latlng: { lat: number; lng: number } }) => {
+      const { lat, lng } = event.latlng;
+      map.panTo([lat, lng], { animate: true, duration: 0.4 });
+
+      if (profile?.role === 'admin') {
+        setNewNode((prev) => ({
+          ...prev,
+          lat: Number(lat.toFixed(4)),
+          lng: Number(lng.toFixed(4)),
+        }));
+        return;
+      }
+
+      setNewDrone((prev) => ({
+        ...prev,
+        lat: Number(lat.toFixed(4)),
+        lng: Number(lng.toFixed(4)),
+      }));
+      setDronePlacementSelected(true);
+    });
+
     return () => {
+      if (droneSelectionRingRef.current) {
+        droneSelectionRingRef.current.remove();
+        droneSelectionRingRef.current = null;
+      }
+      if (dronePreviewMarkerRef.current) {
+        dronePreviewMarkerRef.current.remove();
+        dronePreviewMarkerRef.current = null;
+      }
+      if (previewMarkerRef.current) {
+        previewMarkerRef.current.remove();
+        previewMarkerRef.current = null;
+      }
       if (leafletMapRef.current) {
         leafletMapRef.current.remove();
         leafletMapRef.current = null;
       }
     };
-  }, []);
+  }, [profile?.role]);
 
   useEffect(() => {
     const L = (window as any).L;
@@ -343,10 +382,16 @@ const InfrastructurePlannerPage: React.FC = () => {
         const id = requestAnimationFrame(animate);
         droneAnimationRef.current.set(drone.id, id);
       } else {
+        const popupContent = `
+          <div style="min-width: 140px;">
+            <div style="font-weight: 600;">${drone.name || drone.id}</div>
+            <div style="font-size: 12px; color: #6b7280;">${drone.company?.name || 'Unknown company'}</div>
+          </div>
+        `;
         const marker = L.marker([drone.lat, drone.lng], {
           icon: createDroneIcon(L),
         })
-          .bindPopup(drone.name || drone.id)
+          .bindPopup(popupContent)
           .addTo(map);
         droneMarkersRef.current.set(drone.id, marker);
       }
@@ -359,15 +404,58 @@ const InfrastructurePlannerPage: React.FC = () => {
     const map = leafletMapRef.current;
     if (!L || !map) return;
 
-    if (!previewMarkerRef.current) {
-      previewMarkerRef.current = L.marker([newNode.lat, newNode.lng], {
-        icon: createNodeIcon(L, 0.6),
-        opacity: 0.7,
-      }).addTo(map);
+    if (profile?.role === 'admin') {
+      if (!previewMarkerRef.current) {
+        previewMarkerRef.current = L.marker([newNode.lat, newNode.lng], {
+          icon: createNodeIcon(L, 0.6),
+          opacity: 0.7,
+        }).addTo(map);
+      } else {
+        previewMarkerRef.current.setLatLng([newNode.lat, newNode.lng]);
+      }
     } else {
-      previewMarkerRef.current.setLatLng([newNode.lat, newNode.lng]);
+      if (previewMarkerRef.current) {
+        previewMarkerRef.current.remove();
+        previewMarkerRef.current = null;
+      }
     }
-  }, [newNode.lat, newNode.lng]);
+
+    if (profile?.role !== 'admin' && dronePlacementSelected) {
+      if (!dronePreviewMarkerRef.current) {
+        dronePreviewMarkerRef.current = L.marker([newDrone.lat, newDrone.lng], {
+          icon: createPlacementPinIcon(L),
+          opacity: 1,
+          zIndexOffset: 1200,
+        }).addTo(map);
+        dronePreviewMarkerRef.current.bindPopup('Selected drone location');
+      } else {
+        dronePreviewMarkerRef.current.setLatLng([newDrone.lat, newDrone.lng]);
+      }
+
+      if (!droneSelectionRingRef.current) {
+        droneSelectionRingRef.current = L.circleMarker([newDrone.lat, newDrone.lng], {
+          radius: 12,
+          color: '#06a9e0',
+          weight: 3,
+          fillColor: '#06a9e0',
+          fillOpacity: 0.12,
+        }).addTo(map);
+      } else {
+        droneSelectionRingRef.current.setLatLng([newDrone.lat, newDrone.lng]);
+      }
+
+      dronePreviewMarkerRef.current.openPopup();
+    } else {
+      if (dronePreviewMarkerRef.current) {
+        dronePreviewMarkerRef.current.remove();
+        dronePreviewMarkerRef.current = null;
+      }
+      if (droneSelectionRingRef.current) {
+        droneSelectionRingRef.current.remove();
+        droneSelectionRingRef.current = null;
+      }
+    }
+  }, [newNode.lat, newNode.lng, newDrone.lat, newDrone.lng, profile?.role, dronePlacementSelected]);
 
   return (
     <MainLayout>
@@ -557,8 +645,7 @@ const InfrastructurePlannerPage: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <Label>
-                    {companies.find((company) => company.id === profile?.company_id)?.name ||
-                      'No company assigned'}{' '}
+                    {selectedCompanyName}{' '}
                     <Link to="/settings" className="text-xs text-primary underline underline-offset-4">
                       Manage in Settings
                     </Link>
