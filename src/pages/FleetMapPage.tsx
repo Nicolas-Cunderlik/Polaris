@@ -8,6 +8,7 @@ import { runSimulation } from '@/lib/simulation';
 import type { DroneWithCompany, Node } from '@/types/database';
 import { Zap, MapPin, Activity } from 'lucide-react';
 import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
+import { getRouteColor } from '@/lib/routeColors';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -20,6 +21,7 @@ const FleetMapPage: React.FC = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<any>(null);
   const droneMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneRoutesRef = useRef<Map<string, any>>(new Map());
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
   const droneAnimationRef = useRef<Map<string, number>>(new Map());
   const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
@@ -200,6 +202,53 @@ const FleetMapPage: React.FC = () => {
         droneMarkersRef.current.set(drone.id, marker);
       }
       lastDronePositionRef.current.set(drone.id, nextPosition);
+    });
+  }, [displayDrones, mapReady]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map || !mapReady) return;
+
+    const nextIds = new Set(displayDrones.map((drone) => drone.id));
+    droneRoutesRef.current.forEach((routeLine, id) => {
+      if (!nextIds.has(id)) {
+        routeLine.remove();
+        droneRoutesRef.current.delete(id);
+      }
+    });
+
+    displayDrones.forEach((drone) => {
+      const waypoints = drone.route_waypoints ?? [];
+      const existing = droneRoutesRef.current.get(drone.id);
+
+      if (waypoints.length === 0) {
+        if (existing) {
+          existing.remove();
+          droneRoutesRef.current.delete(drone.id);
+        }
+        return;
+      }
+
+      const points = [
+        [drone.lat, drone.lng] as [number, number],
+        ...waypoints.map((point) => [point.lat, point.lng] as [number, number]),
+      ];
+      const color = getRouteColor(drone.id);
+      const dashArray = drone.route_intent === 'charging' ? '6 6' : undefined;
+
+      if (existing) {
+        existing.setLatLngs(points);
+        existing.setStyle({ color, dashArray });
+      } else {
+        const routeLine = L.polyline(points, {
+          color,
+          weight: 3,
+          opacity: 0.65,
+          dashArray,
+        }).addTo(map);
+        droneRoutesRef.current.set(drone.id, routeLine);
+      }
     });
   }, [displayDrones, mapReady]);
 

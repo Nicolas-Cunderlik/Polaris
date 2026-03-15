@@ -2,6 +2,12 @@
 
 export type UserRole = 'operator' | 'provider' | 'admin';
 export type DroneStatus = 'idle' | 'flying' | 'charging' | 'en_route';
+export type RouteIntent = 'mission' | 'charging' | null;
+
+export interface RouteWaypoint {
+  lat: number;
+  lng: number;
+}
 
 export interface Company {
   id: string;
@@ -41,6 +47,8 @@ export interface Drone {
   destination_lat: number | null;
   destination_lng: number | null;
   current_node_id: string | null;
+  route_waypoints?: RouteWaypoint[] | null;
+  route_intent?: RouteIntent;
   created_at: string;
   updated_at: string;
 }
