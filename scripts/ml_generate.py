@@ -111,7 +111,7 @@ def build_nodes(count, risk_zones):
                 'current_load': random.randint(0, 3),
                 'created_at': datetime.utcnow().isoformat() + 'Z'
             }
-            if not is_point_in_risk({'lat': candidate['lat'], 'lng': candidate['lng']}, risk_zones, buffer_m=350):
+            if not is_point_in_risk({'lat': candidate['lat'], 'lng': candidate['lng']}, risk_zones, buffer_m=600):
                 nodes.append(candidate)
                 break
     return nodes
@@ -211,7 +211,7 @@ def point_in_polygon(point, polygon):
     return inside
 
 
-def is_point_in_risk(point, risk_zones, buffer_m=200):
+def is_point_in_risk(point, risk_zones, buffer_m=500):
     for zone in risk_zones:
         if zone['type'] == 'circle':
             center = zone['center']
@@ -229,12 +229,12 @@ def path_is_safe(points, risk_zones):
 
 
 def create_detour_point(start, end, risk_zones):
-    for _ in range(40):
+    for _ in range(60):
         candidate = {
             'lat': jitter((start['lat'] + end['lat']) / 2.0, 0.06),
             'lng': jitter((start['lng'] + end['lng']) / 2.0, 0.06),
         }
-        if not is_point_in_risk(candidate, risk_zones, buffer_m=300):
+        if not is_point_in_risk(candidate, risk_zones, buffer_m=600):
             return candidate
     return {
         'lat': jitter(CENTER_LAT, 0.08),
@@ -297,14 +297,14 @@ def build_flight_plans(drones, nodes, packages, risk_zones):
             end = key_points[idx + 1]
             waypoints.append({ 'lat': start['lat'], 'lng': start['lng'], 'eta': eta, 'status': start['status'] })
 
-            seg_points = curve_points(start, end, random.randint(6, 10), bend=0.018)
+            seg_points = curve_points(start, end, random.randint(6, 10), bend=0.02)
             if not path_is_safe(seg_points, risk_zones):
                 detour = create_detour_point(start, end, risk_zones)
                 mid_points = curve_points(start, detour, random.randint(4, 7), bend=0.02)
                 seg_points = mid_points + curve_points(detour, end, random.randint(4, 7), bend=0.02)
 
             for point in seg_points:
-                if is_point_in_risk(point, risk_zones, buffer_m=350):
+                if is_point_in_risk(point, risk_zones, buffer_m=600):
                     continue
                 eta += random.randint(1, 2)
                 waypoints.append({ 'lat': point['lat'], 'lng': point['lng'], 'eta': eta, 'status': 'flying' })
