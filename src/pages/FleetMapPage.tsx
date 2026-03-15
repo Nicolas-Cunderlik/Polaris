@@ -352,7 +352,7 @@ const FleetMapPage: React.FC = () => {
                       key={drone.id}
                       className={`p-4 border rounded-xl bg-background shadow-sm ${
                         isHighlightedDrone(drone)
-                          ? 'border-primary/50 ring-1 ring-primary/20'
+                          ? ''
                           : 'border-border opacity-85'
                       }`}
                     >
@@ -374,7 +374,6 @@ const FleetMapPage: React.FC = () => {
                         {getStatusBadge(drone.status)}
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="h-4 w-4 rounded-sm border-2 border-emerald-500" />
                         <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
                           <div
                             className={`h-full ${getBatteryBarColor(drone.battery)}`}
