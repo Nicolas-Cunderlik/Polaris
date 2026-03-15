@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/api';
+import { getDrones, getNodes, getMLForecast, subscribeToDrones, subscribeToNodes } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
 import { loadMockScenario } from '@/lib/mockData';
 import type { DroneWithCompany, Node } from '@/types/database';
@@ -15,54 +15,6 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
 type HeatCell = { lat: number; lng: number; intensity: number };
-
-const transpose = (matrix: number[][]) => matrix[0].map((_, i) => matrix.map((row) => row[i]));
-const matmul = (a: number[][], b: number[][]) =>
-  a.map((row) => b[0].map((_, j) => row.reduce((sum, val, k) => sum + val * b[k][j], 0)));
-
-const invert = (matrix: number[][]) => {
-  const n = matrix.length;
-  const aug = matrix.map((row, i) => [
-    ...row,
-    ...Array.from({ length: n }, (_, j) => (i === j ? 1 : 0)),
-  ]);
-
-  for (let col = 0; col < n; col += 1) {
-    let pivot = col;
-    for (let row = col + 1; row < n; row += 1) {
-      if (Math.abs(aug[row][col]) > Math.abs(aug[pivot][col])) pivot = row;
-    }
-    if (Math.abs(aug[pivot][col]) < 1e-10) return null;
-    if (pivot !== col) {
-      const tmp = aug[col];
-      aug[col] = aug[pivot];
-      aug[pivot] = tmp;
-    }
-    const pivotVal = aug[col][col];
-    aug[col] = aug[col].map((v) => v / pivotVal);
-    for (let row = 0; row < n; row += 1) {
-      if (row === col) continue;
-      const factor = aug[row][col];
-      aug[row] = aug[row].map((v, i) => v - factor * aug[col][i]);
-    }
-  }
-
-  return aug.map((row) => row.slice(n));
-};
-
-const fitLinearRegression = (x: number[][], y: number[][], ridge = 1e-3) => {
-  const xt = transpose(x);
-  const xtx = matmul(xt, x);
-  for (let i = 0; i < xtx.length; i += 1) {
-    xtx[i][i] += ridge;
-  }
-  const xty = matmul(xt, y);
-  const inv = invert(xtx);
-  if (!inv) return null;
-  return matmul(inv, xty);
-};
-
-const predictLinearRegression = (x: number[][], coeffs: number[][]) => matmul(x, coeffs);
 
 const FleetMapPage: React.FC = () => {
   const [drones, setDrones] = useState<DroneWithCompany[]>([]);
@@ -86,10 +38,12 @@ const FleetMapPage: React.FC = () => {
   const [heatCells, setHeatCells] = useState<Array<{ lat: number; lng: number; intensity: number }>>(
     []
   );
+  const [dynamicRoutes, setDynamicRoutes] = useState<Map<string, Array<[number, number]>>>(
+    new Map()
+  );
   const mockStateRef = useRef<Map<string, { battery: number }>>(new Map());
   const mockLastTickRef = useRef<number>(0);
   const mockStartRef = useRef<number>(0);
-  const hotspotsRef = useRef<Array<{ lat: number; lng: number; intensity: number }>>([]);
   const { profile } = useAuth();
   const mockEnabled = import.meta.env.VITE_ML_MOCK === '1';
 
@@ -268,7 +222,11 @@ const FleetMapPage: React.FC = () => {
       });
     }
 
-    const isPointInPolygon = (lat: number, lng: number, points: Array<{ lat: number; lng: number }>) => {
+    const isPointInPolygon = (
+      lat: number,
+      lng: number,
+      points: Array<{ lat: number; lng: number }>
+    ) => {
       let inside = false;
       for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
         const xi = points[i].lng;
@@ -292,24 +250,6 @@ const FleetMapPage: React.FC = () => {
         }
         return isPointInPolygon(lat, lng, zone.points);
       });
-
-    const avoidHotspots = (lat: number, lng: number) => {
-      const hotspots = hotspotsRef.current;
-      if (hotspots.length === 0) return { lat, lng };
-      let pushLat = 0;
-      let pushLng = 0;
-      hotspots.forEach((hotspot) => {
-        const dLat = lat - hotspot.lat;
-        const dLng = lng - hotspot.lng;
-        const dist = Math.hypot(dLat, dLng) || 0.0001;
-        if (dist < 0.025) {
-          const strength = (0.025 - dist) * (1 + hotspot.intensity);
-          pushLat += (dLat / dist) * strength * 0.25;
-          pushLng += (dLng / dist) * strength * 0.25;
-        }
-      });
-      return { lat: lat + pushLat, lng: lng + pushLng };
-    };
 
     const tick = () => {
       const now = performance.now();
@@ -347,12 +287,36 @@ const FleetMapPage: React.FC = () => {
         let lat = from.lat + (to.lat - from.lat) * segProgress;
         let lng = from.lng + (to.lng - from.lng) * segProgress;
 
-        const nudged = avoidHotspots(lat, lng);
-        lat = nudged.lat;
-        lng = nudged.lng;
+        const dynamicPath = dynamicRoutes.get(drone.id);
+        if (dynamicPath && dynamicPath.length > 1) {
+          const pathLengths: number[] = [];
+          let total = 0;
+          for (let i = 0; i < dynamicPath.length - 1; i += 1) {
+            const [x1, y1] = dynamicPath[i];
+            const [x2, y2] = dynamicPath[i + 1];
+            const seg = Math.hypot(x2 - x1, y2 - y1);
+            total += seg;
+            pathLengths.push(seg);
+          }
+          const targetDist = total * segProgress;
+          let walked = 0;
+          for (let i = 0; i < pathLengths.length; i += 1) {
+            const seg = pathLengths[i];
+            if (walked + seg >= targetDist) {
+              const local = (targetDist - walked) / (seg || 1);
+              const [x1, y1] = dynamicPath[i];
+              const [x2, y2] = dynamicPath[i + 1];
+              lat = x1 + (x2 - x1) * local;
+              lng = y1 + (y2 - y1) * local;
+              break;
+            }
+            walked += seg;
+          }
+        }
+
         if (isInRisk(lat, lng)) {
-          lat += (Math.random() - 0.5) * 0.01;
-          lng += (Math.random() - 0.5) * 0.01;
+          lat += (Math.random() - 0.5) * 0.003;
+          lng += (Math.random() - 0.5) * 0.003;
         }
 
         const rawStatus = segProgress >= 0.9 ? to.status : from.status;
@@ -397,171 +361,181 @@ const FleetMapPage: React.FC = () => {
   }, [mockEnabled, mockScenario]);
 
   useEffect(() => {
-    if (!mockEnabled || !mockScenario) return;
+    const mlNodes = mockEnabled ? mockScenario?.nodes : nodes;
+    const mlDrones = mockEnabled ? mockDrones : drones;
+    if (!mlNodes || mlNodes.length === 0 || !mlDrones || mlDrones.length === 0) return;
 
-    const flightPlans = new Map(
-      mockScenario.flight_plans.map((plan) => [plan.drone_id, plan.waypoints])
-    );
+    const flightPlans = mockScenario
+      ? new Map(mockScenario.flight_plans.map((plan) => [plan.drone_id, plan.waypoints]))
+      : new Map();
     const speedScale = 2;
-    const horizonSec = 10 * speedScale; // predict ~10 simulated minutes ahead
 
-    const distance = (a: { lat: number; lng: number }, b: { lat: number; lng: number }) =>
-      Math.hypot(a.lat - b.lat, a.lng - b.lng);
-
-    const riskProximity = (point: { lat: number; lng: number }) => {
-      let closest = 1;
-      mockScenario.risk_zones.forEach((zone) => {
-        if (zone.type === 'circle') {
-          const d = Math.hypot(point.lat - zone.center.lat, point.lng - zone.center.lng);
-          closest = Math.min(closest, d);
-        } else {
-          zone.points.forEach((p) => {
-            const d = Math.hypot(point.lat - p.lat, point.lng - p.lng);
-            closest = Math.min(closest, d);
-          });
-        }
-      });
-      return Math.min(1, Math.max(0, (0.06 - closest) / 0.06));
+    const distancePointToSegment = (
+      p: { lat: number; lng: number },
+      a: { lat: number; lng: number },
+      b: { lat: number; lng: number }
+    ) => {
+      const ax = a.lng;
+      const ay = a.lat;
+      const bx = b.lng;
+      const by = b.lat;
+      const px = p.lng;
+      const py = p.lat;
+      const dx = bx - ax;
+      const dy = by - ay;
+      const lenSq = dx * dx + dy * dy || 1;
+      let t = ((px - ax) * dx + (py - ay) * dy) / lenSq;
+      t = Math.max(0, Math.min(1, t));
+      const lx = ax + t * dx;
+      const ly = ay + t * dy;
+      return Math.hypot(px - lx, py - ly);
     };
 
-    const predictPositionAt = (waypoints: Array<{ lat: number; lng: number; eta: number }>, elapsedSec: number) => {
-      const totalDuration = (waypoints[waypoints.length - 1]?.eta || 1) * speedScale || 1;
-      const t = elapsedSec % totalDuration;
-      let idx = 0;
-      for (let i = 0; i < waypoints.length - 1; i += 1) {
-        const startEta = waypoints[i].eta * speedScale;
-        const endEta = waypoints[i + 1].eta * speedScale;
-        if (t >= startEta && t <= endEta) {
-          idx = i;
-          break;
+    const isInRisk = (lat: number, lng: number) => {
+      if (!mockScenario) return false;
+      return mockScenario.risk_zones.some((zone) => {
+        if (zone.type === 'circle') {
+          const dLat = lat - zone.center.lat;
+          const dLng = lng - zone.center.lng;
+          const dist = Math.sqrt(dLat * dLat + dLng * dLng) * 111000;
+          return dist <= zone.radius_m + 350;
+        }
+        return zone.points.some((point) => Math.hypot(point.lat - lat, point.lng - lng) < 0.004);
+      });
+    };
+
+    const findNearestNode = (lat: number, lng: number) => {
+      let nearest = mlNodes[0];
+      let minDist = Math.hypot(nearest.lat - lat, nearest.lng - lng);
+      for (const node of mlNodes) {
+        const dist = Math.hypot(node.lat - lat, node.lng - lng);
+        if (dist < minDist) {
+          minDist = dist;
+          nearest = node;
         }
       }
-      const from = waypoints[idx];
-      const to = waypoints[Math.min(idx + 1, waypoints.length - 1)];
-      const segStart = from.eta * speedScale;
-      const segEnd = Math.max(segStart + 0.001, to.eta * speedScale);
-      const segProgress = Math.min(1, Math.max(0, (t - segStart) / (segEnd - segStart)));
-      return {
-        lat: from.lat + (to.lat - from.lat) * segProgress,
-        lng: from.lng + (to.lng - from.lng) * segProgress,
-      };
+      return nearest;
     };
 
-    const buildHeat = () => {
-      const elapsedSec = (performance.now() - mockStartRef.current) / 1000;
-      const futurePositions: Array<{ lat: number; lng: number }> = [];
-      mockScenario.drones.forEach((drone) => {
-        const waypoints = flightPlans.get(drone.id);
-        if (!waypoints || waypoints.length < 2) return;
-        futurePositions.push(predictPositionAt(waypoints, elapsedSec + horizonSec));
-      });
+    const buildHeat = async () => {
+      try {
+        const forecast = await getMLForecast({ nodes: mlNodes, drones: mlDrones });
+        const points: Array<{ lat: number; lng: number; weight: number }> = [
+          ...mlDrones.map((drone) => ({ lat: drone.lat, lng: drone.lng, weight: 1.2 })),
+        ];
 
-      const densityRadius = 0.025;
-      const nodeFeatures: number[][] = [];
-      const nodeTargets: number[][] = [];
+        forecast.hotspots.forEach((hotspot) => {
+          if (hotspot.intensity < 0.4) return;
+          const extra = Math.round(3 + hotspot.intensity * 6);
+          for (let i = 0; i < extra; i += 1) {
+            points.push({
+              lat: hotspot.lat + (Math.random() - 0.5) * 0.014,
+              lng: hotspot.lng + (Math.random() - 0.5) * 0.014,
+              weight: 0.6 + hotspot.intensity * 0.6,
+            });
+          }
+        });
 
-      mockScenario.nodes.forEach((node) => {
-        const baseLoad = node.current_load / Math.max(1, node.capacity);
-        const cap = node.capacity / 10;
-        const densityNow = mockDrones.filter((drone) => distance(drone, node) < densityRadius)
-          .length / Math.max(1, mockDrones.length);
-        const risk = riskProximity(node);
-        const target = Math.min(1, Math.max(0, baseLoad + densityNow * 0.9 + risk * 0.35));
-        nodeFeatures.push([1, baseLoad, cap, densityNow, risk]);
-        nodeTargets.push([target]);
-      });
+        const grid = new Map<string, { lat: number; lng: number; value: number }>();
+        const gridSize = 0.0045;
+        const sigma = 0.035;
+        const radiusCells = Math.ceil((sigma * 2) / gridSize);
 
-      const coeffs = fitLinearRegression(nodeFeatures, nodeTargets) ?? [
-        [0.0],
-        [0.6],
-        [0.1],
-        [0.9],
-        [0.3],
-      ];
-
-      const predictionFeatures: number[][] = [];
-      mockScenario.nodes.forEach((node) => {
-        const baseLoad = node.current_load / Math.max(1, node.capacity);
-        const cap = node.capacity / 10;
-        const densityFuture =
-          futurePositions.filter((pos) => distance(pos, node) < densityRadius).length /
-          Math.max(1, futurePositions.length);
-        const risk = riskProximity(node);
-        predictionFeatures.push([1, baseLoad, cap, densityFuture, risk]);
-      });
-
-      const preds = predictLinearRegression(predictionFeatures, coeffs).map((row) =>
-        Math.min(1, Math.max(0, row[0]))
-      );
-
-      const points: Array<{ lat: number; lng: number; weight: number }> = futurePositions.map((pos) => ({
-        ...pos,
-        weight: 1,
-      }));
-
-      mockScenario.nodes.forEach((node, idx) => {
-        const intensity = preds[idx];
-        if (intensity < 0.25) return;
-        const extra = Math.round(10 + intensity * 14);
-        for (let i = 0; i < extra; i += 1) {
-          points.push({
-            lat: node.lat + (Math.random() - 0.5) * 0.012,
-            lng: node.lng + (Math.random() - 0.5) * 0.012,
-            weight: 1.4 + intensity,
-          });
-        }
-      });
-
-      const grid = new Map<string, { lat: number; lng: number; value: number }>();
-      const gridSize = 0.005;
-      const sigma = 0.028;
-      const radiusCells = Math.ceil((sigma * 2) / gridSize);
-
-      points.forEach((point) => {
-        const baseLat = Math.round(point.lat / gridSize) * gridSize;
-        const baseLng = Math.round(point.lng / gridSize) * gridSize;
-        for (let dx = -radiusCells; dx <= radiusCells; dx += 1) {
-          for (let dy = -radiusCells; dy <= radiusCells; dy += 1) {
-            const lat = baseLat + dx * gridSize;
-            const lng = baseLng + dy * gridSize;
-            const dist = Math.hypot(lat - point.lat, lng - point.lng);
-            const kernel = Math.exp(-(dist * dist) / (2 * sigma * sigma)) * point.weight;
-            if (kernel < 0.01) continue;
-            const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
-            const existing = grid.get(key);
-            if (existing) {
-              existing.value += kernel;
-            } else {
-              grid.set(key, { lat, lng, value: kernel });
+        points.forEach((point) => {
+          const baseLat = Math.round(point.lat / gridSize) * gridSize;
+          const baseLng = Math.round(point.lng / gridSize) * gridSize;
+          for (let dx = -radiusCells; dx <= radiusCells; dx += 1) {
+            for (let dy = -radiusCells; dy <= radiusCells; dy += 1) {
+              const lat = baseLat + dx * gridSize;
+              const lng = baseLng + dy * gridSize;
+              const dist = Math.hypot(lat - point.lat, lng - point.lng);
+              const kernel = Math.exp(-(dist * dist) / (2 * sigma * sigma)) * point.weight;
+              if (kernel < 0.008) continue;
+              const key = `${lat.toFixed(4)}|${lng.toFixed(4)}`;
+              const existing = grid.get(key);
+              if (existing) {
+                existing.value += kernel;
+              } else {
+                grid.set(key, { lat, lng, value: kernel });
+              }
             }
           }
-        }
-      });
+        });
 
-      const values = Array.from(grid.values()).map((cell) => cell.value);
-      const maxValue = values.length > 0 ? Math.max(...values) : 1;
+        const values = Array.from(grid.values()).map((cell) => cell.value);
+        const maxValue = values.length > 0 ? Math.max(...values) : 1;
 
-      const cells: HeatCell[] = [];
-      const hotspots: HeatCell[] = [];
-      grid.forEach((cell) => {
-        const intensity = Math.min(1, cell.value / maxValue);
-        if (intensity < 0.06) return;
-        const heatCell = { lat: cell.lat, lng: cell.lng, intensity };
-        cells.push(heatCell);
-        if (intensity > 0.72) hotspots.push(heatCell);
-      });
+        const cells: HeatCell[] = [];
+        const hotspots = forecast.hotspots;
+        grid.forEach((cell) => {
+          const intensity = Math.min(1, cell.value / maxValue);
+          if (intensity < 0.05) return;
+          cells.push({ lat: cell.lat, lng: cell.lng, intensity });
+        });
 
-      hotspotsRef.current = hotspots;
-      setHeatCells(cells);
+        setHeatCells(cells);
+        const routeMap = new Map<string, Array<[number, number]>>();
+        mlDrones.forEach((drone) => {
+          const current = { lat: drone.lat, lng: drone.lng };
+          let target = current;
+
+          if (mockScenario) {
+            const waypoints = flightPlans.get(drone.id);
+            if (waypoints && waypoints.length > 1) {
+              const totalDuration = (waypoints[waypoints.length - 1].eta || 1) * speedScale || 1;
+              const t = ((performance.now() - mockStartRef.current) / 1000) % totalDuration;
+              for (let i = 0; i < waypoints.length - 1; i += 1) {
+                const startEta = waypoints[i].eta * speedScale;
+                const endEta = waypoints[i + 1].eta * speedScale;
+                if (t >= startEta && t <= endEta) {
+                  target = waypoints[i + 1];
+                  break;
+                }
+              }
+            }
+          } else {
+            const nearest = findNearestNode(drone.lat, drone.lng);
+            target = nearest ? { lat: nearest.lat, lng: nearest.lng } : current;
+          }
+
+          const path: Array<[number, number]> = [[current.lat, current.lng]];
+          let detour: { lat: number; lng: number } | null = null;
+          for (const hotspot of hotspots) {
+            if (distancePointToSegment(hotspot, current, target) < 0.02) {
+              const dx = target.lng - current.lng;
+              const dy = target.lat - current.lat;
+              const len = Math.hypot(dx, dy) || 0.0001;
+              const nx = -dy / len;
+              const ny = dx / len;
+              const offset = 0.02 + hotspot.intensity * 0.02;
+              const candidate = {
+                lat: (current.lat + target.lat) / 2 + ny * offset,
+                lng: (current.lng + target.lng) / 2 + nx * offset,
+              };
+              if (!isInRisk(candidate.lat, candidate.lng)) {
+                detour = candidate;
+                break;
+              }
+            }
+          }
+          if (detour) {
+            path.push([detour.lat, detour.lng]);
+          }
+          path.push([target.lat, target.lng]);
+          routeMap.set(drone.id, path);
+        });
+
+        setDynamicRoutes(routeMap);
+      } catch (error) {
+        console.error('ML forecast error:', error);
+      }
     };
 
     const interval = setInterval(buildHeat, 10000);
     buildHeat();
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, [mockEnabled, mockScenario, mockDrones]);
+    return () => clearInterval(interval);
+  }, [mockEnabled, mockScenario, mockDrones, nodes, drones]);
 
   useEffect(() => {
     const L = (window as any).L;
@@ -595,15 +569,25 @@ const FleetMapPage: React.FC = () => {
     riskLayer.addTo(map);
 
     const flightLayer = L.layerGroup();
-    mockScenario.flight_plans.forEach((plan) => {
-      const points = plan.waypoints.map((point) => [point.lat, point.lng]);
-      L.polyline(points, {
-        color: plan.rerouted ? '#f97316' : '#2563eb',
-        weight: 1.5,
-        opacity: 0.2,
-        dashArray: plan.rerouted ? '4 6' : undefined,
-      }).addTo(flightLayer);
-    });
+    if (dynamicRoutes.size > 0) {
+      dynamicRoutes.forEach((points) => {
+        L.polyline(points, {
+          color: '#2563eb',
+          weight: 2,
+          opacity: 0.35,
+        }).addTo(flightLayer);
+      });
+    } else {
+      mockScenario.flight_plans.forEach((plan) => {
+        const points = plan.waypoints.map((point) => [point.lat, point.lng]);
+        L.polyline(points, {
+          color: plan.rerouted ? '#f97316' : '#2563eb',
+          weight: 1.5,
+          opacity: 0.2,
+          dashArray: plan.rerouted ? '4 6' : undefined,
+        }).addTo(flightLayer);
+      });
+    }
     flightLayer.addTo(map);
 
     const heatLayer = L.layerGroup();
@@ -623,7 +607,7 @@ const FleetMapPage: React.FC = () => {
     heatLayer.addTo(map);
 
     overlayLayersRef.current = { risk: riskLayer, flights: flightLayer, heat: heatLayer };
-  }, [mockEnabled, mockScenario, showOverlays, mapReady, heatCells]);
+  }, [mockEnabled, mockScenario, showOverlays, mapReady, heatCells, dynamicRoutes]);
 
   useEffect(() => {
     const L = (window as any).L;

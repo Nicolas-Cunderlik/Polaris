@@ -30,6 +30,7 @@ import {
   createTransaction,
   getNetworkMetrics,
 } from './store.js';
+import { buildForecast } from './ml.js';
 
 const app = express();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -306,6 +307,16 @@ app.get('/api/metrics', async (_req, res, next) => {
   try {
     const metrics = await getNetworkMetrics();
     res.json(metrics);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/ml/forecast', async (req, res, next) => {
+  try {
+    const { nodes, drones } = req.body ?? {};
+    const forecast = await buildForecast({ nodes, drones });
+    res.json(forecast);
   } catch (error) {
     next(error);
   }

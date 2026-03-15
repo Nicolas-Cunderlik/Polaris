@@ -221,6 +221,38 @@ export const getNetworkMetrics = async (): Promise<NetworkMetrics> => {
   return apiFetch<NetworkMetrics>('/api/metrics');
 };
 
+export interface MLForecastPrediction {
+  node_id: string;
+  congestion: number;
+}
+
+export interface MLForecastHotspot {
+  node_id: string;
+  lat: number;
+  lng: number;
+  intensity: number;
+}
+
+export interface MLForecast {
+  predictions: MLForecastPrediction[];
+  hotspots: MLForecastHotspot[];
+  generated_at: string;
+  model: {
+    weights: number[];
+    last_trained_at: string | null;
+  };
+}
+
+export const getMLForecast = async (payload?: {
+  nodes?: Node[];
+  drones?: Drone[];
+}): Promise<MLForecast> => {
+  return apiFetch<MLForecast>('/api/ml/forecast', {
+    method: 'POST',
+    body: JSON.stringify(payload ?? {}),
+  });
+};
+
 export interface AIRecommendation {
   title: string;
   description: string;
