@@ -478,16 +478,20 @@ export const deleteDrone = async (id) => {
   return false;
 };
 
-export const getTransactions = async (limit = 50) => {
+export const getTransactions = async (limit = 50, companyId = null) => {
   const transactions =
     (await withCollection('transactions', (collection) =>
       collection
-        .find({}, { projection: { _id: 0 } })
+        .find(
+          companyId ? { company_id: companyId } : {},
+          { projection: { _id: 0 } }
+        )
         .sort({ timestamp: -1 })
         .limit(limit)
         .toArray()
     )) ??
     [...memoryStore.transactions]
+      .filter((transaction) => (companyId ? transaction.company_id === companyId : true))
       .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
       .slice(0, limit);
 
@@ -525,7 +529,7 @@ export const getNetworkMetrics = async (companyId = null) => {
   const [nodes, drones, transactions] = await Promise.all([
     getNodes(),
     getDrones(),
-    getTransactions(500),
+    getTransactions(500, companyId),
   ]);
 
   const scopedDrones = companyId

@@ -297,7 +297,11 @@ app.delete('/api/drones/:id', async (req, res, next) => {
 app.get('/api/transactions', async (req, res, next) => {
   try {
     const limit = Number(req.query.limit) || 50;
-    const transactions = await getTransactions(limit);
+    const companyId =
+      typeof req.query.company_id === 'string' && req.query.company_id.trim().length > 0
+        ? req.query.company_id.trim()
+        : null;
+    const transactions = await getTransactions(limit, companyId);
     res.json(transactions);
   } catch (error) {
     next(error);

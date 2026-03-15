@@ -195,8 +195,19 @@ export const updateDronePosition = async (
 };
 
 // Transactions API
-export const getTransactions = async (limit = 50): Promise<TransactionWithDetails[]> => {
-  return apiFetch<TransactionWithDetails[]>(`/api/transactions?limit=${limit}`);
+const resolveCompanyId = (companyContext?: CompanyContext): string | null => {
+  return companyContext?.id ?? companyContext?.company_id ?? null;
+};
+
+export const getTransactions = async (
+  limit = 50,
+  companyContext?: CompanyContext
+): Promise<TransactionWithDetails[]> => {
+  const companyId = resolveCompanyId(companyContext);
+  const suffix = companyId
+    ? `/api/transactions?limit=${limit}&company_id=${encodeURIComponent(companyId)}`
+    : `/api/transactions?limit=${limit}`;
+  return apiFetch<TransactionWithDetails[]>(suffix);
 };
 
 export const createTransaction = async (
@@ -223,7 +234,7 @@ export interface CompanyContext {
 }
 
 export const getNetworkMetrics = async (companyContext?: CompanyContext): Promise<NetworkMetrics> => {
-  const companyId = companyContext?.id ?? companyContext?.company_id ?? null;
+  const companyId = resolveCompanyId(companyContext);
   const suffix = companyId ? `?company_id=${encodeURIComponent(companyId)}` : '';
   return apiFetch<NetworkMetrics>(`/api/metrics${suffix}`);
 };
@@ -238,11 +249,6 @@ export interface AIRecommendation {
 export interface AIAnalysis {
   recommendations: AIRecommendation[];
   summary: string;
-}
-
-export interface CompanyContext {
-  id?: string | null;
-  name?: string | null;
 }
 
 export const generateAIAnalysis = async (
@@ -300,8 +306,11 @@ export const subscribeToDrones = (callback: (payload: SyncPayload<DroneWithCompa
   return createPollingSubscription(getDrones, callback);
 };
 
-export const subscribeToTransactions = (callback: (payload: SyncPayload<TransactionWithDetails[]>) => void): RealtimeSubscription => {
-  return createPollingSubscription(() => getTransactions(100), callback, 6000);
+export const subscribeToTransactions = (
+  callback: (payload: SyncPayload<TransactionWithDetails[]>) => void,
+  companyContext?: CompanyContext
+): RealtimeSubscription => {
+  return createPollingSubscription(() => getTransactions(100, companyContext), callback, 6000);
 };
 
 export const subscribeToNodes = (callback: (payload: SyncPayload<Node[]>) => void): RealtimeSubscription => {
