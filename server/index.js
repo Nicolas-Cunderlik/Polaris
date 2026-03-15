@@ -4,10 +4,13 @@ import cors from 'cors';
 import {
   getCompanies,
   getCompanyById,
+  createCompany,
   getProfiles,
   getProfileById,
+  getProfileByUsername,
   upsertProfile,
   updateProfile,
+  associateProfileCompany,
   getNodes,
   getNodeById,
   createNode,
@@ -32,7 +35,7 @@ const corsOrigins = (process.env.CORS_ORIGIN || '')
 const corsOptions = {
   origin: corsOrigins.length > 0 ? corsOrigins : true,
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-role'],
   optionsSuccessStatus: 204,
 };
 
@@ -50,6 +53,15 @@ app.get('/api/companies', async (_req, res, next) => {
     res.json(companies);
   } catch (error) {
     next(error);
+  }
+});
+
+app.post('/api/companies', async (req, res, next) => {
+  try {
+    const company = await createCompany(req.body?.name ?? '');
+    res.json(company);
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'Failed to create company.' });
   }
 });
 
@@ -80,6 +92,15 @@ app.get('/api/profiles/:id', async (req, res, next) => {
   }
 });
 
+app.get('/api/profiles/by-username/:username', async (req, res, next) => {
+  try {
+    const profile = await getProfileByUsername(req.params.username);
+    res.json(profile);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.post('/api/profiles', async (req, res, next) => {
   try {
     const profile = await upsertProfile(req.body);
@@ -95,6 +116,15 @@ app.patch('/api/profiles/:id', async (req, res, next) => {
     res.json({ ok: true });
   } catch (error) {
     next(error);
+  }
+});
+
+app.post('/api/profiles/:id/company', async (req, res, next) => {
+  try {
+    const profile = await associateProfileCompany(req.params.id, req.body?.company_id);
+    res.json(profile);
+  } catch (error) {
+    res.status(400).json({ error: error.message || 'Failed to associate company.' });
   }
 });
 
@@ -118,6 +148,11 @@ app.get('/api/nodes/:id', async (req, res, next) => {
 
 app.post('/api/nodes', async (req, res, next) => {
   try {
+    const userRole = req.headers['x-user-role'];
+    if (userRole !== 'admin') {
+      res.status(403).json({ error: 'Only admins can create nodes.' });
+      return;
+    }
     const node = await createNode(req.body);
     res.json(node);
   } catch (error) {
@@ -169,7 +204,16 @@ app.post('/api/drones', async (req, res, next) => {
       enterprise: 2.5,
     };
 
+    const userRole = req.headers['x-user-role'];
+    if (userRole === 'admin') {
+      res.status(403).json({ error: 'Admins cannot register drones.' });
+      return;
+    }
     const { tier = 'starter', ...payload } = req.body ?? {};
+    if (!payload?.company_id) {
+      res.status(400).json({ error: 'Company association is required to register drones.' });
+      return;
+    }
     const drone = await createDrone(payload);
 
     const amountSol = tierPricing[tier] ?? tierPricing.starter;
@@ -228,30 +272,88 @@ app.get('/api/metrics', async (_req, res, next) => {
 app.post('/api/ai-analytics', async (req, res, next) => {
   try {
     const { networkData } = req.body ?? {};
-    const summary = networkData
-      ? `Network health looks stable with ${networkData.total_drones} active drones and ${networkData.total_nodes} nodes.`
-      : 'Network health summary is unavailable.';
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      res.json({
+        summary: 'AI analysis is not configured yet. Add GEMINI_API_KEY to enable it.',
+        recommendations: [],
+      });
+      return;
+    }
 
-    const recommendations = [
-      {
-        title: 'Rebalance charging loads',
-        description: `Shift traffic away from ${networkData?.most_congested_node ?? 'the busiest node'} to reduce congestion.`,
-        impact: 'Lower queue times by 8-12%',
-        priority: 'high',
+    const model = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+
+    const responseSchema = {
+      type: 'object',
+      properties: {
+        summary: { type: 'string' },
+        recommendations: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              title: { type: 'string' },
+              description: { type: 'string' },
+              impact: { type: 'string' },
+              priority: { type: 'string', enum: ['high', 'medium', 'low'] },
+            },
+            required: ['title', 'description', 'impact', 'priority'],
+          },
+        },
       },
-      {
-        title: 'Schedule proactive maintenance',
-        description: 'Rotate drones with low battery and prioritize charging slots for them.',
-        impact: 'Reduce battery-related delays by ~10%',
-        priority: 'medium',
+      required: ['summary', 'recommendations'],
+    };
+
+    const prompt = [
+      'You are an operations analyst for a drone fleet platform.',
+      'Return JSON that matches the provided schema.',
+      'Use concise, actionable language.',
+      '',
+      'Network data:',
+      JSON.stringify(networkData ?? {}, null, 2),
+    ].join('\n');
+
+    const geminiResponse = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey,
       },
-      {
-        title: 'Optimize delivery windows',
-        description: 'Batch deliveries during lower congestion periods.',
-        impact: 'Improve deliveries per hour by 5-7%',
-        priority: 'low',
-      },
-    ];
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseJsonSchema: responseSchema,
+        },
+      }),
+    });
+
+    if (!geminiResponse.ok) {
+      const errorText = await geminiResponse.text();
+      throw new Error(`Gemini API error: ${geminiResponse.status} ${errorText}`);
+    }
+
+    const payload = await geminiResponse.json();
+    const text = payload?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+    if (!text) {
+      throw new Error('Gemini response missing content text.');
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error('Gemini returned non-JSON output.');
+    }
+
+    const summary = typeof parsed?.summary === 'string' ? parsed.summary : 'No summary provided.';
+    const recommendations = Array.isArray(parsed?.recommendations) ? parsed.recommendations : [];
 
     res.json({ summary, recommendations });
   } catch (error) {
@@ -261,11 +363,11 @@ app.post('/api/ai-analytics', async (req, res, next) => {
 
 app.post('/api/text-to-speech', async (req, res, next) => {
   try {
-    const apiKey = process.env.INTEGRATIONS_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       res.json({
         audioBase64: null,
-        message: 'INTEGRATIONS_API_KEY not configured yet. Add it to enable TTS.',
+        message: 'GEMINI_API_KEY not configured yet. Add it to enable TTS.',
       });
       return;
     }

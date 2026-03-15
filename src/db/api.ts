@@ -24,6 +24,20 @@ export const getCompanies = async (): Promise<Company[]> => {
   return apiFetch<Company[]>('/api/companies');
 };
 
+export const createCompany = async (name: string): Promise<Company> => {
+  return apiFetch<Company>('/api/companies', {
+    method: 'POST',
+    body: JSON.stringify({ name }),
+  });
+};
+
+export const associateProfileCompany = async (profileId: string, companyId: string): Promise<Profile> => {
+  return apiFetch<Profile>(`/api/profiles/${profileId}/company`, {
+    method: 'POST',
+    body: JSON.stringify({ company_id: companyId }),
+  });
+};
+
 export const getCompanyById = async (id: string): Promise<Company | null> => {
   return apiFetch<Company | null>(`/api/companies/${id}`);
 };
@@ -31,6 +45,10 @@ export const getCompanyById = async (id: string): Promise<Company | null> => {
 // Profiles API
 export const getProfileById = async (id: string): Promise<Profile | null> => {
   return apiFetch<Profile | null>(`/api/profiles/${id}`);
+};
+
+export const getProfileByUsername = async (username: string): Promise<Profile | null> => {
+  return apiFetch<Profile | null>(`/api/profiles/by-username/${encodeURIComponent(username)}`);
 };
 
 export const getAllProfiles = async (): Promise<Profile[]> => {
@@ -60,9 +78,13 @@ export const getNodeById = async (id: string): Promise<Node | null> => {
   return apiFetch<Node | null>(`/api/nodes/${id}`);
 };
 
-export const createNode = async (node: Omit<Node, 'id' | 'created_at' | 'current_load'>): Promise<Node> => {
+export const createNode = async (
+  node: Omit<Node, 'id' | 'created_at' | 'current_load'>,
+  role: string | null
+): Promise<Node> => {
   return apiFetch<Node>('/api/nodes', {
     method: 'POST',
+    headers: role ? { 'x-user-role': role } : undefined,
     body: JSON.stringify(node),
   });
 };
@@ -92,7 +114,7 @@ export const updateDrone = async (id: string, updates: Partial<Drone>): Promise<
 
 export interface DroneRegistrationPayload {
   name: string;
-  company_id: string | null;
+  company_id: string;
   tier: 'starter' | 'pro' | 'enterprise';
   lat?: number;
   lng?: number;
@@ -104,9 +126,13 @@ export interface DroneRegistrationResponse {
   amount_sol: number;
 }
 
-export const registerDrone = async (payload: DroneRegistrationPayload): Promise<DroneRegistrationResponse> => {
+export const registerDrone = async (
+  payload: DroneRegistrationPayload,
+  role: string | null
+): Promise<DroneRegistrationResponse> => {
   return apiFetch<DroneRegistrationResponse>('/api/drones', {
     method: 'POST',
+    headers: role ? { 'x-user-role': role } : undefined,
     body: JSON.stringify(payload),
   });
 };
