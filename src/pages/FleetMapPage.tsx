@@ -246,7 +246,7 @@ const FleetMapPage: React.FC = () => {
       <div className="container mx-auto p-4 space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold gradient-text">Live Fleet Map</h1>
+            <h1 className="text-3xl font-bold gradient-text">Local Cluster Monitoring</h1>
             <p className="text-muted-foreground">Real-time drone fleet monitoring</p>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">

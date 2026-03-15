@@ -58,10 +58,6 @@ export interface DroneWithCompany extends Drone {
   company?: Company;
 }
 
-export interface NodeWithCompany extends Node {
-  owner_company?: Company;
-}
-
 export interface TransactionWithDetails extends Transaction {
   drone?: Drone;
   node?: Node;

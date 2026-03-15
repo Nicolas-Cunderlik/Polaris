@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Building2, BadgeCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-import { associateProfileCompany, createCompany, getCompanies } from '@/db/api';
+import { associateProfileCompany, createCompany, getCompanies, leaveCompany } from '@/db/api';
 import type { Company } from '@/types/database';
 
 const UserSettingsPage: React.FC = () => {
@@ -18,6 +18,7 @@ const UserSettingsPage: React.FC = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState('');
   const [newCompanyName, setNewCompanyName] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     loadCompanies();
@@ -76,6 +77,21 @@ const UserSettingsPage: React.FC = () => {
     }
   };
 
+  const handleLeaveCompany = async () => {
+    if (!profile?.id || !profile?.company_id) return;
+
+    setLeaving(true);
+    try {
+      await leaveCompany(profile.id);
+      await refreshProfile();
+      toast.success('You have left the company');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to leave company');
+    } finally {
+      setLeaving(false);
+    }
+  };
+
   const currentCompany = companies.find((company) => company.id === profile?.company_id);
 
   return (
@@ -95,9 +111,20 @@ const UserSettingsPage: React.FC = () => {
           </CardHeader>
           <CardContent>
             {profile?.company_id ? (
-              <div className="text-sm">
-                <div className="font-medium">{currentCompany?.name || 'Assigned company'}</div>
-                <div className="text-xs text-muted-foreground">Company registration is locked.</div>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <div className="font-medium">{currentCompany?.name || 'Assigned company'}</div>
+                  <div className="text-xs text-muted-foreground">
+                    You can leave the company without affecting its data.
+                  </div>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={handleLeaveCompany}
+                  disabled={leaving}
+                >
+                  {leaving ? 'Leaving...' : 'Leave Company'}
+                </Button>
               </div>
             ) : (
               <div className="text-sm text-muted-foreground">
