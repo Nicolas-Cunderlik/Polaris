@@ -53,25 +53,32 @@ const corsOrigins = (process.env.CORS_ORIGIN || '')
   .filter(Boolean);
 
 const corsOptions = {
-  origin: corsOrigins.length > 0 ? corsOrigins : true,
+  origin: true,
   methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-role'],
-  exposedHeaders: ['Content-Length', 'X-Requested-With'],
-  optionsSuccessStatus: 204,
-  credentials: false,
+  allowedHeaders: ['*'],
+  exposedHeaders: ['*'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  preflightContinue: false,
 };
 
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin && (corsOrigins.length === 0 || corsOrigins.includes(origin))) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  } else if (corsOrigins.length === 0) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-  }
+  const origin = req.headers.origin || '*';
+  console.debug('CORS DEBUG: request origin=', origin, 'method=', req.method, 'path=', req.path);
+  res.setHeader('Access-Control-Allow-Origin', origin === 'null' ? '*' : origin);
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,x-user-role');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization,x-user-role,*');
+  res.setHeader('Access-Control-Expose-Headers', 'Content-Length,ETag,*');
+  res.setHeader('Access-Control-Max-Age', '86400');
+  if (req.method === 'OPTIONS') {
+    console.debug('CORS DEBUG: preflight response for', req.path);
+    res.status(204).send('');
+    return;
+  }
   next();
 });
+
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '2mb' }));
