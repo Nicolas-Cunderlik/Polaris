@@ -3,11 +3,13 @@ import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Switch } from '@/components/ui/switch';
 import { getDrones, getNodes, subscribeToDrones, subscribeToNodes } from '@/db/api';
 import { runSimulation } from '@/lib/simulation';
 import type { DroneWithCompany, Node } from '@/types/database';
 import { Zap, MapPin, Activity } from 'lucide-react';
 import { createDroneIcon, createNodeIcon } from '@/lib/leafletIcons';
+import { getRouteColor } from '@/lib/routeColors';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -20,12 +22,14 @@ const FleetMapPage: React.FC = () => {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMapRef = useRef<any>(null);
   const droneMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneRoutesRef = useRef<Map<string, any>>(new Map());
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
   const droneAnimationRef = useRef<Map<string, number>>(new Map());
   const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
   const hasFitBoundsRef = useRef(false);
   const [leafletReady, setLeafletReady] = useState(true);
   const [mapReady, setMapReady] = useState(false);
+  const [showRoutes, setShowRoutes] = useState(true);
   const { profile } = useAuth();
 
   const ownCompanyId = profile?.role === 'admin' ? null : profile?.company_id ?? null;
@@ -206,6 +210,61 @@ const FleetMapPage: React.FC = () => {
   useEffect(() => {
     const L = (window as any).L;
     const map = leafletMapRef.current;
+    if (!L || !map || !mapReady) return;
+
+    if (!showRoutes) {
+      droneRoutesRef.current.forEach((routeLine) => {
+        routeLine.remove();
+      });
+      droneRoutesRef.current.clear();
+      return;
+    }
+
+    const nextIds = new Set(displayDrones.map((drone) => drone.id));
+    droneRoutesRef.current.forEach((routeLine, id) => {
+      if (!nextIds.has(id)) {
+        routeLine.remove();
+        droneRoutesRef.current.delete(id);
+      }
+    });
+
+    displayDrones.forEach((drone) => {
+      const waypoints = drone.route_waypoints ?? [];
+      const existing = droneRoutesRef.current.get(drone.id);
+
+      if (waypoints.length === 0) {
+        if (existing) {
+          existing.remove();
+          droneRoutesRef.current.delete(drone.id);
+        }
+        return;
+      }
+
+      const points = [
+        [drone.lat, drone.lng] as [number, number],
+        ...waypoints.map((point) => [point.lat, point.lng] as [number, number]),
+      ];
+      const color = getRouteColor(drone.id);
+      const dashArray = drone.route_intent === 'charging' ? '6 6' : undefined;
+
+      if (existing) {
+        existing.setLatLngs(points);
+        existing.setStyle({ color, dashArray });
+      } else {
+        const routeLine = L.polyline(points, {
+          color,
+          weight: 3,
+          opacity: 0.65,
+          dashArray,
+        }).addTo(map);
+        droneRoutesRef.current.set(drone.id, routeLine);
+      }
+    });
+  }, [displayDrones, mapReady, showRoutes]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
     if (!L || !map || !mapReady || hasFitBoundsRef.current) return;
 
     const points = [
@@ -295,6 +354,15 @@ const FleetMapPage: React.FC = () => {
                     Leaflet failed to load. Check the script include in index.html.
                   </div>
                 )}
+              </div>
+              <div className="mt-3 flex items-center justify-between rounded-lg border border-border px-3 py-2">
+                <div>
+                  <div className="text-sm font-medium">Show optimal paths</div>
+                  <div className="text-xs text-muted-foreground">
+                    Toggle planned drone routes on the map.
+                  </div>
+                </div>
+                <Switch checked={showRoutes} onCheckedChange={setShowRoutes} />
               </div>
               <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                 <div className="p-3 bg-muted rounded-lg">

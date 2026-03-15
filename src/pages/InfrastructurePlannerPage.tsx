@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import {
   getCompanies,
   getDrones,
@@ -20,6 +21,7 @@ import type { Node, DroneWithCompany, Company } from '@/types/database';
 import { Network, Plus, TrendingDown, AlertCircle, MapPin, Trash2, Plane } from 'lucide-react';
 import { toast } from 'sonner';
 import { createDroneIcon, createNodeIcon, createPlacementPinIcon } from '@/lib/leafletIcons';
+import { getRouteColor } from '@/lib/routeColors';
 import { runSimulation } from '@/lib/simulation';
 import {
   Select,
@@ -36,6 +38,7 @@ const InfrastructurePlannerPage: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [simulationMode, setSimulationMode] = useState(false);
+  const [showRoutes, setShowRoutes] = useState(true);
   const [newNode, setNewNode] = useState({
     name: '',
     lat: 37.7749,
@@ -243,6 +246,7 @@ const InfrastructurePlannerPage: React.FC = () => {
   const leafletMapRef = useRef<any>(null);
   const nodeMarkersRef = useRef<Map<string, any>>(new Map());
   const droneMarkersRef = useRef<Map<string, any>>(new Map());
+  const droneRoutesRef = useRef<Map<string, any>>(new Map());
   const droneAnimationRef = useRef<Map<string, number>>(new Map());
   const lastDronePositionRef = useRef<Map<string, [number, number]>>(new Map());
   const previewMarkerRef = useRef<any>(null);
@@ -404,6 +408,61 @@ const InfrastructurePlannerPage: React.FC = () => {
     const map = leafletMapRef.current;
     if (!L || !map) return;
 
+    if (!showRoutes) {
+      droneRoutesRef.current.forEach((routeLine) => {
+        routeLine.remove();
+      });
+      droneRoutesRef.current.clear();
+      return;
+    }
+
+    const nextIds = new Set(visibleDrones.map((drone) => drone.id));
+    droneRoutesRef.current.forEach((routeLine, id) => {
+      if (!nextIds.has(id)) {
+        routeLine.remove();
+        droneRoutesRef.current.delete(id);
+      }
+    });
+
+    visibleDrones.forEach((drone) => {
+      const waypoints = drone.route_waypoints ?? [];
+      const existing = droneRoutesRef.current.get(drone.id);
+
+      if (waypoints.length === 0) {
+        if (existing) {
+          existing.remove();
+          droneRoutesRef.current.delete(drone.id);
+        }
+        return;
+      }
+
+      const points = [
+        [drone.lat, drone.lng] as [number, number],
+        ...waypoints.map((point) => [point.lat, point.lng] as [number, number]),
+      ];
+      const color = getRouteColor(drone.id);
+      const dashArray = drone.route_intent === 'charging' ? '6 6' : undefined;
+
+      if (existing) {
+        existing.setLatLngs(points);
+        existing.setStyle({ color, dashArray });
+      } else {
+        const routeLine = L.polyline(points, {
+          color,
+          weight: 3,
+          opacity: 0.65,
+          dashArray,
+        }).addTo(map);
+        droneRoutesRef.current.set(drone.id, routeLine);
+      }
+    });
+  }, [visibleDrones, showRoutes]);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map) return;
+
     if (profile?.role === 'admin') {
       if (!previewMarkerRef.current) {
         previewMarkerRef.current = L.marker([newNode.lat, newNode.lng], {
@@ -481,6 +540,15 @@ const InfrastructurePlannerPage: React.FC = () => {
             <CardContent>
               <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4 relative">
                 <div ref={mapRef} className="absolute inset-0" />
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border px-3 py-2 mb-4">
+                <div>
+                  <div className="text-sm font-medium">Show optimal paths</div>
+                  <div className="text-xs text-muted-foreground">
+                    Toggle planned drone routes on the map.
+                  </div>
+                </div>
+                <Switch checked={showRoutes} onCheckedChange={setShowRoutes} />
               </div>
 
               {simulationMode && impact && (

@@ -451,6 +451,8 @@ export const createDrone = async (payload) => {
     destination_lat: null,
     destination_lng: null,
     current_node_id: null,
+    route_waypoints: [],
+    route_intent: null,
     created_at: now,
     updated_at: now,
   };

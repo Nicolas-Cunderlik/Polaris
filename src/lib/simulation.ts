@@ -1,6 +1,7 @@
 // Drone simulation engine
 import type { Drone, Node } from '@/types/database';
 import { updateDronePosition, createTransaction, updateNodeLoad } from '@/db/api';
+import { planRoute, selectChargingTarget, type PlannedRoute, type Waypoint } from '@/lib/pathPlanner';
 
 // Calculate distance between two coordinates (Haversine formula)
 export const calculateDistance = (
@@ -79,35 +80,145 @@ export const calculateBatteryDrain = (distance: number): number => {
   return distance * 0.5;
 };
 
+const routeCache = new Map<string, PlannedRoute>();
+
+const generateMissionTarget = (drone: Drone): Waypoint => {
+  return {
+    lat: drone.lat + (Math.random() - 0.5) * 0.1,
+    lng: drone.lng + (Math.random() - 0.5) * 0.1,
+  };
+};
+
+const resolveChargingRoute = async (
+  drone: Drone,
+  nodes: Node[],
+  drones: Drone[]
+): Promise<PlannedRoute | null> => {
+  const cached = routeCache.get(drone.id);
+  if (cached?.intent === 'charging' && cached.waypoints.length > 0 && cached.targetNodeId) {
+    const targetNode = nodes.find(node => node.id === cached.targetNodeId);
+    if (targetNode && targetNode.current_load < targetNode.capacity) {
+      return cached;
+    }
+  }
+
+  const targetNode = selectChargingTarget(drone, nodes, drones);
+  if (!targetNode) return null;
+
+  const waypoints = await planRoute({
+    start: { lat: drone.lat, lng: drone.lng },
+    target: { lat: targetNode.lat, lng: targetNode.lng },
+    drone,
+    nodes,
+    drones,
+  });
+
+  const plannedRoute: PlannedRoute = {
+    waypoints,
+    intent: 'charging',
+    targetNodeId: targetNode.id,
+  };
+
+  routeCache.set(drone.id, plannedRoute);
+  return plannedRoute;
+};
+
+const resolveMissionRoute = async (
+  drone: Drone,
+  nodes: Node[],
+  drones: Drone[]
+): Promise<PlannedRoute> => {
+  const cached = routeCache.get(drone.id);
+  if (cached?.intent === 'mission' && cached.waypoints.length > 0) {
+    return cached;
+  }
+
+  const target: Waypoint =
+    drone.destination_lat !== null && drone.destination_lng !== null
+      ? { lat: drone.destination_lat, lng: drone.destination_lng }
+      : generateMissionTarget(drone);
+
+  const waypoints = await planRoute({
+    start: { lat: drone.lat, lng: drone.lng },
+    target,
+    drone,
+    nodes,
+    drones,
+  });
+
+  const plannedRoute: PlannedRoute = {
+    waypoints,
+    intent: 'mission',
+  };
+
+  routeCache.set(drone.id, plannedRoute);
+  return plannedRoute;
+};
+
+const advanceAlongRoute = async (
+  drone: Drone,
+  plannedRoute: PlannedRoute,
+  nodes: Node[],
+  movingStatus: 'flying' | 'en_route'
+): Promise<void> => {
+  const next = plannedRoute.waypoints[0];
+  if (!next) {
+    routeCache.delete(drone.id);
+    await updateDronePosition(drone.id, drone.lat, drone.lng, drone.battery, 'idle', {
+      waypoints: [],
+      intent: null,
+    });
+    return;
+  }
+
+  const { lat, lng, arrived } = moveDrone(drone, next.lat, next.lng);
+  const distanceTraveled = calculateDistance(drone.lat, drone.lng, lat, lng);
+  const batteryDrain = calculateBatteryDrain(distanceTraveled);
+  const newBattery = Math.max(0, drone.battery - batteryDrain);
+
+  if (arrived) {
+    plannedRoute.waypoints.shift();
+  }
+
+  if (plannedRoute.waypoints.length === 0) {
+    if (plannedRoute.intent === 'charging' && plannedRoute.targetNodeId) {
+      const targetNode = nodes.find(node => node.id === plannedRoute.targetNodeId);
+      await updateDronePosition(drone.id, lat, lng, newBattery, 'charging', {
+        waypoints: [],
+        intent: null,
+      });
+      if (targetNode) {
+        await updateNodeLoad(targetNode.id, targetNode.current_load + 1);
+      }
+    } else {
+      await updateDronePosition(drone.id, lat, lng, newBattery, 'idle', {
+        waypoints: [],
+        intent: null,
+      });
+    }
+    routeCache.delete(drone.id);
+    return;
+  }
+
+  await updateDronePosition(drone.id, lat, lng, newBattery, movingStatus, {
+    waypoints: plannedRoute.waypoints,
+    intent: plannedRoute.intent,
+  });
+  routeCache.set(drone.id, plannedRoute);
+};
+
 // Simulate drone behavior
 export const simulateDrone = async (
   drone: Drone,
-  nodes: Node[]
+  nodes: Node[],
+  drones: Drone[]
 ): Promise<void> => {
   try {
-    // If battery is critically low and not charging, find nearest node
+    // If battery is critically low and not charging, plan a charging route
     if (drone.battery < 25 && drone.status !== 'charging') {
-      const nearestNode = findNearestNode(drone.lat, drone.lng, nodes);
-      if (nearestNode) {
-        // Set destination to nearest charging node
-        const { lat, lng, arrived } = moveDrone(
-          drone,
-          nearestNode.lat,
-          nearestNode.lng
-        );
-
-        const distanceTraveled = calculateDistance(drone.lat, drone.lng, lat, lng);
-        const batteryDrain = calculateBatteryDrain(distanceTraveled);
-        const newBattery = Math.max(0, drone.battery - batteryDrain);
-
-        if (arrived) {
-          // Arrived at charging node
-          await updateDronePosition(drone.id, lat, lng, newBattery, 'charging');
-          await updateNodeLoad(nearestNode.id, nearestNode.current_load + 1);
-        } else {
-          // En route to charging node
-          await updateDronePosition(drone.id, lat, lng, newBattery, 'en_route');
-        }
+      const chargingRoute = await resolveChargingRoute(drone, nodes, drones);
+      if (chargingRoute) {
+        await advanceAlongRoute(drone, chargingRoute, nodes, 'en_route');
         return;
       }
     }
@@ -136,32 +247,39 @@ export const simulateDrone = async (
           );
         }
         
-        await updateDronePosition(drone.id, drone.lat, drone.lng, newBattery, 'idle');
+        await updateDronePosition(drone.id, drone.lat, drone.lng, newBattery, 'idle', {
+          waypoints: [],
+          intent: null,
+        });
       } else {
-        await updateDronePosition(drone.id, drone.lat, drone.lng, newBattery, 'charging');
+        await updateDronePosition(drone.id, drone.lat, drone.lng, newBattery, 'charging', {
+          waypoints: [],
+          intent: null,
+        });
       }
       return;
     }
 
-    // If idle, assign random destination
+    // If idle, possibly start a mission route
     if (drone.status === 'idle' && Math.random() > 0.7) {
       // 30% chance to start flying
-      const randomLat = drone.lat + (Math.random() - 0.5) * 0.1;
-      const randomLng = drone.lng + (Math.random() - 0.5) * 0.1;
-      await updateDronePosition(drone.id, drone.lat, drone.lng, drone.battery, 'flying');
+      const missionRoute = await resolveMissionRoute(drone, nodes, drones);
+      await advanceAlongRoute(drone, missionRoute, nodes, 'flying');
       return;
     }
 
-    // If flying, move randomly
-    if (drone.status === 'flying') {
-      const randomLat = drone.lat + (Math.random() - 0.5) * 0.002;
-      const randomLng = drone.lng + (Math.random() - 0.5) * 0.002;
-      
-      const distanceTraveled = calculateDistance(drone.lat, drone.lng, randomLat, randomLng);
-      const batteryDrain = calculateBatteryDrain(distanceTraveled);
-      const newBattery = Math.max(0, drone.battery - batteryDrain);
+    if (drone.status === 'en_route') {
+      const chargingRoute = await resolveChargingRoute(drone, nodes, drones);
+      if (chargingRoute) {
+        await advanceAlongRoute(drone, chargingRoute, nodes, 'en_route');
+        return;
+      }
+    }
 
-      await updateDronePosition(drone.id, randomLat, randomLng, newBattery, 'flying');
+    // If flying, follow the planned route
+    if (drone.status === 'flying') {
+      const missionRoute = await resolveMissionRoute(drone, nodes, drones);
+      await advanceAlongRoute(drone, missionRoute, nodes, 'flying');
       return;
     }
   } catch (error) {
@@ -171,6 +289,6 @@ export const simulateDrone = async (
 
 // Run simulation for all drones
 export const runSimulation = async (drones: Drone[], nodes: Node[]): Promise<void> => {
-  const promises = drones.map(drone => simulateDrone(drone, nodes));
+  const promises = drones.map(drone => simulateDrone(drone, nodes, drones));
   await Promise.allSettled(promises);
 };

@@ -3,6 +3,8 @@ import type {
   Profile,
   Node,
   Drone,
+  RouteIntent,
+  RouteWaypoint,
   Transaction,
   DroneWithCompany,
   TransactionWithDetails,
@@ -180,8 +182,19 @@ export const updateDronePosition = async (
   lat: number,
   lng: number,
   battery: number,
-  status: string
+  status: string,
+  route?: {
+    waypoints?: RouteWaypoint[] | null;
+    intent?: RouteIntent;
+  }
 ): Promise<void> => {
+  const routePayload =
+    route && (route.waypoints !== undefined || route.intent !== undefined)
+      ? {
+          route_waypoints: route.waypoints ?? null,
+          route_intent: route.intent ?? null,
+        }
+      : {};
   await apiFetch<void>(`/api/drones/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({
@@ -189,6 +202,7 @@ export const updateDronePosition = async (
       lng,
       battery,
       status,
+      ...routePayload,
       updated_at: new Date().toISOString(),
     }),
   });
