@@ -32,14 +32,17 @@ const AnalyticsDashboardPage: React.FC = () => {
   const [audioLoading, setAudioLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const { profile } = useAuth();
+  const metricsScopeLabel = profile?.role === 'admin' ? 'network' : 'company';
 
   useEffect(() => {
     loadMetrics();
-  }, []);
+  }, [profile?.company_id, profile?.role]);
 
   const loadMetrics = async () => {
     try {
-      const data = await getNetworkMetrics();
+      const data = await getNetworkMetrics(
+        profile?.role === 'admin' ? undefined : { company_id: profile?.company_id ?? null }
+      );
       setMetrics(data);
     } catch (error) {
       toast.error('Failed to load metrics');
@@ -147,7 +150,9 @@ const AnalyticsDashboardPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold gradient-text">Analytics Dashboard</h1>
-            <p className="text-muted-foreground">AI-powered network insights and recommendations</p>
+            <p className="text-muted-foreground">
+              AI-powered {metricsScopeLabel} insights and recommendations
+            </p>
           </div>
           <div className="flex gap-2">
             <Button
@@ -193,7 +198,9 @@ const AnalyticsDashboardPage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-primary">{metrics?.total_nodes}</div>
-                  <p className="text-xs text-muted-foreground mt-1">Charging nodes</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {profile?.role === 'admin' ? 'Charging nodes' : 'Nodes used by your company'}
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -204,7 +211,9 @@ const AnalyticsDashboardPage: React.FC = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-secondary">{metrics?.total_drones}</div>
-                  <p className="text-xs text-muted-foreground mt-1">Active drones</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {profile?.role === 'admin' ? 'Active drones' : 'Your company drones'}
+                  </p>
                 </CardContent>
               </Card>
               <Card>
@@ -217,7 +226,9 @@ const AnalyticsDashboardPage: React.FC = () => {
                   <div className="text-3xl font-bold text-chart-5">
                     {metrics?.deliveries_per_hour}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Average throughput</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {profile?.role === 'admin' ? 'Average throughput' : 'Company throughput'}
+                  </p>
                 </CardContent>
               </Card>
               <Card>

@@ -28,11 +28,27 @@ const FleetMapPage: React.FC = () => {
   const [mapReady, setMapReady] = useState(false);
   const { profile } = useAuth();
 
-  const companyDrones = profile?.role === 'admin'
-    ? drones
-    : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
-  const displayDrones = apiAvailable ? companyDrones : [];
+  const ownCompanyId = profile?.role === 'admin' ? null : profile?.company_id ?? null;
+  const displayDrones = apiAvailable ? drones : [];
   const displayNodes = apiAvailable ? nodes : [];
+  const ownCompanyDrones =
+    ownCompanyId === null
+      ? displayDrones
+      : displayDrones.filter((drone) => drone.company_id === ownCompanyId);
+  const droneStatusList =
+    profile?.role === 'admin'
+      ? displayDrones
+      : ownCompanyId
+        ? ownCompanyDrones
+        : [];
+
+  const getDroneColor = (drone: DroneWithCompany) => {
+    if (profile?.role === 'admin') return '#06a9e0';
+    return drone.company_id && drone.company_id === ownCompanyId ? '#06a9e0' : '#111827';
+  };
+
+  const isHighlightedDrone = (drone: DroneWithCompany) =>
+    profile?.role === 'admin' || (drone.company_id && drone.company_id === ownCompanyId);
 
   useEffect(() => {
     loadData();
@@ -145,8 +161,10 @@ const FleetMapPage: React.FC = () => {
     displayDrones.forEach((drone) => {
       const existing = droneMarkersRef.current.get(drone.id);
       const nextPosition: [number, number] = [drone.lat, drone.lng];
+      const iconColor = getDroneColor(drone);
       const current = existing ? existing.getLatLng() : { lat: drone.lat, lng: drone.lng };
       if (existing) {
+        existing.setIcon(createDroneIcon(L, iconColor));
         const start: [number, number] = [current.lat, current.lng];
         const end = nextPosition;
         const duration = 1800;
@@ -168,10 +186,16 @@ const FleetMapPage: React.FC = () => {
         const id = requestAnimationFrame(animate);
         droneAnimationRef.current.set(drone.id, id);
       } else {
+        const popupContent = `
+          <div style="min-width: 140px;">
+            <div style="font-weight: 600;">${drone.name || drone.id}</div>
+            <div style="font-size: 12px; color: #6b7280;">${drone.company?.name || 'Unknown company'}</div>
+          </div>
+        `;
         const marker = L.marker([drone.lat, drone.lng], {
-          icon: createDroneIcon(L),
+          icon: createDroneIcon(L, iconColor),
         })
-          .bindPopup(drone.name || drone.id)
+          .bindPopup(popupContent)
           .addTo(map);
         droneMarkersRef.current.set(drone.id, marker);
       }
@@ -283,15 +307,19 @@ const FleetMapPage: React.FC = () => {
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
                   <div className="text-2xl font-bold text-chart-5">
-                    {displayDrones.filter((d) => d.status === 'flying').length}
+                    {ownCompanyDrones.filter((d) => d.status === 'flying').length}
                   </div>
-                  <div className="text-xs text-muted-foreground">Active Flights</div>
+                  <div className="text-xs text-muted-foreground">
+                    {profile?.role === 'admin' ? 'Active Flights' : 'Your Active Flights'}
+                  </div>
                 </div>
                 <div className="p-3 bg-muted rounded-lg">
                   <div className="text-2xl font-bold text-chart-4">
-                    {displayDrones.filter((d) => d.status === 'charging').length}
+                    {ownCompanyDrones.filter((d) => d.status === 'charging').length}
                   </div>
-                  <div className="text-xs text-muted-foreground">Charging</div>
+                  <div className="text-xs text-muted-foreground">
+                    {profile?.role === 'admin' ? 'Charging' : 'Your Charging'}
+                  </div>
                 </div>
               </div>
             </CardContent>
@@ -310,15 +338,35 @@ const FleetMapPage: React.FC = () => {
                   Array.from({ length: 5 }).map((_, i) => (
                     <Skeleton key={i} className="h-20 w-full bg-muted" />
                   ))
+                ) : profile?.role !== 'admin' && !ownCompanyId ? (
+                  <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                    Join or create a company to view your fleet status.
+                  </div>
+                ) : droneStatusList.length === 0 ? (
+                  <div className="rounded-xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                    No drones found for your company yet.
+                  </div>
                 ) : (
-                  displayDrones.map((drone) => (
+                  droneStatusList.map((drone) => (
                     <div
                       key={drone.id}
-                      className="p-4 border border-border rounded-xl bg-background shadow-sm"
+                      className={`p-4 border rounded-xl bg-background shadow-sm ${
+                        isHighlightedDrone(drone)
+                          ? 'border-primary/50 ring-1 ring-primary/20'
+                          : 'border-border opacity-85'
+                      }`}
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <div className="font-semibold text-sm">{drone.name}</div>
+                          <div className="flex items-center gap-2">
+                            <span
+                              className="inline-flex h-2.5 w-2.5 rounded-full"
+                              style={{
+                                backgroundColor: isHighlightedDrone(drone) ? '#06a9e0' : '#111827',
+                              }}
+                            />
+                            <span className="font-semibold text-sm">{drone.name}</span>
+                          </div>
                           <div className="text-xs text-muted-foreground">
                             {drone.company?.name || 'Unknown'}
                           </div>

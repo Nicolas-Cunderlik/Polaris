@@ -302,9 +302,13 @@ app.post('/api/transactions', async (req, res, next) => {
   }
 });
 
-app.get('/api/metrics', async (_req, res, next) => {
+app.get('/api/metrics', async (req, res, next) => {
   try {
-    const metrics = await getNetworkMetrics();
+    const companyId =
+      typeof req.query.company_id === 'string' && req.query.company_id.trim().length > 0
+        ? req.query.company_id.trim()
+        : null;
+    const metrics = await getNetworkMetrics(companyId);
     res.json(metrics);
   } catch (error) {
     next(error);

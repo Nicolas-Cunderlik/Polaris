@@ -67,14 +67,6 @@ const createProfileDefaults = async (username) => {
   const role =
     normalized === 'admin' ? 'admin' : normalized === 'provider' ? 'provider' : 'operator';
 
-  const companyIdLookup = {
-    provider: 'company-aurora',
-    operator: 'company-skylink',
-    aurora: 'company-aurora',
-    skylink: 'company-skylink',
-    nimbus: 'company-nimbus',
-  };
-
   if (role === 'admin') {
     return { role, company_id: null };
   }
@@ -83,7 +75,7 @@ const createProfileDefaults = async (username) => {
   const isFirstProfile = existingProfiles.length === 0;
   return {
     role: isFirstProfile ? 'admin' : role,
-    company_id: isFirstProfile ? null : companyIdLookup[normalized] ?? 'company-aurora',
+    company_id: null,
   };
 };
 
@@ -529,28 +521,44 @@ export const createTransaction = async (transaction) => {
   return newTx;
 };
 
-export const getNetworkMetrics = async () => {
+export const getNetworkMetrics = async (companyId = null) => {
   const [nodes, drones, transactions] = await Promise.all([
     getNodes(),
     getDrones(),
     getTransactions(500),
   ]);
 
-  const totalNodes = nodes.length;
-  const totalDrones = drones.length;
-  const totalTransactions = transactions.length;
+  const scopedDrones = companyId
+    ? drones.filter((drone) => drone.company_id === companyId)
+    : drones;
+  const scopedTransactions = companyId
+    ? transactions.filter((transaction) => transaction.company_id === companyId)
+    : transactions;
+  const scopedNodeIds = new Set(
+    scopedTransactions.map((transaction) => transaction.node_id).filter(Boolean)
+  );
+  const scopedNodes = companyId
+    ? nodes.filter((node) => scopedNodeIds.has(node.id))
+    : nodes;
+
+  const totalNodes = scopedNodes.length;
+  const totalDrones = scopedDrones.length;
+  const totalTransactions = scopedTransactions.length;
 
   const deliveriesPerHour = Math.round(totalTransactions / 24);
 
+  const nodesForCongestion = scopedNodes.length > 0 ? scopedNodes : companyId ? [] : nodes;
+
   const congestionLevel =
-    nodes.length > 0
+    nodesForCongestion.length > 0
       ? Math.round(
-          (nodes.reduce((sum, node) => sum + node.current_load / node.capacity, 0) / nodes.length) *
+          (nodesForCongestion.reduce((sum, node) => sum + node.current_load / node.capacity, 0) /
+            nodesForCongestion.length) *
             100
         )
       : 0;
 
-  const batteryFailures = drones.filter((drone) => drone.battery < 20).length;
+  const batteryFailures = scopedDrones.filter((drone) => drone.battery < 20).length;
 
   return {
     total_nodes: totalNodes,

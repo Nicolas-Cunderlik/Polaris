@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -5,6 +6,9 @@ import { createHash } from 'node:crypto';
 import { getDb, closeDb } from './db.js';
 
 const BASE_DATE = '2026-03-15T00:00:00.000Z';
+const SAN_FRANCISCO_NODE_COUNT = 20;
+const REGIONAL_NODE_COUNT = 5;
+const TOTAL_DRONE_COUNT = 120;
 
 const companiesSeed = [
   'AeroLink',
@@ -100,7 +104,7 @@ const buildProfiles = (companies) => {
 
 const buildNodes = () => {
   const nodes = [];
-  for (let i = 1; i <= 50; i += 1) {
+  for (let i = 1; i <= SAN_FRANCISCO_NODE_COUNT; i += 1) {
     const seed_key = `node-sf-${String(i).padStart(3, '0')}`;
     const rng = mulberry32(seedToNumber(seed_key));
     const city = cities[0];
@@ -118,7 +122,7 @@ const buildNodes = () => {
 
   const extraCities = cities.slice(1);
   extraCities.forEach((city) => {
-    for (let i = 1; i <= 10; i += 1) {
+    for (let i = 1; i <= REGIONAL_NODE_COUNT; i += 1) {
       const seed_key = `node-${city.key}-${String(i).padStart(2, '0')}`;
       const rng = mulberry32(seedToNumber(seed_key));
       nodes.push({
@@ -139,8 +143,7 @@ const buildNodes = () => {
 
 const buildDrones = (companies) => {
   const drones = [];
-  const total = 500;
-  for (let i = 0; i < total; i += 1) {
+  for (let i = 0; i < TOTAL_DRONE_COUNT; i += 1) {
     const company = companies[i % companies.length];
     const city = cities[i % cities.length];
     const seed_key = `drone-${company.seed_key}-${String(i).padStart(3, '0')}`;
@@ -165,23 +168,29 @@ const buildDrones = (companies) => {
   return drones;
 };
 
-const writeCredentialsFile = (companies) => {
-  const credentials = [
+const writeDemoProfilesFile = (companies) => {
+  const demoProfiles = [
     {
+      kind: 'demo-profile',
       role: 'admin',
       username: 'admin',
-      password: 'test123',
       company_name: null,
       company_id: null,
+      auth_provider: 'Auth0',
+      can_log_in: false,
+      note: 'Demo app profile only. Create a real Auth0 account separately if you need login access.',
     },
     ...companies.map((company) => {
       const username = `operator-${slugify(company.name)}`;
       return {
+        kind: 'demo-profile',
         role: 'operator',
         username,
-        password: 'test123',
         company_name: company.name,
         company_id: company.id,
+        auth_provider: 'Auth0',
+        can_log_in: false,
+        note: 'Demo app profile only. This record simulates an existing operator in the platform.',
       };
     }),
   ];
@@ -189,9 +198,9 @@ const writeCredentialsFile = (companies) => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
   const targetDir = path.join(__dirname, 'seed-data');
-  const targetFile = path.join(targetDir, 'company-credentials.json');
+  const targetFile = path.join(targetDir, 'demo-profiles.json');
   fs.mkdirSync(targetDir, { recursive: true });
-  fs.writeFileSync(targetFile, JSON.stringify(credentials, null, 2));
+  fs.writeFileSync(targetFile, JSON.stringify(demoProfiles, null, 2));
   return targetFile;
 };
 
@@ -205,12 +214,40 @@ const upsertMany = async (collection, docs) => {
   }
 };
 
+const ensureSeedIndex = async (collection) => {
+  const indexName = 'seed_key_1';
+  let indexes = [];
+  try {
+    indexes = await collection.indexes();
+  } catch (error) {
+    if (error?.code !== 26) {
+      throw error;
+    }
+  }
+  const existing = indexes.find((index) => index.name === indexName);
+
+  if (existing && !existing.partialFilterExpression) {
+    await collection.dropIndex(indexName);
+  }
+
+  await collection.createIndex(
+    { seed_key: 1 },
+    {
+      name: indexName,
+      unique: true,
+      partialFilterExpression: {
+        seed_key: { $exists: true, $type: 'string' },
+      },
+    }
+  );
+};
+
 const ensureIndexes = async (db) => {
   await Promise.all([
-    db.collection('companies').createIndex({ seed_key: 1 }, { unique: true }),
-    db.collection('profiles').createIndex({ seed_key: 1 }, { unique: true }),
-    db.collection('nodes').createIndex({ seed_key: 1 }, { unique: true }),
-    db.collection('drones').createIndex({ seed_key: 1 }, { unique: true }),
+    ensureSeedIndex(db.collection('companies')),
+    ensureSeedIndex(db.collection('profiles')),
+    ensureSeedIndex(db.collection('nodes')),
+    ensureSeedIndex(db.collection('drones')),
   ]);
 };
 
@@ -235,11 +272,11 @@ const main = async () => {
     await upsertMany(db.collection('nodes'), nodes);
     await upsertMany(db.collection('drones'), drones);
 
-    const credentialsPath = writeCredentialsFile(companies);
+    const demoProfilesPath = writeDemoProfilesFile(companies);
 
     console.log(`Seeded ${companies.length} companies, ${profiles.length} profiles.`);
     console.log(`Seeded ${nodes.length} nodes and ${drones.length} drones.`);
-    console.log(`Wrote credentials to ${credentialsPath}`);
+    console.log(`Wrote demo profile manifest to ${demoProfilesPath}`);
   } finally {
     await closeDb();
   }

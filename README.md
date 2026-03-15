@@ -91,9 +91,15 @@ Alternatively, use the official installer: Visit the Node.js official website. D
 
 Configure environment variables and install relevant dependencies. The API server uses MongoDB when `MONGODB_URI` is set, or an in-memory placeholder store when it is not.
 
-### Local Admin Login (Placeholder)
+### Authentication
 
-Use username `admin` to create an admin profile on first sign-in. Other usernames default to the `operator` role.
+Authentication is handled by Auth0. New real users sign in through Auth0 and then get a Polaris profile in MongoDB on first access.
+
+### Demo Data
+
+Run `npm run seed:large` to populate MongoDB with demo companies, profiles, nodes, and drones for presentation purposes.
+
+The generated `server/seed-data/demo-profiles.json` file is a manifest of seeded demo profiles only. These are not real login credentials and cannot sign in unless a matching Auth0 account also exists.
 
 
 ## Learn More
