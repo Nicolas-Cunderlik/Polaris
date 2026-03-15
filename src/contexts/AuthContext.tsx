@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import type { Profile, UserRole } from '@/types/database';
-import { upsertProfile } from '@/db/api';
+import { getProfileById, upsertProfile } from '@/db/api';
 import { toast } from 'sonner';
 
 export interface AuthUser {
@@ -10,27 +11,20 @@ export interface AuthUser {
   created_at: string;
 }
 
-const USER_STORAGE_KEY = 'polaris_user';
-const PROFILE_STORAGE_KEY = 'polaris_profile';
+interface AuthContextType {
+  user: AuthUser | null;
+  profile: Profile | null;
+  loading: boolean;
+  login: (returnTo?: string) => Promise<void>;
+  signup: (returnTo?: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
+}
 
-const readStorage = <T,>(key: string): T | null => {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) as T) : null;
-  } catch {
-    return null;
-  }
-};
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const writeStorage = (key: string, value: unknown) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-const clearStorage = (key: string) => {
-  localStorage.removeItem(key);
-};
-
-const createProfileForUser = (user: AuthUser, username: string): Profile => {
+const createProfileForUser = (user: AuthUser): Profile => {
+  const username = user.username ?? user.email?.split('@')[0] ?? 'operator';
   const normalized = username.trim().toLowerCase();
   const role: UserRole =
     normalized === 'admin' ? 'admin' : normalized === 'provider' ? 'provider' : 'operator';
@@ -43,10 +37,7 @@ const createProfileForUser = (user: AuthUser, username: string): Profile => {
     nimbus: 'company-nimbus',
   };
 
-  const company_id =
-    role === 'admin'
-      ? null
-      : companyIdLookup[normalized] ?? 'company-aurora';
+  const company_id = role === 'admin' ? null : companyIdLookup[normalized] ?? 'company-aurora';
 
   return {
     id: user.id,
@@ -58,30 +49,98 @@ const createProfileForUser = (user: AuthUser, username: string): Profile => {
   };
 };
 
-export async function getProfile(userId: string): Promise<Profile | null> {
-  const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
-  if (storedProfile?.id === userId) {
-    return storedProfile;
-  }
-  return null;
-}
-
-interface AuthContextType {
-  user: AuthUser | null;
-  profile: Profile | null;
-  loading: boolean;
-  signInWithUsername: (username: string, password: string) => Promise<{ error: Error | null }>;
-  signUpWithUsername: (username: string, password: string) => Promise<{ error: Error | null }>;
-  signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const normalizeAuthUser = (auth0User: {
+  sub?: string;
+  email?: string;
+  nickname?: string;
+  name?: string;
+  updated_at?: string;
+}): AuthUser => ({
+  id: auth0User.sub ?? '',
+  email: auth0User.email ?? null,
+  username: auth0User.nickname ?? auth0User.name ?? auth0User.email?.split('@')[0] ?? null,
+  created_at: auth0User.updated_at ?? new Date().toISOString(),
+});
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const {
+    isAuthenticated,
+    isLoading: auth0Loading,
+    user: auth0User,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
   const [user, setUser] = useState<AuthUser | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [profileLoading, setProfileLoading] = useState(false);
+
+  const syncProfile = async (nextUser: AuthUser) => {
+    const existingProfile = await getProfileById(nextUser.id);
+    if (existingProfile) {
+      setProfile(existingProfile);
+      return;
+    }
+
+    const createdProfile = await upsertProfile(createProfileForUser(nextUser));
+    setProfile(createdProfile);
+  };
+
+  useEffect(() => {
+    if (auth0Loading) {
+      return;
+    }
+
+    if (!isAuthenticated || !auth0User?.sub) {
+      setUser(null);
+      setProfile(null);
+      setProfileLoading(false);
+      return;
+    }
+
+    const nextUser = normalizeAuthUser(auth0User);
+    setUser(nextUser);
+    setProfileLoading(true);
+
+    void syncProfile(nextUser)
+      .catch((error) => {
+        toast.error('Failed to sync profile');
+        console.error(error);
+      })
+      .finally(() => {
+        setProfileLoading(false);
+      });
+  }, [auth0Loading, isAuthenticated, auth0User]);
+
+  const login = async (returnTo = window.location.pathname) => {
+    await loginWithRedirect({
+      appState: { returnTo },
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        prompt: 'login',
+      },
+    });
+  };
+
+  const signup = async (returnTo = window.location.pathname) => {
+    await loginWithRedirect({
+      appState: { returnTo },
+      authorizationParams: {
+        redirect_uri: window.location.origin,
+        prompt: 'login',
+        screen_hint: 'signup',
+      },
+    });
+  };
+
+  const signOut = async () => {
+    setUser(null);
+    setProfile(null);
+    await logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   const refreshProfile = async () => {
     if (!user) {
@@ -89,89 +148,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const profileData = await getProfile(user.id);
-    setProfile(profileData);
-  };
-
-  useEffect(() => {
     try {
-      const storedUser = readStorage<AuthUser>(USER_STORAGE_KEY);
-      const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
-      setUser(storedUser);
-      setProfile(storedProfile);
-    } catch (error) {
-      toast.error('Failed to restore session');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const signInWithUsername = async (username: string, _password: string) => {
-    try {
-      const storedUser = readStorage<AuthUser>(USER_STORAGE_KEY);
-      const storedProfile = readStorage<Profile>(PROFILE_STORAGE_KEY);
-
-      if (storedUser && storedProfile && storedUser.username === username) {
-        setUser(storedUser);
-        setProfile(storedProfile);
-        return { error: null };
+      const profileData = await getProfileById(user.id);
+      if (profileData) {
+        setProfile(profileData);
+        return;
       }
 
-      // Placeholder auth: create a local user if none exists.
-      const createdAt = new Date().toISOString();
-      const newUser: AuthUser = {
-        id: crypto.randomUUID(),
-        email: `${username}@miaoda.com`,
-        username,
-        created_at: createdAt,
-      };
-      const newProfile = createProfileForUser(newUser, username);
-
-      writeStorage(USER_STORAGE_KEY, newUser);
-      writeStorage(PROFILE_STORAGE_KEY, newProfile);
-      setUser(newUser);
-      setProfile(newProfile);
-
-      void upsertProfile(newProfile).catch((error) => {
-        console.error('Failed to sync profile:', error);
-      });
-
-      return { error: null };
+      const createdProfile = await upsertProfile(createProfileForUser(user));
+      setProfile(createdProfile);
     } catch (error) {
-      return { error: error as Error };
+      toast.error('Failed to refresh profile');
+      console.error(error);
     }
   };
 
-  const signUpWithUsername = async (username: string, _password: string) => {
-    return signInWithUsername(username, _password);
-  };
-
-  const signOut = async () => {
-    clearStorage(USER_STORAGE_KEY);
-    clearStorage(PROFILE_STORAGE_KEY);
-    setUser(null);
-    setProfile(null);
-  };
+  const loading = auth0Loading || profileLoading;
 
   const contextValue = useMemo(
     () => ({
       user,
       profile,
       loading,
-      signInWithUsername,
-      signUpWithUsername,
+      login,
+      signup,
       signOut,
       refreshProfile,
     }),
     [user, profile, loading]
   );
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

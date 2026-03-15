@@ -1,8 +1,9 @@
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import { getDb } from './db.js';
 import { seedData } from './seed.js';
 
 const memoryStore = {
+  users: [...seedData.users],
   companies: [...seedData.companies],
   profiles: [...seedData.profiles],
   nodes: [...seedData.nodes],
@@ -21,6 +22,180 @@ const sanitizeDoc = (doc) => {
   if (!doc) return doc;
   const { _id, ...rest } = doc;
   return rest;
+};
+
+const normalizeUsername = (username) => username.trim().toLowerCase();
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const createPasswordHash = (password) => {
+  const salt = randomBytes(16).toString('hex');
+  const derivedKey = scryptSync(password, salt, 64).toString('hex');
+  return `${salt}:${derivedKey}`;
+};
+
+const verifyPassword = (password, passwordHash) => {
+  const [salt, key] = passwordHash.split(':');
+  if (!salt || !key) {
+    return false;
+  }
+
+  const expectedKey = Buffer.from(key, 'hex');
+  const derivedKey = scryptSync(password, salt, expectedKey.length);
+  return timingSafeEqual(expectedKey, derivedKey);
+};
+
+const toProfile = (user) => ({
+  id: user.id,
+  email: user.email,
+  username: user.username,
+  role: user.role,
+  company_id: user.company_id,
+  created_at: user.created_at,
+});
+
+const toAuthUser = (user) => ({
+  id: user.id,
+  email: user.email,
+  username: user.username,
+  created_at: user.created_at,
+});
+
+const createProfileDefaults = async (username) => {
+  const normalized = normalizeUsername(username);
+  const role =
+    normalized === 'admin' ? 'admin' : normalized === 'provider' ? 'provider' : 'operator';
+
+  const companyIdLookup = {
+    provider: 'company-aurora',
+    operator: 'company-skylink',
+    aurora: 'company-aurora',
+    skylink: 'company-skylink',
+    nimbus: 'company-nimbus',
+  };
+
+  if (role === 'admin') {
+    return { role, company_id: null };
+  }
+
+  const existingProfiles = await getProfiles();
+  const isFirstProfile = existingProfiles.length === 0;
+  return {
+    role: isFirstProfile ? 'admin' : role,
+    company_id: isFirstProfile ? null : companyIdLookup[normalized] ?? 'company-aurora',
+  };
+};
+
+const findMemoryUserByUsername = (username) => {
+  const normalized = normalizeUsername(username);
+  return memoryStore.users.find((user) => user.username_lower === normalized) ?? null;
+};
+
+const withUsersCollection = async (handler) => {
+  const db = await getDb();
+  if (!db) return null;
+  return handler(db.collection('users'));
+};
+
+const getUserByUsername = async (username) => {
+  const normalized = normalizeUsername(username);
+  const result = await withUsersCollection((collection) =>
+    collection.findOne({ username_lower: normalized }, { projection: { _id: 0 } })
+  );
+
+  if (result) {
+    return sanitizeDoc(result);
+  }
+
+  return findMemoryUserByUsername(username);
+};
+
+const profileUsernameExists = async (username) => {
+  const normalized = normalizeUsername(username);
+  const result = await withCollection('profiles', (collection) =>
+    collection.findOne(
+      { username: { $regex: `^${escapeRegExp(normalized)}$`, $options: 'i' } },
+      { projection: { _id: 0, id: 1 } }
+    )
+  );
+
+  if (result) {
+    return true;
+  }
+
+  return memoryStore.profiles.some((profile) => normalizeUsername(profile.username ?? '') === normalized);
+};
+
+export const signUpUser = async ({ username, password }) => {
+  const trimmedUsername = username.trim();
+  const normalized = normalizeUsername(trimmedUsername);
+  if (!trimmedUsername || !password) {
+    throw new Error('Username and password are required');
+  }
+
+  const existingUser = await getUserByUsername(trimmedUsername);
+  if (existingUser) {
+    throw new Error('Username already exists');
+  }
+
+  if (await profileUsernameExists(trimmedUsername)) {
+    throw new Error('Username already exists');
+  }
+
+  const created_at = new Date().toISOString();
+  const { role, company_id } = await createProfileDefaults(trimmedUsername);
+  const user = {
+    id: randomUUID(),
+    username: trimmedUsername,
+    username_lower: normalized,
+    email: `${normalized}@miaoda.com`,
+    role,
+    company_id,
+    created_at,
+    password_hash: createPasswordHash(password),
+  };
+
+  let result;
+  try {
+    result = await withUsersCollection(async (collection) => {
+      await collection.createIndex({ username_lower: 1 }, { unique: true });
+      await collection.insertOne(user);
+      return user;
+    });
+  } catch (error) {
+    if (error?.code === 11000) {
+      throw new Error('Username already exists');
+    }
+    throw error;
+  }
+
+  if (!result) {
+    memoryStore.users.push(user);
+  }
+
+  const profile = toProfile(user);
+  await upsertProfile(profile);
+
+  return {
+    user: toAuthUser(user),
+    profile,
+  };
+};
+
+export const loginUser = async ({ username, password }) => {
+  const trimmedUsername = username.trim();
+  if (!trimmedUsername || !password) {
+    throw new Error('Username and password are required');
+  }
+
+  const user = await getUserByUsername(trimmedUsername);
+  if (!user || !verifyPassword(password, user.password_hash)) {
+    throw new Error('Invalid username or password');
+  }
+
+  return {
+    user: toAuthUser(user),
+    profile: toProfile(user),
+  };
 };
 
 export const getCompanies = async () => {

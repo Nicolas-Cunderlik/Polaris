@@ -2,6 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import {
+  signUpUser,
+  loginUser,
   getCompanies,
   getCompanyById,
   getProfiles,
@@ -42,6 +44,32 @@ app.use(express.json({ limit: '2mb' }));
 
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'polaris-api' });
+});
+
+app.post('/api/auth/signup', async (req, res, next) => {
+  try {
+    const authResult = await signUpUser(req.body ?? {});
+    res.status(201).json(authResult);
+  } catch (error) {
+    if (error.message === 'Username already exists' || error.message === 'Username and password are required') {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+    next(error);
+  }
+});
+
+app.post('/api/auth/login', async (req, res, next) => {
+  try {
+    const authResult = await loginUser(req.body ?? {});
+    res.json(authResult);
+  } catch (error) {
+    if (error.message === 'Invalid username or password' || error.message === 'Username and password are required') {
+      res.status(401).json({ error: error.message });
+      return;
+    }
+    next(error);
+  }
 });
 
 app.get('/api/companies', async (_req, res, next) => {

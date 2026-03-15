@@ -1,6 +1,41 @@
 const now = new Date().toISOString();
 
 export const seedData = {
+  users: [
+    {
+      id: 'profile-admin',
+      username: 'admin',
+      username_lower: 'admin',
+      email: 'admin@miaoda.com',
+      role: 'admin',
+      company_id: null,
+      created_at: now,
+      password_hash:
+        'a8f80679af24912b238e93fb775a2ef0:007d3934b8667be86d41827d0eebeb659cbf80b860a39858c43739bfca3edaf743d2098ce453453fc291070067f0bc2b616d4721f121fdce7d4d31fca5f271bf',
+    },
+    {
+      id: 'profile-provider',
+      username: 'provider',
+      username_lower: 'provider',
+      email: 'provider@miaoda.com',
+      role: 'provider',
+      company_id: 'company-aurora',
+      created_at: now,
+      password_hash:
+        '535d13df25150d8d76b866c970ecaceb:53f078df9e6fd24b35bc9f6ad516821eb00b7177606295a5d91b33f8874a38d1b4c91af5cecb2e76be5c92958a5d9982b82511add26c169d0735b4f7ce8c2b7a',
+    },
+    {
+      id: 'profile-operator',
+      username: 'operator',
+      username_lower: 'operator',
+      email: 'operator@miaoda.com',
+      role: 'operator',
+      company_id: 'company-skylink',
+      created_at: now,
+      password_hash:
+        'de227c8e618113c1e3ba1b90c90b145f:4f0dc73e7ca754f1681f8ef41c308f350def2e706e6f5d9414779907406cf598035ce5cf94244ea087d7891fac54be082e3b64c335a0dd59fd715f67227e3e8c',
+    },
+  ],
   companies: [
     {
       id: 'company-aurora',

@@ -10,6 +10,18 @@ import type {
 } from '@/types/database';
 import { apiFetch } from './client';
 
+export interface AuthUser {
+  id: string;
+  email: string | null;
+  username: string | null;
+  created_at: string;
+}
+
+export interface AuthResponse {
+  user: AuthUser;
+  profile: Profile;
+}
+
 export interface SyncPayload<T> {
   type: 'sync';
   data: T;
@@ -18,6 +30,20 @@ export interface SyncPayload<T> {
 export interface RealtimeSubscription {
   unsubscribe: () => void;
 }
+
+export const signUp = async (username: string, password: string): Promise<AuthResponse> => {
+  return apiFetch<AuthResponse>('/api/auth/signup', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
+};
+
+export const signIn = async (username: string, password: string): Promise<AuthResponse> => {
+  return apiFetch<AuthResponse>('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
+};
 
 // Companies API
 export const getCompanies = async (): Promise<Company[]> => {
