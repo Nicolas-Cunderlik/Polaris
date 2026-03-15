@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,12 @@ const InfrastructurePlannerPage: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [simulationMode, setSimulationMode] = useState(false);
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const leafletMapRef = useRef<any>(null);
+  const droneMarkersRef = useRef<Map<string, any>>(new Map());
+  const nodeMarkersRef = useRef<Map<string, any>>(new Map());
+  const [leafletReady, setLeafletReady] = useState(true);
+  const [mapReady, setMapReady] = useState(false);
   const [newNode, setNewNode] = useState({
     name: '',
     lat: 37.7749,
@@ -185,12 +191,58 @@ const InfrastructurePlannerPage: React.FC = () => {
       ? drones
       : drones.filter((drone) => drone.company_id && drone.company_id === profile?.company_id);
 
-  const mapCenter = { lat: newNode.lat, lng: newNode.lng };
-  const mapZoom = 12;
-  const mapsKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string | undefined;
-  const mapSrc = mapsKey
-    ? `https://www.google.com/maps/embed/v1/view?key=${mapsKey}&center=${mapCenter.lat},${mapCenter.lng}&zoom=${mapZoom}&language=en&region=us`
-    : null;
+  useEffect(() => {
+    const L = (window as any).L;
+    if (!L) {
+      setLeafletReady(false);
+      return;
+    }
+    setLeafletReady(true);
+    if (!mapRef.current || leafletMapRef.current) return;
+
+    const montrealLat = 45.5017;
+    const montrealLng = -73.5673;
+
+    const map = L.map(mapRef.current, {
+      center: [montrealLat, montrealLng],
+      zoom: 13,
+      zoomControl: false,
+      attributionControl: false
+    });
+    leafletMapRef.current = map;
+    setMapReady(true);
+
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB'
+    }).addTo(map);
+
+    return () => {
+      if (leafletMapRef.current) {
+        leafletMapRef.current.remove();
+        leafletMapRef.current = null;
+      }
+      setMapReady(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    nodeMarkersRef.current.forEach((marker) => marker.remove());
+    nodeMarkersRef.current.clear();
+  }, []);
+
+  useEffect(() => {
+    droneMarkersRef.current.forEach((marker) => marker.remove());
+    droneMarkersRef.current.clear();
+  }, []);
+
+  useEffect(() => {
+    const L = (window as any).L;
+    const map = leafletMapRef.current;
+    if (!L || !map || !mapReady) return;
+
+    map.setView([45.5017, -73.5673], 13);
+  }, [nodes, drones, mapReady]);
 
   return (
     <MainLayout>
@@ -214,20 +266,11 @@ const InfrastructurePlannerPage: React.FC = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4">
-                {mapSrc ? (
-                  <iframe
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src={mapSrc}
-                    title="Node Placement Map"
-                  />
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center text-sm text-muted-foreground">
-                    Set VITE_GOOGLE_MAPS_API_KEY to load the map preview.
+              <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-4 relative">
+                <div ref={mapRef} className="absolute inset-0" />
+                {!leafletReady && (
+                  <div className="absolute inset-0 flex items-center justify-center text-sm text-muted-foreground">
+                    Leaflet failed to load. Check the script include in index.html.
                   </div>
                 )}
               </div>

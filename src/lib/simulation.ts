@@ -2,6 +2,21 @@
 import type { Drone, Node } from '@/types/database';
 import { updateDronePosition, createTransaction, updateNodeLoad } from '@/db/api';
 
+const KM_PER_DEGREE = 111;
+const DEFAULT_TRAVEL_SPEED = 0.002; // degrees per update (~200m)
+const CRUISING_SPEED = 0.0025; // faster patrol speed
+const PATROL_RADIUS_DEGREES = 0.02; // keep drones near nodes (~2.2km)
+const flightTargets = new Map<string, { lat: number; lng: number }>();
+
+const randomPointInCircle = (centerLat: number, centerLng: number, radius: number) => {
+  const angle = Math.random() * Math.PI * 2;
+  const distance = Math.sqrt(Math.random()) * radius;
+  return {
+    lat: centerLat + Math.cos(angle) * distance,
+    lng: centerLng + Math.sin(angle) * distance
+  };
+};
+
 // Calculate distance between two coordinates (Haversine formula)
 export const calculateDistance = (
   lat1: number,
@@ -52,11 +67,12 @@ export const moveDrone = (
   drone: Drone,
   targetLat: number,
   targetLng: number,
-  speed: number = 0.001 // degrees per update (~100m)
+  speed: number = DEFAULT_TRAVEL_SPEED
 ): { lat: number; lng: number; arrived: boolean } => {
   const distance = calculateDistance(drone.lat, drone.lng, targetLat, targetLng);
-  
-  if (distance < 0.1) {
+  const speedKm = speed * KM_PER_DEGREE;
+
+  if (distance <= Math.max(0.1, speedKm)) {
     // Arrived at destination
     return { lat: targetLat, lng: targetLng, arrived: true };
   }
@@ -85,6 +101,10 @@ export const simulateDrone = async (
   nodes: Node[]
 ): Promise<void> => {
   try {
+    if (drone.status !== 'flying') {
+      flightTargets.delete(drone.id);
+    }
+
     // If battery is critically low and not charging, find nearest node
     if (drone.battery < 25 && drone.status !== 'charging') {
       const nearestNode = findNearestNode(drone.lat, drone.lng, nodes);
@@ -146,22 +166,48 @@ export const simulateDrone = async (
     // If idle, assign random destination
     if (drone.status === 'idle' && Math.random() > 0.7) {
       // 30% chance to start flying
-      const randomLat = drone.lat + (Math.random() - 0.5) * 0.1;
-      const randomLng = drone.lng + (Math.random() - 0.5) * 0.1;
+      const nearestNode = findNearestNode(drone.lat, drone.lng, nodes);
+      const center = nearestNode ?? { lat: drone.lat, lng: drone.lng };
+      const target = randomPointInCircle(
+        center.lat,
+        center.lng,
+        PATROL_RADIUS_DEGREES
+      );
+      flightTargets.set(drone.id, target);
       await updateDronePosition(drone.id, drone.lat, drone.lng, drone.battery, 'flying');
       return;
     }
 
     // If flying, move randomly
     if (drone.status === 'flying') {
-      const randomLat = drone.lat + (Math.random() - 0.5) * 0.002;
-      const randomLng = drone.lng + (Math.random() - 0.5) * 0.002;
+      const nearestNode = findNearestNode(drone.lat, drone.lng, nodes);
+      const center = nearestNode ?? { lat: drone.lat, lng: drone.lng };
+      const distanceFromCenter = calculateDistance(drone.lat, drone.lng, center.lat, center.lng);
+      const maxDistanceKm = PATROL_RADIUS_DEGREES * KM_PER_DEGREE;
+
+      let target = flightTargets.get(drone.id);
+      if (!target || distanceFromCenter > maxDistanceKm) {
+        target = randomPointInCircle(center.lat, center.lng, PATROL_RADIUS_DEGREES);
+        flightTargets.set(drone.id, target);
+      }
+      const { lat, lng, arrived } = moveDrone(
+        drone,
+        target.lat,
+        target.lng,
+        CRUISING_SPEED
+      );
       
-      const distanceTraveled = calculateDistance(drone.lat, drone.lng, randomLat, randomLng);
+      const distanceTraveled = calculateDistance(drone.lat, drone.lng, lat, lng);
       const batteryDrain = calculateBatteryDrain(distanceTraveled);
       const newBattery = Math.max(0, drone.battery - batteryDrain);
 
-      await updateDronePosition(drone.id, randomLat, randomLng, newBattery, 'flying');
+      await updateDronePosition(drone.id, lat, lng, newBattery, 'flying');
+      if (arrived) {
+        flightTargets.set(
+          drone.id,
+          randomPointInCircle(center.lat, center.lng, PATROL_RADIUS_DEGREES)
+        );
+      }
       return;
     }
   } catch (error) {

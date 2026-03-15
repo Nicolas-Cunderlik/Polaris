@@ -198,7 +198,7 @@ export const generateVoiceExplanation = async (text: string): Promise<TextToSpee
 const createPollingSubscription = <T>(
   fetcher: () => Promise<T>,
   callback: (payload: SyncPayload<T>) => void,
-  intervalMs = 4000
+  intervalMs = 2000
 ): RealtimeSubscription => {
   let active = true;
 

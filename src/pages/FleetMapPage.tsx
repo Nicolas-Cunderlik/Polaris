@@ -40,7 +40,7 @@ const FleetMapPage: React.FC = () => {
 
     simulationInterval.current = setInterval(() => {
       runSimulationCycle();
-    }, 2000);
+    }, 1200);
 
     return () => {
       dronesChannel.unsubscribe();
